@@ -17,6 +17,20 @@ $(function() {
 		}
 	});
 
+	$(document).on("touchstart", function(event) {
+		console.log('touch');
+		$(window).swipe({
+		  	swipeRight:function(event, direction, distance, duration, fingerCount) {
+		  		console.log('right');
+		  		$('#sidebar').sidebar('show');
+		  	}, 
+		  	swipeLeft:function(event, direction, distance, duration, fingerCount) {
+		  		console.log('left');
+		  		$('#sidebar').sidebar('hide');
+		  	}
+		});
+	});
+
 	var sidebar_visible = false;
 	$('#mainMenu').click(function() {
 		$('#sidebar').sidebar('show');
@@ -29,9 +43,10 @@ $(function() {
 
 	$('#back_menu').click(function() {
 		$('#sidebar').sidebar('hide');
-		$('.user-avatar').removeClass('visible');
+		$('.user-avatar').removeClass('visible');		
+	});
 
-
+	$('#sidebar').on('sidebar-hide', function() {
 		$('#back_menu').hide();
 		$('#mainMenu').show();
 	});
