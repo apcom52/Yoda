@@ -1,0 +1,146 @@
+{% load humanize %}
+{% if request.user == user %}
+<div class="ui special cards">
+	<div class="card">
+{% else %}
+<div class="ui card">
+{% endif %}
+		{% if request.user == user %}
+			<div class="blurring dimmable image">
+		      	<div class="ui dimmer">
+		        	<div class="content">
+		          		<div class="center">
+		            		<a href="/users/settings/"><div class="ui inverted button"><i class="photo icon"></i>Загрузить фотографию</div></a>
+		          		</div>
+		        	</div>
+		      	</div>
+		      	<img src="{{avatar}}">
+		    </div>
+		{% else %}
+		<div class="image">
+	    	<img src="{{avatar}}" class="visible content">		    
+	  	</div>
+	  	{% endif %}
+	  	<div class="content">
+	    	<div class="header">{{title}}
+	    	{% if is_online %}
+	    	<span style="float: right;" class="altrone-popup" data-content="Онлайн"><span class="ui olive empty circular label"></span></span>
+	    	</div>
+	    	{% elif last_visit %}
+	    	</div>
+	    	<div style="color: #666;">Был на сайте {{last_visit|naturaltime}}</div>
+	    	{% else %}</div>{% endif %}
+	    	
+	    	<div style="color: #666;">{% if user.userprofile.beta %}<img src="/media/img/icons/beta.png" style="width: 2em;" class="altrone-popup" data-content="Участник предварительного тестирования">{% endif %}{% if user.userprofile.group == 1 %}Первая подгруппа{% else %}Вторая подгруппа{% endif %}</div><br>
+	    	
+	    	<div class="ui two statistics">
+			  	<div class="red statistic">
+			    	<div class="value" id="xpCounter">{{xp}}</div><div class="label">{{xp_morph}}</div>
+			  	</div>
+			  	<div class="yellow statistic">
+			    	<div class="value">{{ach_counter}}</div><div class="label">{{ach_counter_morph}}</div>
+			  	</div>
+			  	<div class="blue statistic">
+			    	<div class="value" id="actionsCounter">{{more.act_count}}</div><div class="label">{{actions_morph}}</div>
+			  	</div>
+			  	<div class="green statistic">
+			    	<div class="text value" style="font-size:1.80rem; padding-top: 10px;">{{rank}}</div><div class="label" style="margin-top:0.3rem">{{level}} уровень</div>
+			  	</div>		
+			  	<div class="purple statistic">
+			    	<div class="value" style="font-size:3.6rem;">{{attendance_percent}}%</div><div class="label">Посещаемость</div>
+			  	</div>		
+			  	<div class="orange statistic">
+			    	<div class="value" style="font-size:3.6rem;">{{duties_percent}}%</div><div class="label">Долгов</div>
+			  	</div>	  
+			</div>  
+			<br>
+			<a href='/notes/2'>Что это?</a>			
+	  	</div>
+	  	<div class="ui red bottom attached progress" data-percent="{{percent}}">
+			<div class="bar" style="transition-duration: 300ms; width: {{percent}}%; min-width: 0%;"></div>
+		</div>
+	</div>
+{% if request.user == user %}</div>{% endif %}
+{% if request.user == user %}
+<div class="ui card">
+	<div class="content">
+		<a href="/users/settings"><button class="ui labeled icon button"><i class="photo icon"></i>Изменить аватар</button></a>
+		<a href="/users/settings"><button class="ui icon button"><i class="setting icon"></i></button></a>
+	</div>
+</div>
+{%endif%}
+
+<div class="ui card">
+	<div class="content">
+		<div class="header">Контакты</div>	
+		<div class="ui relaxed divided list">
+		  	{% if contacts.vk %}
+		  	<div class="item">
+		    	<i class="blue large vk middle aligned icon"></i>
+			    <div class="content">
+			      	<a class="header" href="https://vk.com/{{contacts.vk}}">ВКонтакте</a>
+			      	<div class="description">{{title}}</div>
+			    </div>
+		  	</div>
+		  	{% endif %}		
+		  	{% if contacts.twitter %}
+		  	<div class="item">
+		    	<i class="teal large twitter middle aligned icon"></i>
+			    <div class="content">
+			      	<a class="header" href="https://twitter.com/{{contacts.twitter}}">Twitter</a>
+			      	<div class="description">{{title}}</div>
+			    </div>
+		  	</div>	
+		  	{% endif %}	
+		  	{% if contacts.facebook %}
+		  	<div class="item">
+		    	<i class="blue large facebook square middle aligned icon"></i>
+			    <div class="content">
+			      	<a class="header" href="https://facebook.com/{{contacts.facebook}}">Facebook</a>
+			      	<div class="description">{{title}}</div>
+			    </div>
+		  	</div>	
+		  	{% endif %}	
+		  	{% if contacts.phone %}
+		  	<div class="item">
+		    	<i class="large phone middle aligned icon"></i>
+			    <div class="content">
+			      	<span class="header">Номер телефона</span>
+			      	<div class="description">{{phone}}</div>
+			    </div>
+		  	</div>	
+		  	{% endif %}	
+		  	{% if not user.userprofile.hide_email %}
+		  	<div class="item">
+		    	<i class="large mail outline middle aligned icon"></i>
+			    <div class="content">
+			      	<span class="header">Электронная почта</span>
+			      	<div class="description">{{user.email}}</div>
+			    </div>
+		  	</div>	
+		  	{% else %}
+				<center>{{title}} скрыл свой адрес электронной почты</center>
+		  	{% endif %}
+		  	<br>
+		  	{% if request.user == user %}<p><a href="/users/settings/">Добавить контакты</a></p>{% endif %}
+		</div>		  
+	</div>
+</div>
+
+<div class="ui card">
+  	<div class="content">
+    	<div class="header">Мои друзья</div>	
+    	<div class="ui middle aligned selection list">  
+    		{% for friend in friends %}					
+			<div class="item">						
+			    <img class="ui avatar image" src="{{friend.avatar}}">
+			    <div class="content"><a href="/users/{{friend.user_id}}"><div class="header">{{friend.username}}</div></a></div>
+			    {% if friend.is_online %}
+			    	<span style="float: right; position: relative; top: 0.5em" class="altrone-popup" data-content="Онлайн"><span class="ui olive empty circular label"></span></span>			    	
+			    {% endif %}
+		  	</div>				  	
+    		{%endfor%}
+    		{% if not friends %}У вас нет друзей :( {%endif%}
+    	</div>
+  	</div>
+</div>

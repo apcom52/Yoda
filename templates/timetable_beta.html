@@ -1,0 +1,129 @@
+{% extends 'basic/beta_base.html' %}
+{% block title %}{{title}}{% endblock %}
+{% block more_head %}
+	<link href="/media/static/css/more_css/timetable.css" rel="stylesheet"/>
+	<script type="text/javascript" src="/media/static/js/more_js/timetable.js"></script>
+{% endblock %}
+{% block bodyclass %}{{request.user.userprofile.theme}}-bg{% endblock %}
+{% block content %}
+<div class="card  {% if request.user.userprofile.theme == 'dark'%}card--color-black card--colored{%endif%} card--no-smooth" style="margin-left: 0.25em; margin-right: 0.25em; overflow: hidden;">
+	<div class="card__content card__content--no-padding">
+		
+		<div class="grid">
+			<div class="col-4 col-lm-4 offset-3 offset-lm-0 align-center">
+				<div class="button-group">
+					<button class="button--icon-only {% if request.user.userprofile.theme == 'dark' %}button--color-white{% else %}button--color-black{% endif %} button--transparent-full showPrevDay"><i class="flaticon-left"></i></button>
+					<button class="{% if request.user.userprofile.theme == 'dark' %}button--color-white{% else %}button--color-black{% endif %} bold button--transparent-full" id="currentDayLabel">{% now "j E" %}</button>
+					<button class="button--icon-only {% if request.user.userprofile.theme == 'dark' %}button--color-white{% else %}button--color-black{% endif %} button--transparent-full showNextDay"><i class="flaticon-right1"></i></button>
+				</div>
+			</div>	
+			<div class="col-4 align-right">
+				<div class="tabs tabs--transparent">
+					<div class="tabs__item tabs__item--active">ДЕНЬ</div>
+					<div class="tabs__item">НЕДЕЛЯ</div>
+					<div class="tabs__item">МЕСЯЦ</div>
+				</div>
+			</div>
+		</div>
+
+
+
+		<!-- <div class="horizontal-layout horizontal-layout--centered">
+
+
+			
+			<div class="column column--centered">
+				<div class="button-group">
+					<button class="button--icon-only {% if request.user.userprofile.theme == 'dark' %}button--color-white{% else %}button--color-black{% endif %} button--transparent-full showPrevDay"><i class="flaticon-left"></i></button>
+					<button class="{% if request.user.userprofile.theme == 'dark' %}button--color-white{% else %}button--color-black{% endif %} bold button--transparent-full" id="currentDayLabel">{% now "j E" %}</button>
+					<button class="button--icon-only {% if request.user.userprofile.theme == 'dark' %}button--color-white{% else %}button--color-black{% endif %} button--transparent-full showNextDay"><i class="flaticon-right1"></i></button>
+				</div>
+			</div>
+			<div class="column">
+				<div class="tabs tabs--pin-right tabs--transparent {% if request.user.userprofile.theme == 'dark' %}tabs--invert{% endif %}" id="switch-view-tabs">
+					<a href="#"><div class="tabs__item tabs__item--active" id="day">День</div></a>
+					<a href="#week/20"><div class="tabs__item" id="week">Неделя</div></a>
+					<a href="#month"><div class="tabs__item" id="month">Месяц</div></a>
+				</div>
+			</div>
+		</div> -->
+
+		<div id="day-view">
+			<div class="horizontal-layout">
+				<div class="column" style="flex: 2;">				
+					<div class="day-timetable" id="dayTimetableView">					
+					</div>
+				</div>
+				<div class="column shadow-2">
+					<div class="{{request.user.userprofile.accent}}-bg padding-3 white-fg" style="width: 100%; height: auto;">
+						<div class="horizontal-layout" id="dayTimetableLayout">
+							<div class="column"><div class="helvetica-ultra" style="font-size: 5em;" id="currentDayNumber"></div></div>
+							<div class="column" style="flex: 3">
+								<div class="helvetica-ultra" style="font-size: 3em; text-transform: lowercase;" id="currentDayMonth"></div>
+								<div class="helvetica-medium" style="font-size: 0.8em; text-transform: uppercase;" id="currentDayWeekType"></div>
+							</div>
+						</div>
+					</div>
+					<div class="grid margin-vertical-1">
+						<div class="col-4 align-center">
+							<span class="weather-icons {{request.user.userprofile.accent}}-fg" style="font-size: 6em;">{{weather.icon}}</span>
+						</div>
+						<div class="col-6">
+							<div style="font-size: 3em;" class="helvetica-thin">
+							{{weather.main.temp}} <span class="weather-icons">l</span></div>
+							<br>{{weather.rus}}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="week-view">
+			<div class="grid">
+				<div class="col-12 blue-bg white-fg {{request.user.userprofile.accent}}-bg">
+					<h1 class="pin-right helvetica-thin margin-right-3" style="font-weight: 100;">Нечетная неделя</h1>
+				</div>
+				<div class="col-12" id="weekTimetableView"></div>				
+			</div>
+		</div>		
+	</div>
+</div>	
+
+{% verbatim %}
+<script src="text/html" id="DayTimetableItemTemplate">
+	<div class="day-timetable__time">{{time}}</div>
+	<div class="day-timetable__content {{type_css}}">
+		<div class="day-timetable__title">{{title}}</div>
+		<div class="day-timetable__meta">{{teacher}}
+		<br>{{place}} - {{type}}</div>
+	</div>
+</script>
+
+<script src="text/html" id="DayTimetableHoliday">
+	<div class="align-center">
+		<h1 class="helvetica-thin"><i class="flaticon-star"></i><br>Выходной</h1>
+		<p class="helvetica-light">На этот день пар не назначено</p>
+		<button class="showNextDay">Расписание на следующий день</button>
+	</div>
+</script>
+
+<script src="text/html" id="WeekTimetableItemTemplate">
+	<div class="horizontal-layout week-timetable">		
+		<div class="column date"><h1>{{date}}</h1>{{month}}</div>
+		{{#each timetable}}
+			<div class="column {{type_css}}"><h1>{{title}}</h1>
+			{{place}} <br>
+			<b> {{time}} </b></div>
+		{{/each}}
+	</div>
+</script>
+
+<script src="text/html" id="dayTimetableViewErrorTemplate">
+	<div class="red-fg align-center">
+		<h3>Возникла ошибка</h3>
+		<p>Проверьте ваше интернет-соединение или правильность отправляемых данных</p>
+	</div>
+</script>
+{% endverbatim %}
+
+{% endblock %}
