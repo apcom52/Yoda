@@ -61,11 +61,16 @@ $(function() {
 	$('body').on('click', '.showNextDay', function() {
 		targetDay.setDate(targetDay.getDate() + 1);
 		window.location.hash = '#day/' + getParseDate(targetDay);
+		// $('.timetable-view__label').removeClass('slide-right').removeClass('slide-left');
+		// $('.timetable-view__label').addClass('slide-left');
 	});
 
 	$('body').on('click', '.showPrevDay', function() {
 		targetDay.setDate(targetDay.getDate() - 1);
 		window.location.hash = '#day/' + getParseDate(targetDay);
+
+		// $('.timetable-view__label').removeClass('slide-left').removeClass('slide-right');
+		// $('.timetable-view__label').addClass('slide-right');
 	});
 
 	/* Модели */
@@ -155,7 +160,8 @@ $(function() {
 	});
 
 	function uploadDay() {
-		this.async = true;
+		this.async = true;		
+		$('#dayView').html('<div class="loading-layout"></div>');
 		dayTimetableCollection = new DayTimetableList();
 		dayTimetableCollection.fetch({
 			success: function(data) {

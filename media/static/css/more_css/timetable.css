@@ -7,7 +7,7 @@
 }
 .timetable-view .timetable-view__label {
   width: 100%;
-  padding: 1em;
+  padding: 16px;
   box-sizing: border-box;
 }
 .timetable-view .timetable-view__label .timetable-view__label__title {
@@ -68,5 +68,81 @@
   }
   .timetable-view .timetable-view__content .row .subject .title {
     font-size: 1.25em;
+  }
+}
+.slide-left {
+  padding-left: 1em;
+  opacity: 1;
+  animation-name: slide-left;
+  animation-duration: 1s;
+}
+.slide-right {
+  padding-left: 1em;
+  opacity: 1;
+  animation-name: slide-right;
+  animation-duration: 1s;
+}
+@-webkit-keyframes slide-left {
+  0% {
+    padding-left: 3em;
+  }
+  0% .timetable-view__label__title,
+  0% .timetable-view__label__meta {
+    opacity: 0;
+  }
+  100% {
+    padding-left: 1em;
+  }
+  100% .timetable-view__label__title,
+  100% .timetable-view__label__meta {
+    opacity: 1;
+  }
+}
+@keyframes slide-left {
+  0% {
+    padding-left: 3em;
+  }
+  0% .timetable-view__label__title,
+  0% .timetable-view__label__meta {
+    opacity: 0;
+  }
+  100% {
+    padding-left: 1em;
+  }
+  100% .timetable-view__label__title,
+  100% .timetable-view__label__meta {
+    opacity: 1;
+  }
+}
+@-webkit-keyframes slide-right {
+  0% {
+    padding-left: 0em;
+  }
+  0% .timetable-view__label__title,
+  0% .timetable-view__label__meta {
+    opacity: 0;
+  }
+  100% {
+    padding-left: 1em;
+  }
+  100% .timetable-view__label__title,
+  100% .timetable-view__label__meta {
+    opacity: 1;
+  }
+}
+@keyframes slide-right {
+  0% {
+    padding-left: 0em;
+  }
+  0% .timetable-view__label__title,
+  0% .timetable-view__label__meta {
+    opacity: 0;
+  }
+  100% {
+    padding-left: 1em;
+  }
+  100% .timetable-view__label__title,
+  100% .timetable-view__label__meta {
+    opacity: 1;
   }
 }
