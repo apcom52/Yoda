@@ -11,7 +11,7 @@
 		
 		<div class="grid">
 			<div class="col-12">
-				<div class="col-4 col-lm-4 col-m-4 offset-3 offset-lm-0 align-center">
+				<div class="col-6 col-lm-6 offset-3 offset-lm-0 align-center">
 					<div class="button-group" style="display: block;">
 						<button class="button--icon-only {% if request.user.userprofile.theme == 'dark' %}button--color-white{% else %}button--color-black{% endif %} button--transparent-full showPrevDay"><i class="flaticon-left"></i></button>
 						<button class="{% if request.user.userprofile.theme == 'dark' %}button--color-white{% else %}button--color-black{% endif %} bold button--transparent-full" id="currentDayLabel">{% now "j E" %}</button>
