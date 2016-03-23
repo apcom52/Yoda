@@ -7,6 +7,12 @@
 <div class="ui stackable grid">
 	<div class="one wide column"></div>
 	<div class="eight wide column">		
+		{% if request.user.userprofile.beta %}
+			<div class="ui info message">			  
+			  	<p>Вы являетесь <b>участником предварительного тестирования</b> и для вас доступна обновленная версия расписания<br>
+			  	<a href="/timetable">Перейти в обновленную версию</a></p>
+			</div>
+		{% endif %}
 		{% if bonus.xp or bonus.is_item %}
 			{% include 'basic/everyday_bonus.html' %}
 		{% endif %}

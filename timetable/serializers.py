@@ -2,6 +2,7 @@ import datetime
 from django.db.models import Q
 from rest_framework import serializers
 from .models import *
+from .utils import TimetableControl
 
 class TimetableSerializer(serializers.ModelSerializer):
 	title = serializers.CharField(source = 'lesson.title', allow_blank = True)
@@ -9,6 +10,7 @@ class TimetableSerializer(serializers.ModelSerializer):
 	teacher = serializers.CharField(source = 'teacher.name', allow_blank = True)
 	type_css = serializers.SerializerMethodField()
 	type = serializers.SerializerMethodField()
+	is_ended = serializers.SerializerMethodField()
 
 	def get_time(self, obj):
 		times = ['8:20','10:00','11:45','14:00','15:45','17:20','18:55']
@@ -22,10 +24,28 @@ class TimetableSerializer(serializers.ModelSerializer):
 		types = ['Лекция', 'Практика', 'Лабораторная работа']
 		return types[obj.lesson.type - 1]
 
+	def get_is_ended(self, obj):				
+		today = datetime.datetime.today()
+		date = self.context['date']
+		print(today, date)
+
+		if date > today.date():
+			print('Not today')
+			return False
+
+		subject_time = obj.time
+		if obj.double: subject_time += 1
+
+		ttcontrol = TimetableControl(date)
+
+		if date < today.date() or ttcontrol.timesumm > ttcontrol.gettimesummend(subject_time):
+			return True
+		return False
+
 	class Meta:
 		model = Timetable
 		fields = (
-			'title', 'time', 'place', 'teacher', 'type', 'type_css'
+			'title', 'time', 'place', 'teacher', 'type', 'type_css', 'is_ended'
 		)
 
 class TimetableWeekSerializer():

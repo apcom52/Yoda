@@ -228,11 +228,9 @@ class TimetableAPI(APIView):
 		if data.get("day"):
 			import datetime
 			data_day = str(data.get("day"))
-			print(data_day)
 			today = datetime.datetime.today()
 			day = int(data_day[0:2])
 			month = int(data_day[2:4])
-			print(day, month)
 			year = today.year
 			date = datetime.date(year, month, day)
 			weekday = date.weekday() + 1
@@ -245,7 +243,7 @@ class TimetableAPI(APIView):
 			semester = settings.SEMESTER
 
 			timetable = Timetable.objects.all().filter(week = week, day = weekday, semester = semester).filter(Q(group = 1) | Q(group = (group + 1))).order_by('time')
-			serializer = TimetableSerializer(timetable, many = True)		
+			serializer = TimetableSerializer(timetable, many = True, context = {'date': date})		
 			return Response(serializer.data)
 
 		elif data.get("week"):

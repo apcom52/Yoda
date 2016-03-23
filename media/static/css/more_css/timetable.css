@@ -59,6 +59,9 @@
 .timetable-view .timetable-view__content .row .subject.lab {
   background-color: #ed9595;
 }
+.timetable-view .timetable-view__content .row .subject.ended {
+  color: #666666;
+}
 @media (max-width: 767px) {
   .timetable-view .timetable-view__label .timetable-view__label__meta {
     font-size: 0.7em;

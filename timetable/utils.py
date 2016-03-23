@@ -59,6 +59,41 @@ class DTControl:
 		elif lessonnum == 6: return '17:20'
 		elif lessonnum == 7: return '18:55'
 
+class TimetableControl():
+	def __init__(self, date):
+		if date:
+			self.date = date
+			self.now = datetime.datetime.now()
+			self.year = self.date.year
+			self.month = self.date.month
+			self.weekday = self.date.weekday() + 1
+			self.day = self.date.day
+			self.weeknumber = datetime.date(self.year, self.month, self.day).isocalendar()[1]
+			self.week = 1
+			if (self.weeknumber + settings.WEEK_SHIFT) % 2 == 0: self.week = 2
+			self.hour = self.now.hour
+			self.minute = self.now.minute
+			self.timesumm = self.hour * 60 + self.minute
+
+	def gettimesummstart(self, lessonnum):
+		if lessonnum == 1: return 500
+		elif lessonnum == 2: return 600
+		elif lessonnum == 3: return 705
+		elif lessonnum == 4: return 840
+		elif lessonnum == 5: return 945
+		elif lessonnum == 6: return 1040
+		elif lessonnum == 7: return 1135
+
+	def gettimesummend(self, lessonnum):
+		if lessonnum == 1: return 590
+		elif lessonnum == 2: return 690
+		elif lessonnum == 3: return 795
+		elif lessonnum == 4: return 930
+		elif lessonnum == 5: return 1035
+		elif lessonnum == 6: return 1130
+		elif lessonnum == 7: return 1225
+
+
 def dateInfo(info):
 	date = datetime.datetime(info['year'], info['month'], info['day'])
 	weekday = date.weekday() + 1

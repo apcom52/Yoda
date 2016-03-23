@@ -66,7 +66,7 @@
 {% verbatim %}
 <script src="text/html" id="DayTimetableItemTemplate">
 	<div class="time">{{time}}</div>
-	<div class="subject {{type_css}}">
+	<div class="subject {{#if is_ended}}ended{{else}}{{type_css}}{{/if}}">
 		<div class="title">{{title}}</div>
 		<div class="meta">{{teacher}}
 		<br>{{place}} - {{type}}</div>

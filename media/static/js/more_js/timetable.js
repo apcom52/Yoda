@@ -82,6 +82,7 @@ $(function() {
 			teacher: null,
 			type: null,
 			type_css: null,
+			is_ended: false,
 		},
 		urlRoot: "/api/settings/",
 		url: function() {
@@ -122,7 +123,8 @@ $(function() {
 				place: this.model.get('place'),
 				time: this.model.get('time'),
 				type: this.model.get('type'),
-				type_css: this.model.get('type_css')
+				type_css: this.model.get('type_css'),
+				is_ended: this.model.get('is_ended')
 			};
 
 			$(this.el).html(template(context));
@@ -141,6 +143,8 @@ $(function() {
 		render: function() {
 			var element = $(this.el);
 			element.html('');
+
+			console.log(this.collection);
 
 			if (this.collection.length) {
 				this.collection.forEach(function(item) {
