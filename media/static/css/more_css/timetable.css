@@ -50,17 +50,38 @@
   font-size: 0.9em;
   font-family: HelveticaNeueLight, sans-serif;
 }
+.timetable-view .timetable-view__content .row .subject .homework {
+  width: 100%;
+  background-color: #f5f5f5;
+  color: #333333;
+  padding: 0.5em 1em;
+  box-sizing: border-box;
+  margin-top: 0.5em;
+}
+.timetable-view .timetable-view__content .row .subject .homework .homework__title {
+  text-transform: uppercase;
+  font-weight: bold;
+}
 .timetable-view .timetable-view__content .row .subject.lection {
-  background-color: #74e68f;
+  background-color: #dfef75;
+}
+.timetable-view .timetable-view__content .row .subject.lection .homework {
+  background-color: #daec5e;
 }
 .timetable-view .timetable-view__content .row .subject.practice {
   background-color: #85c0ec;
 }
+.timetable-view .timetable-view__content .row .subject.practice .homework {
+  background-color: #6fb4e8;
+}
 .timetable-view .timetable-view__content .row .subject.lab {
   background-color: #ed9595;
 }
+.timetable-view .timetable-view__content .row .subject.lab .homework {
+  background-color: #ea7f7f;
+}
 .timetable-view .timetable-view__content .row .subject.ended {
-  color: #666666;
+  opacity: 0.5;
 }
 @media (max-width: 767px) {
   .timetable-view .timetable-view__label .timetable-view__label__meta {

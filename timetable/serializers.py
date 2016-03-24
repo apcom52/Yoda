@@ -1,5 +1,6 @@
 import datetime
 from django.db.models import Q
+from django.core.exceptions import ObjectDoesNotExist 
 from rest_framework import serializers
 from .models import *
 from .utils import TimetableControl
@@ -11,6 +12,9 @@ class TimetableSerializer(serializers.ModelSerializer):
 	type_css = serializers.SerializerMethodField()
 	type = serializers.SerializerMethodField()
 	is_ended = serializers.SerializerMethodField()
+	homework = serializers.SerializerMethodField()
+	control = serializers.SerializerMethodField()
+	is_canceled = serializers.SerializerMethodField();
 
 	def get_time(self, obj):
 		times = ['8:20','10:00','11:45','14:00','15:45','17:20','18:55']
@@ -42,10 +46,47 @@ class TimetableSerializer(serializers.ModelSerializer):
 			return True
 		return False
 
+	def get_homework(self, obj):
+		date = self.context['date']
+		time = obj.time
+
+		try:
+			homework = Homework.objects.all().filter(date = date, time = time)
+			for hw in homework:
+				return hw.homework
+		except ObjectDoesNotExist:
+			return False
+
+	def get_control(self, obj):
+		date = self.context['date']
+		time = obj.time
+
+		try:
+			control = Control.objects.all().filter(date = date, time = time)
+			for ctrl in control:
+				if ctrl.info:
+					return ctrl.info
+				return True
+		except ObjectDoesNotExist:
+			return False
+
+	def get_is_canceled(self, obj):
+		date = self.context['date']
+		time = obj.time
+
+		try:
+			canceled_list = CanceledLesson.objects.all().filter(date = date, time = time)
+			if len(canceled_list):
+				return True
+			return False
+		except ObjectDoesNotExist:
+			return False
+
+
 	class Meta:
 		model = Timetable
 		fields = (
-			'title', 'time', 'place', 'teacher', 'type', 'type_css', 'is_ended'
+			'title', 'time', 'place', 'teacher', 'type', 'type_css', 'is_ended', 'homework', 'control', 'is_canceled',
 		)
 
 class TimetableWeekSerializer():

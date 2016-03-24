@@ -66,10 +66,20 @@
 {% verbatim %}
 <script src="text/html" id="DayTimetableItemTemplate">
 	<div class="time">{{time}}</div>
-	<div class="subject {{#if is_ended}}ended{{else}}{{type_css}}{{/if}}">
+	<div class="subject {{type_css}} {{#if is_ended}}ended{{/if}}">
 		<div class="title">{{title}}</div>
+		{{#if is_canceled}}
+		<div class="alert alert--color-red"><div class="alert__header">Пара отменена</div></div>
+		{{else}}
 		<div class="meta">{{teacher}}
 		<br>{{place}} - {{type}}</div>
+		{{#if control}}
+			<div class="homework"><div class="homework__title">Проверочная работа</div>{{control}}</div>
+		{{/if}}
+		{{#if homework}}
+			<div class="homework"><div class="homework__title">Домашнее задание</div>{{homework}}</div>
+		{{/if}}
+		{{/if}}
 	</div>
 </script>
 

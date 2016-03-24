@@ -52,20 +52,46 @@
 					font-family: HelveticaNeueLight, sans-serif;
 				}
 
+				.homework {
+					width: 100%;
+					background-color: @u-gray;
+					color: @d-gray;
+					padding: 0.5em 1em;
+					box-sizing: border-box;
+					margin-top: 0.5em;
+
+					.homework__title {
+						text-transform: uppercase;
+						font-weight: bold;
+					}
+				}
+
 				&.lection {
-					background-color: lighten(@green, 25%);
+					background-color: lighten(@olive, 25%);
+
+					.homework {
+						background-color: lighten(@olive, 20%);
+					}
 				}
 
 				&.practice {
 					background-color: lighten(@blue, 25%);
+
+					.homework {
+						background-color: lighten(@blue, 20%);
+					}
 				}
 
 				&.lab {
 					background-color: lighten(@red, 25%);
+
+					.homework {
+						background-color: lighten(@red, 20%);
+					}
 				}
 
 				&.ended {
-					color: @m-gray;
+					opacity: 0.5;
 				}
 			}
 		}

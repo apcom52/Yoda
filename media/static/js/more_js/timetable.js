@@ -83,6 +83,9 @@ $(function() {
 			type: null,
 			type_css: null,
 			is_ended: false,
+			homework: null,
+			control: null,
+			is_canceled: false
 		},
 		urlRoot: "/api/settings/",
 		url: function() {
@@ -124,7 +127,10 @@ $(function() {
 				time: this.model.get('time'),
 				type: this.model.get('type'),
 				type_css: this.model.get('type_css'),
-				is_ended: this.model.get('is_ended')
+				is_ended: this.model.get('is_ended'),
+				homework: this.model.get('homework'),
+				control: this.model.get('control'),
+				is_canceled: this.model.get('is_canceled')
 			};
 
 			$(this.el).html(template(context));
