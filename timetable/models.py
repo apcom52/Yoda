@@ -140,7 +140,7 @@ class NewPlace(models.Model):
 		(4, '4 пара'), (5, '5 пара'), (6, '6 пара'), 
 		(7, '7 пара'), 
 	)
-	user = models.OneToOneField(User)
+	user = models.ForeignKey(User)
 	date = models.DateField('Дата (YYYY-MM-DD)')
 	time = models.IntegerField('Номер пары', choices = lesson_nums, default = 1)
 	new_place = models.CharField('Подробности', max_length = 1024)

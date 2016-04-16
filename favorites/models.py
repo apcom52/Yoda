@@ -15,7 +15,7 @@ class Favorite(models.Model):
 		(2, 'Файл'),
 	)
 	login = models.ForeignKey(User)
-	type = models.IntegerField('Тип закладки', choices = types)
+	type = models.IntegerField('Тип закладки', choices = types, default = 1)
 	note = models.ForeignKey(Note, blank = True, null = True)
 	file = models.ForeignKey(LibraryFile, blank = True, null = True)
 	pub_date = models.DateTimeField('Дата', auto_now = True)

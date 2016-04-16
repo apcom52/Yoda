@@ -15,6 +15,7 @@ class TimetableSerializer(serializers.ModelSerializer):
 	homework = serializers.SerializerMethodField()
 	control = serializers.SerializerMethodField()
 	is_canceled = serializers.SerializerMethodField();
+	new_place = serializers.SerializerMethodField();
 
 	def get_time(self, obj):
 		times = ['8:20','10:00','11:45','14:00','15:45','17:20','18:55']
@@ -31,10 +32,8 @@ class TimetableSerializer(serializers.ModelSerializer):
 	def get_is_ended(self, obj):				
 		today = datetime.datetime.today()
 		date = self.context['date']
-		print(today, date)
 
 		if date > today.date():
-			print('Not today')
 			return False
 
 		subject_time = obj.time
@@ -45,6 +44,15 @@ class TimetableSerializer(serializers.ModelSerializer):
 		if date < today.date() or ttcontrol.timesumm > ttcontrol.gettimesummend(subject_time):
 			return True
 		return False
+
+	def get_new_place(self, obj):
+		date = self.context['date']
+		date = date.strftime("%Y-%m-%d")
+		try:
+			newplace = NewPlace.objects.all().filter(date = date, time = obj.time).latest('id')
+			return newplace.new_place
+		except ObjectDoesNotExist:
+			return False
 
 	def get_homework(self, obj):
 		date = self.context['date']
@@ -86,7 +94,8 @@ class TimetableSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Timetable
 		fields = (
-			'title', 'time', 'place', 'teacher', 'type', 'type_css', 'is_ended', 'homework', 'control', 'is_canceled',
+			'title', 'time', 'place', 'teacher', 'type', 'type_css', 
+			'is_ended', 'homework', 'control', 'is_canceled', 'new_place',
 		)
 
 class TimetableWeekSerializer():
