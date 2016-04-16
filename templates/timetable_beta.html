@@ -10,22 +10,23 @@
 	<div class="card__content card__content--no-padding">
 		
 		<div class="grid">
-			<div class="col-12">
-				<div class="col-6 col-lm-6 offset-3 offset-lm-0 align-center">
-					<div class="button-group" style="display: block;">
-						<button class="button--icon-only {% if request.user.userprofile.theme == 'dark' %}button--color-white{% else %}button--color-black{% endif %} button--transparent-full showPrevDay"><i class="flaticon-left"></i></button>
-						<button class="{% if request.user.userprofile.theme == 'dark' %}button--color-white{% else %}button--color-black{% endif %} bold button--transparent-full" id="currentDayLabel">{% now "j E" %}</button>
-						<button class="button--icon-only {% if request.user.userprofile.theme == 'dark' %}button--color-white{% else %}button--color-black{% endif %} button--transparent-full showNextDay"><i class="flaticon-right1"></i></button>
-					</div>
-				</div>	
-				<!-- <div class="col-4 col-m-4 align-center">
-					<div class="tabs tabs--transparent tabs--centered">
-						<div class="tabs__item tabs__item--active">ДЕНЬ</div>
-						<div class="tabs__item">НЕДЕЛЯ</div>
-						<div class="tabs__item">МЕСЯЦ</div>
-					</div>
-				</div> -->
-			</div>			
+			<div class="col-4 col-lt-2 hide-m">
+				<button class="button--only-icon button--size-small"><i class="flaticon-settings"></i></button>
+			</div>
+			<div class="col-4 col-lt-4 col-lm-6">
+				<div class="button-group" style="align-items: center;">
+					<button style="flex: 1;" class="button--icon-only bold {% if request.user.userprofile.theme == 'dark' %}button--color-white{% else %}{% endif %} showPrevDay"><i class="flaticon-left"></i></button>
+					<button style="flex: 2;" class="{% if request.user.userprofile.theme == 'dark' %}button--color-white{% endif %} bold" id="currentDayLabel">{% now "j E" %}</button>
+					<button style="flex: 1;" class="button--icon-only bold {% if request.user.userprofile.theme == 'dark' %}button--color-white{% else %}{% endif %} showNextDay"><i class="flaticon-right1"></i></button>
+				</div>
+			</div>	
+			<div class="col-4 col-lt-4 col-lm-6">
+				<div class="tabs tabs--transparent tabs--centered">
+					<div class="tabs__item tabs__item--active">ДЕНЬ</div>
+					<div class="tabs__item">НЕДЕЛЯ</div>
+					<div class="tabs__item">МЕСЯЦ</div>
+				</div>
+			</div>
 		</div>
 
 		<div class="timetable-view">
@@ -34,12 +35,17 @@
 				<div class="timetable-view__label__meta">вторник, нечетная неделя</div>
 			</div>
 
-			<div class="timetable-view__content" id="dayView">
-				
+			<div class="timetable-view__content" id="dayView">				
 			</div>
 		</div>
 
-
+		<div class="dropdown" id="timetableMenu">
+			<div class="dropdown__item" id="dropdownAddHomework">Добавить домашнее задание</div>
+			<div class="dropdown__item" id="dropdownAddControl">Добавить контрольную работу</div>
+			<div class="dropdown__item" id="dropdownChangePlace">Изменить аудиторию</div>
+			<div class="dropdown__item" id="dropdownTransferLesson">Перенести пару</div>
+			<div class="dropdown__item" id="dropdownCancelLesson">Отменить пару</div>
+		</div>
 
 		<!-- <div class="horizontal-layout horizontal-layout--centered">
 
@@ -63,31 +69,108 @@
 	</div>
 </div>	
 
+<div class="modal" id="addHomeworkModal">
+	<div class="modal__header">
+		<div class="modal__header__title">Добавить домашнее задание</div>
+	</div>
+	<div class="modal__content">
+		<div class="form form--fit">
+			<label for="homeworkInput">Домашнее задание</label>
+			<textarea id="homeworkInput" placeholder="Введите домашнее задание"></textarea>
+		</div>
+	</div>
+	<div class="modal__footer align-center"><button class="button--color-{{request.user.userprofile.accent}}">ОК</button><button class="modal__discard">Отмена</button></div>
+</div>
+<div class="modal" id="addControlModal">
+	<div class="modal__header">
+		<div class="modal__header__title">Добавить контрольную работу</div>
+	</div>
+	<div class="modal__content">
+		<div class="form form--fit">
+			<label for="controlInput">Контрольная работа</label>
+			<textarea id="controlInput" placeholder="Введите, что будет в контрольной работе"></textarea>
+		</div>
+	</div>
+	<div class="modal__footer align-center"><button class="button--color-{{request.user.userprofile.accent}}">ОК</button><button class="modal__discard">Отмена</button></div>ОК
+</div>
+<div class="modal" id="changePlaceModal">
+	<div class="modal__header">
+		<div class="modal__header__title">Изменить аудиторию</div>
+	</div>
+	<div class="modal__content">
+		<div class="form">
+			<label for="placeInput">Номер аудитории</label>
+			<input type="text" id="placeInput" placeholder="Введите номер новой аудитории">
+		</div>
+	</div>
+	<div class="modal__footer align-center"><button class="button--color-{{request.user.userprofile.accent}}">ОК</button><button class="modal__discard">Отмена</button></div>
+</div>
+<div class="modal" id="transferLessonModal">
+	<div class="modal__header">
+		<div class="modal__header__title">Перенести пару</div>
+	</div>
+	<div class="modal__content">
+		<div class="form form--fit">
+			<label for="transfer1Input">Новая дата</label>
+			<input type="text" id="transfer1Input" placeholder="Введите новую дату">
+			<label for="transfer2Input">Номер пары</label>
+			<input type="text" id="transfer2Input" placeholder="Введите новую дату">
+			<label for="transfer3Input">Номер аудитории</label>
+			<input type="text"  id="transfer3Input" placeholder="Введите номер аудитории">
+		</div>
+	</div>
+	<div class="modal__footer align-center"><button class="button--color-{{request.user.userprofile.accent}}">ОК</button><button class="modal__discard">Отмена</button></div>
+</div>
+<div class="modal" id="cancelLessonModal">
+	<div class="modal__header">
+		<div class="modal__header__title">Отменить пару</div>
+	</div>
+	<div class="modal__content">Вы действительно хотите отменить пару?</div>
+	<div class="modal__footer align-center"><button class="button--color-{{request.user.userprofile.accent}}">ОК</button><button class="modal__discard">Отмена</button></div>
+</div>
+
+<script type="text/javascript">
+	$(function() {
+		var addHomework = new Modal($('#addHomeworkModal'));
+		var addControl = new Modal($('#addControlModal'));
+		var changePlace = new Modal($('#changePlaceModal'));
+		var transferLesson = new Modal($('#transferLessonModal'));
+		var cancelLesson = new Modal($('#cancelLessonModal'));
+
+		$('#dropdownAddHomework').click(function() { addHomework.show(); });
+		$('#dropdownAddControl').click(function() { addControl.show(); });
+		$('#dropdownChangePlace').click(function() { changePlace.show(); });
+		$('#dropdownTransferLesson').click(function() { transferLesson.show(); });
+		$('#dropdownCancelLesson').click(function() { cancelLesson.show(); });
+	});
+</script>
+
 {% verbatim %}
 <script src="text/html" id="DayTimetableItemTemplate">
-	<div class="time">{{time}}</div>
+	<div class="time">{{time}}<br><button class="button--icon-only button--size-small bold button--circle" data-dropdown-target="timetableMenu"><i class="flaticon-more"></i></button></div>
 	<div class="subject {{type_css}} {{#if is_ended}}ended{{/if}}">
 		<div class="title">{{title}}</div>
 		{{#if is_canceled}}
-		<div class="alert alert--color-red"><div class="alert__header">Пара отменена</div></div>
+			<div class="alert alert--color-red"><div class="alert__header">Пара отменена</div></div>
 		{{else}}
-		<div class="meta">{{teacher}}
-		<br>{{place}} - {{type}}</div>
+			<div class="meta">{{teacher}}
+			<br>{{place}} - {{type}}</div>
 		{{#if control}}
 			<div class="homework"><div class="homework__title">Проверочная работа</div>{{control}}</div>
 		{{/if}}
 		{{#if homework}}
 			<div class="homework"><div class="homework__title">Домашнее задание</div>{{homework}}</div>
+		{{/if}}	
 		{{/if}}
-		{{/if}}
+		<br>
 	</div>
 </script>
 
 <script src="text/html" id="DayTimetableHoliday">
 	<div class="align-center">
-		<h1 class="helvetica-thin"><i class="flaticon-star"></i><br>Выходной</h1>
+		<h1 class="helvetica-thin"><img src="/media/img/day_off.png" style="width: 6em;"><br>Выходной</h1>
 		<p class="helvetica-light">На этот день пар не назначено</p>
-		<button class="showNextDay">Расписание на следующий день</button>
+		<button class="{% endverbatim %}button--color-{{request.user.userprofile.accent}}{% verbatim %} showNextDay">Расписание на следующий день</button>
 	</div>
 </script>
 

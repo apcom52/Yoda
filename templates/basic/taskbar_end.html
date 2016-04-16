@@ -7,11 +7,14 @@
 </div>-->
 	<div class="right-menu">
 		{% if request.user.is_authenticated %}		
-		<div class="ui middle aligned selection list">				
-			<div class="item user">				
+		<div class="ui middle aligned selection list">	
+			<div class="item user" style="float: right;">				
 			    <img class="ui avatar image" src="{{request.user.userprofile.avatar.url|default:'/media/img/noavatar.jpg'}}">
 			    <span class="content"><a href="/users/{{request.user.id}}"><span class="header">{{request.user.first_name}} {{request.user.last_name}}</span></a></span>
 			</div>
+			<button class="ui circular icon button" id="openNotifications">
+			  <i class="alarm icon"></i>
+			</button>
 		</div>
 		{% else %}
 		<a href="/auth/in"><button class="ui button">Войти</button></a>

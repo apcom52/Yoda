@@ -5,7 +5,7 @@ $(function() {
 		headers: {'X-CSRFToken': getCookie("csrftoken")}
 	});
 
-	$(window).scroll(function () {
+	/*$(window).scroll(function () {
 		if ($(this).scrollTop() >= 44) {
 			$('.y-sidebar').css('top', '0px');
 			$('.y-friends-list').css('top', '0px');
@@ -29,21 +29,95 @@ $(function() {
 		  		$('#sidebar').sidebar('hide');
 		  	}
 		});
-	});
+	});*/
 
-	var sidebar_visible = false;
+	/* Центр уведомлений */
+	var notificationCenterTabs = new Tabs($('#notificationCenterTabs'));
+    var login = $('body').data('user');
+    var notificationLength = 0;
+    var notificationIsFirst = true;
+    var alarmSong = new Audio('/media/audio/alarm.mp3');
+   	var notificationCenter = new Sidebar($('#notificationCenter'));
+    console.log(notificationCenter);
+    checkNotification();
+
+    $('#openNotifications').click(function() {
+        notificationCenter.toggle();
+        console.log(notificationCenter);
+        checkNotification(false);
+    });
+
+    $('#updateNotifications').click(function() {
+        checkNotification(false);
+    });
+
+    function checkNotification(withSong = true) {
+    	$('#notificationCenterContent').html('<div class="loading-layout"></div>');
+
+        $.get("/api/notifications?login=" + login, 
+            function (response) {         
+
+                if (response.length) {
+                    $('#openNotifications').addClass(accent + '-bg white-fg');
+                    $('#openNotifications > i').removeClass('flaticon-alarm').addClass('flaticon-alarm-fill');
+                    $('#notificationCenterContent').html("");
+                } else {
+                	$('#notificationCenterContent').html('<p class="padding-horizontal-1">Уведомлений нет</p>');
+                }                
+
+                if (withSong && !notificationIsFirst && notificationLength < response.length) {
+                    alarmSong.play();
+                }
+
+                notificationLength = response.length;
+                var source = $('#notificationItemTemplate').html();
+                var template = Handlebars.compile(source);
+                
+                $('#notificationCenterContent').append("<div class='feed'>");
+                $('#notificationCenterContent > .feed').addClass('feed--color-' + accent);
+                for (var i = 0; i < response.length; i++) {
+                    $('#notificationCenterContent > .feed').append(template(response[i]));                    
+                }
+                $('#notificationCenterContent').append("</div>");
+
+                notificationIsFirst = false;
+            }
+        );
+    };
+
+    var notificationCheck = setInterval(function() {
+        console.log('Проверено уведомление');
+        checkNotification();
+    }, 30000);
+
+    $('#clearNotifications').click(function() {
+        $('#notificationCenterContent').html('<div class="loading-layout"></div>');
+        $.get("/api/notifications?clear=true&login=" + login, 
+            function (response) {  
+                $('#openNotifications').removeClass(accent + '-bg white-fg');  
+                $('#openNotifications > i').removeClass('flaticon-alarm-fill').addClass('flaticon-alarm');
+                $('#notificationCenterContent').html('<p class="padding-horizontal-1">Уведомлений нет</p>');
+
+                notificationLength = 0;
+            }
+        );
+    });
+
+
+    // ---------
+
+	var sidebar = new Sidebar($('#sidebar'));
 	$('#mainMenu').click(function() {
-		$('#sidebar').sidebar('show');
-		$('.user-avatar').addClass('visible');
-
-
-		$('#mainMenu').hide();
-		$('#back_menu').show();
+		sidebar.show();
 	});
 
 	$('#back_menu').click(function() {
-		$('#sidebar').sidebar('hide');
-		$('.user-avatar').removeClass('visible');		
+		sidebar.hide();
+	});
+
+	$('#sidebar').on('sidebar-show', function() {
+		$('#back_menu').show();
+		$('#mainMenu').hide();
 	});
 
 	$('#sidebar').on('sidebar-hide', function() {

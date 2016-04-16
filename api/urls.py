@@ -23,7 +23,10 @@ urlpatterns = [
 
 	url('^settings/$', views.SettingsAPI.as_view()),
 	
+	url('^notifications/$', views.NotificationAPI.as_view()),
+	
 	url('^timetable/$', views.TimetableAPI.as_view()),
+	url('^change_timetable/$', views.TimetableManupulationsAPI.as_view()),
 
 	url('^blog/$', views.BlogPostAPI.as_view()),
 	#url('^', include(router.urls)),

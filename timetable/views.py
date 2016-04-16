@@ -937,4 +937,4 @@ def getTimeTable(semester, week, day, date = datetime.datetime.now()):
 	return timetable
 
 def game(request):
-	return render(request, 'game.html', {'title': "Зельеварение (beta)"})
+	return render(request, 'game.html', {'title': "Battles (beta)"})

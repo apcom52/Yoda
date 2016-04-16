@@ -24,6 +24,69 @@ $(function() {
 	$('.altrone-popup').popup();
     $('.special.cards .image').dimmer({on: 'hover'});
 
+
+    /* Центр уведомлений */
+    var login = $('body').data('user');
+    var notificationLength = 0;
+    var notificationIsFirst = true;
+    var alarmSong = new Audio('/media/audio/alarm.mp3');
+    checkNotification();
+
+    $('#openNotifications').click(function() {
+        $('#notificationCenter').modal('show');
+        checkNotification(false);
+    });
+
+    $('#updateNotifications').click(function() {
+        checkNotification(false);
+    });
+
+    function checkNotification(withSong = true) {
+        $.get("/api/notifications?login=" + login, 
+            function (response) {         
+
+                if (response.length) {
+                    $('#openNotifications').addClass('red');
+                }
+
+                $('#notificationCenterContent').html("");
+
+                if (withSong && !notificationIsFirst && notificationLength < response.length) {
+                    alarmSong.play();
+                }
+
+                notificationLength = response.length;
+
+                var source = $('#notificationTemplate').html();
+                var template = Handlebars.compile(source);
+
+                for (var i = 0; i < response.length; i++) {
+                    $('#notificationCenterContent').append(template(response[i]));                    
+                }
+
+                notificationIsFirst = false;
+            }
+        );
+    };
+
+    var notificationCheck = setInterval(function() {
+        console.log('Проверено уведомление');
+        checkNotification();
+    }, 30000);
+
+    $('#clearNotifications').click(function() {
+        $('#clearNotifications').addClass('loading');
+        $.get("/api/notifications?clear=true&login=" + login, 
+            function (response) {  
+                $('#openNotifications').removeClass('red');  
+                $('#notificationCenterContent').html("Уведомлений нет");
+                $('#clearNotifications').removeClass('loading');
+
+                notificationLength = 0;
+            }
+        );
+    });
+
 	/* таскбар */
   	var toggleSidebar = false;
   	$('.overlay').click(function() {

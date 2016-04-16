@@ -46,9 +46,15 @@ class AchUnlockedAdmin(admin.ModelAdmin):
 	list_display = ('ach_id', 'login', 'pub_date')
 
 	def save_model(self, request, obj, form, change):
-		from timetable.utils import addAction
+		from timetable.utils import addAction, sendNotification
 		achievement = obj.ach_id
 		user = obj.login
+		sendNotification({
+			'user': user,
+			'title': 'Новое достижение',
+			'text': 'Вы получили новое достижение "%s"' % (achievement.title,),
+			'type': 3,
+		})
 		addAction(user, 'получил достижение<div class="comments"><div class="comment"><span class="avatar"><img src="%s"></span><div class="content"><span class="author">%s</span><div class="text">%s</div></div></div></div>' % (achievement.icon, achievement.title, achievement.description))
 		obj.save()
 
@@ -65,13 +71,19 @@ class RankAdmin(admin.ModelAdmin):
 
 class Notification(models.Model):
 	types = (
-		(1, 'Обычное уведомление'),
-		(2, 'Системное уведомление'),
+		(1, 'Обычное текстовое уведомление'),
+		(2, 'Получение предмета из подаркопульты'),
+		(3, 'Получение нового достижения'),
+		(4, 'Системное уведомление'),
+		(5, 'Уведомление о новом уровне'),
+		(6, 'Уведомление о мероприятии'),
+		(7, 'Уведоление для beta-пользователей'),
 	)
 
 	login = models.ForeignKey(User)
 	type = models.IntegerField('Тип уведомления', choices = types, default = 1)
 	title = models.CharField('Заголовок уведомления', max_length = 128)
+	link = models.CharField('Ссылка', max_length = 256, blank = True, null = True)
 	text = models.CharField('Текст уведомления', max_length = 256)
 	pub_date = models.DateTimeField('Дата и время получения', auto_now = True)
 	view = models.BooleanField('Уведомление просмотрено', default = False)

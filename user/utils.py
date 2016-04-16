@@ -5,10 +5,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils.datastructures import MultiValueDictKeyError
 from django.contrib.auth.forms import PasswordChangeForm
 from django.db.models import Q
-from timetable.utils import avatar, pointsumm, getrank, handle_uploaded_file
-from achievements.models import Action, Achievement, AchUnlocked
-from timetable.utils import addAction, setAch, checkAchievements, isOnline, UpdateStatus
-from .models import Attendance, Duty, BonusPoints
+from timetable.utils import *
+from achievements.models import *
+from .models import *
 from inventory.models import *
 import pymorphy2
 import math
@@ -139,3 +138,4 @@ def getSmiles(user):
 				'symbol': smile.symbol,
 			})
 	return smiles
+

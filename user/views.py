@@ -824,6 +824,8 @@ def complect(request):
 @csrf_exempt 
 def send_catapult(request):
 	import random
+	from timetable.utils import sendNotification
+
 	if request.method == 'POST':
 		data = request.POST
 		item_id = data.get('item_id', False)
@@ -896,6 +898,12 @@ def send_catapult(request):
 
 			user.save()
 
+			sendNotification({
+				'user': rand_user,
+				'title': "Вы получили подарок",
+				'text': "%s %s запустил в вас %s" % (request.user.get_full_name(), db_item.title),
+				'type': 2,
+			})
 			addAction(request.user, 'запустил %s и бросил %s в <b>%s</b>' % (catapult_text, user_item_text, rand_user.get_full_name(),), False)
 			return HttpResponse('%s' % (rand_user.get_full_name(),), content_type='text/html')
 		return HttpResponse('no', content_type='text/html')

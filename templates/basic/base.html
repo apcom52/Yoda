@@ -20,12 +20,10 @@
     <meta name="msapplication-TileColor" content="#f5f5f5">
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#f5f5f5">
-    <link href="/media/static/css/altrone.css" rel="stylesheet">
     <link href="/media/static/css/semantic.css" rel="stylesheet">
     <link href="/media/static/css/styles.css?v=23" rel="stylesheet">
     <script src="/media/static/js/jqold.js"></script>
-    <script src="/media/static/js/altrone.js"></script>
-    <script src="/media/static/altrone-dev.js"></script>
+    <script src="/media/static/js/handlebars.js"></script>
     <script src="/media/static/js/semantic.js"></script>
     <script src="/media/static/js/jquery.cookie.js"></script>
     <script src="/media/static/js/actions.js?v=22"></script>
@@ -33,12 +31,44 @@
     {% block more_head %}
     {%endblock%}
 </head>
-<body class="{% block bodyclass %}{%endblock%}">
+<body class="{% block bodyclass %}{%endblock%}" data-user="{{request.user.username}}">
 	{% block content %}{% endblock %}
     <button class="ui button altrone-up" tabindex="0">
         <div class="visible content"><i class="angle up icon"></i></div>
     </button>
+
+    <audio src="/media/audio/alarm.mp3" id="alarmSong"></audio>
+
+    <div class="ui modal" id="notificationCenter">
+        <div class="header">Центр уведомлений</div>
+        <div class="content">
+            <div class="ui comments" id="notificationCenterContent">
+            Уведомлений нет
+            </div>
+        </div>
+        <div class="actions">
+            <div class="ui button" id="updateNotifications">Обновить</div>
+            <div class="ui button" id="clearNotifications">Очистить все</div>
+            <div class="ui cancel button">Закрыть</div>
+        </div>
+    </div>
 </body>
+
+{% verbatim %}
+<script src="html/text" id="notificationTemplate">
+    <div class="comment">
+        <div class="avatar"><img src="{{icon}}" alt=""></div>
+        <div class="content">
+            <span href="" class="author">{{title}}</span>
+            <div class="metadata">
+                <div class="date">{{pub_date}}</div>
+            </div>
+            <div class="text">{{text}}</div>
+        </div>
+    </div>           
+</script>
+{% endverbatim %}
+
 <!-- Yandex.Metrika counter -->
 <script type="text/javascript"> (function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter32139868 = new Ya.Metrika({ id:32139868, clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true }); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = "https://mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks");</script><noscript><div><img src="https://mc.yandex.ru/watch/32139868" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->

@@ -2,7 +2,18 @@
 {% block title %}{{title}}{% endblock %}
 {% block more_head %}
 	<script type="text/javascript" src="/media/static/js/phaser.js"></script>
+	<script type="text/javascript" src="/media/static/js/phaser-plugin-isometric.js"></script>
 	<script type="text/javascript" src="/media/static/js/more_js/game.js"></script>
+
+	<style>
+		body {
+			background-color: black;
+		}
+
+		canvas {
+			margin: 1em auto;
+		}
+	</style>
 {% endblock %}
 {% block content %}
 {% endblock %}

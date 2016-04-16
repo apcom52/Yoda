@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
@@ -17,11 +18,13 @@ from notes.serializers import *
 from favorites.serializers import *
 from timetable.serializers import *
 from feedback.serializers import *
+from achievements.serializers import *
 
 from library.models import *
 from notes.models import Note
 from timetable.models import Timetable
 from feedback.models import *
+from achievements.models import Notification
 
 # Create your views here.
 class LibraryFilesAPI(APIView):	
@@ -239,7 +242,10 @@ class TimetableAPI(APIView):
 			if weeknumber % 2 == 0:
 				week = 2
 
-			group = request.user.userprofile.group
+			if not data.get("group"):
+				group = request.user.userprofile.group
+			else:
+				group = int(data.get("group"))
 			semester = settings.SEMESTER
 
 			timetable = Timetable.objects.all().filter(week = week, day = weekday, semester = semester).filter(Q(group = 1) | Q(group = (group + 1))).order_by('time')
@@ -250,8 +256,60 @@ class TimetableAPI(APIView):
 			serializer = TimetableWeekSerializer(str(data.get("week")), request.user.userprofile.group, settings.SEMESTER)
 			return Response(serializer.get_data())
 
+class TimetableManupulationsAPI(APIView):
+	def get(self, request, format = None):
+		data = request.GET
+		method = data.get("method")
+
+		if method == "homework":
+			import datetime
+			homework = data.get("homework")
+			params = {
+				"login": data.get("login"),
+				"date": data.get("date"),
+				"time": int(data.get("time")),
+				"homework": homework
+			}
+			
+			date = datetime.datetime.strptime(params['date'], '%d.%m.%Y')
+			print(date)
+			try:
+				user = User.objects.get(username = params['login'])
+				print(user)
+				
+			except ObjectDoesNotExist:
+				return Response("Wrong params", status = status.HTTP_400_BAD_REQUEST)
+
+			homework = Homework()
+			homework.user = user
+			homework.date = date
+			homework.time = params['time']
+			homework.homework = params['homework']
+			homework.save()
+			return Response("OK");
+		return Response("Empty params string", status = status.HTTP_400_BAD_REQUEST)
+
 class BlogPostAPI(APIView):
 	def get(self, request, format = None):
 		blog = BlogPost.objects.all().order_by('-id')
 		serializer = BlogPostSerializer(blog, many = True)
+		return Response(serializer.data)
+
+class NotificationAPI(APIView):
+	def get(self, request, format = None):
+		data = request.GET
+		login = data.get("login", "")
+
+		if (login == ""):
+			return Response("Empty login parameter", status = status.HTTP_400_BAD_REQUEST)
+
+		user = User.objects.get(username = login)
+		notifications = Notification.objects.all().filter(login = user, view = False).order_by('-id')
+		serializer = NotificationSerializer(notifications, many = True)
+
+		if (data.get("clear", "false") == "true"):
+			for n in notifications:
+				n.view = True
+				n.save()
+
 		return Response(serializer.data)

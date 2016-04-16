@@ -1,33 +1,109 @@
 {% extends 'basic/beta_base.html' %}
 {% block title %}{{title}}{% endblock %}
 {% block more_head %}
+	<!-- <link href="/media/static/css/more_css/timetable.css" rel="stylesheet"/> -->
+	<script type="text/javascript" src="/media/static/js/more_js/feedback.js"></script>
 {% endblock %}
 {% block content %}
 <div class="grid">
 	<div class="col-12 margin-vertical-1">
-		<div class="tabs tabs--transparent tabs--color-{{request.user.userprofile.accent}} {% if request.user.userprofile.theme == 'dark' %}tabs--invert{% endif%}">
-			<div class="tabs__item tabs__item--active">Блог разработки</div>
-			<div class="tabs__item">Баг-репорты и предложения</div>
+		<div class="tabs tabs--transparent tabs--color-{{request.user.userprofile.accent}} {% if request.user.userprofile.theme == 'dark' %}tabs--invert{% endif%}" id="feedbackTabs">
+			<div class="tabs__item tabs__item--active" data-tab-target="blogTabContent">Блог разработки</div>
+			<div class="tabs__item" data-tab-target="feedbackTabContent">Отзывы</div>
+			<div class="tabs__item" data-tab-target="apiTabContent">API</div>
+			<div class="tabs__item" data-tab-target="appsTabsContent">Приложения</div>
 		</div>
 	</div>
-	<div class="col-4 u-gray-bg {% if request.user.userprofile.theme == 'dark' %}d-gray-bg{% endif%}">
-		<div class="vertical-layout vertical-layout--stripped margin-vertical-1">
+	<div id="blogTabContent">
+		<div class="col-4 u-gray-bg {% if request.user.userprofile.theme == 'dark' %}d-gray-bg{% endif%}">
 			{% if request.user.is_superuser %}
-				<div class="row padding-1"><a href="#add" class="{{request.user.userprofile.accent}}-fg margin-vertical-1">Добавить запись</a></div>				
+				<button class="button--icon button--color-{{request.user.userprofile.accent}} button--only-borders" id="addNewsBtn"><i class="flaticon-edit"></i>Добавить запись</button>				
 			{% endif %}
-			<div class="row padding-1">Вышло обновление 2.3 beta</div>
-			<div class="row padding-1">Вышло обновление 2.3 beta</div>
-			<div class="row padding-1">Вышло обновление 2.3 beta</div>
-			<div class="row padding-1">Вышло обновление 2.3 beta</div>
-			<div class="row padding-1">Вышло обновление 2.3 beta</div>
-			<div class="row padding-1">Вышло обновление 2.3 beta</div>
+			<p class="margin-left-1">Последние записи в блоге:</p>
+			<div class="list list--animation-invert margin-vertical-1" id="blogListView">
+			</div>
+		</div>
+		<div class="col-8">
+			<div class="padding-horizontal-1">
+				<h2 id="blogView-title"></h2>
+				<p id="blogView-content"></p>
+			</div>		
 		</div>
 	</div>
-	<div class="col-8">
-		<div class="padding-horizontal-1">
-			<h2>Вышло обновление 2.3 beta</h2>
-			<p>Случилось что-то невероятное</p>
-		</div>		
+
+	<div id="feedbackTabContent">
+		<h1>Мои отзывы</h1>
+	</div>
+
+	<div id="apiTabContent">
+		<h1>API методы</h1>
+	</div>
+
+	<div id="appsTabsContent">
+		<div class="grid">
+			<div class="col-4">
+				<div class="card">
+					<div class="card__image"><img src="http://www.technobuffalo.com/wp-content/uploads/2014/10/Nexus-9-product.jpg" alt=""></div>
+					<div class="card__content">
+						<h1>Yoda для Android</h1>
+						<p>Последняя актуальная версия: <b>0.3</b></p>
+					</div>
+					<div class="card__footer align-center">
+						<button class="button--color-green">Загрузить .apk</button>
+						<button>История версий</button>
+					</div>
+				</div>
+			</div>
+			<div class="col-4">
+				<div class="card">
+					<div class="card__image"><img src="http://www.techsmart.co.za/data/articles/Microsoft%20begins%20Windows%20Phone%20Mango%20roll%20out/windows_phone_7.5_os.jpg" alt=""></div>
+					<div class="card__content">
+						<h1>Yoda для Windows Phone 7</h1>
+						<p>Последняя актуальная версия: <b>0.3</b></p>
+					</div>
+					<div class="card__footer align-center">
+						<button class="button--color-green">Загрузить .xap</button>
+						<button>История версий</button>
+					</div>
+				</div>
+			</div>
+			<div class="col-4">
+				<div class="card">
+					<div class="card__image"><img src="http://analogindex.com/image/640437/1024x1024/windows-10-build-10163-start-menu-leaked-screenshots.jpeg" alt=""></div>
+					<div class="card__content">
+						<h1>Yoda для Windows 10</h1>
+						<p>Последняя актуальная версия: <b>0.1</b></p>
+					</div>
+					<div class="card__footer align-center">
+						<button class="button--color-green">Загрузить .xap</button>
+						<button>История версий</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+
+	<div class="modal {% if request.user.userprofile.theme == 'dark' %}modal--invert{% endif %}" id="AddNewsModal">
+		<div class="modal__header">
+			<div class="modal__header__title">Добавить запись в блог</div>
+		</div>
+		<div class="modal__content">
+			<div class="form form--fit {% if request.user.userprofile.theme == 'dark' %}form--invert{% endif %}">
+				<input type="text" placeholder="Введите заголовок новости">
+				<textarea placeholder="Введите здесь текст новости (в формате Markdown)" rows="10"></textarea>
+				<div class="checkbox">
+					<input type="checkbox" id="onlyBetaUsers">
+					<label for="onlyBetaUsers">
+						<div class="checkbox__title">Для участников предварительного тестирования</div>
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="modal__footer align-center">
+			<button class="button--color-green">Добавить</button>
+			<button class="modal__discard">Отмена</button>
+		</div>
 	</div>
 </div>
 {% endblock %}

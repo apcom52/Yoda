@@ -1,38 +1,62 @@
-var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
+//Build 100 - 09.04.16
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'battles');
 
-function preload() {
-    game.load.image('cup', '/media/potions/cup.jpg');
-    game.load.image('smoke', '/media/potions/smoke.png');
-    game.load.image('carrot', '/media/potions/carrot.png');
+/* Состояния игры */
+var bootState = {
+	create: function() {
+		// Здесь будут подгружаться плагины, если они будут
+		game.state.start('load');
+	}
+};
 
+var loadState = {
+	preload: function() {
+		var loadingLabel = game.add.text(0, 0, 'Идет загрузка. Подождите...', {font: '30px Courier', fill: '#ffffff'});
+
+		game.load.image('hamburger', '/media/game/hamburger.png');
+		game.load.image('logo', '/media/game/logo.png');
+		
+		game.load.image('build_button', '/media/game/build_button.png');
+		game.load.image('army_button', '/media/game/army_button.png');
+		game.load.image('stats_button', '/media/game/stats_button.png');
+	},
+
+	create: function() {
+		game.state.start('kingdom');
+	}
 }
 
-var cup, carrot;
+var kingdomState = {
+	create: function() {
+		game.stage.backgroundColor = '#ffdacf'
+
+		game.add.sprite(16, 16, 'hamburger');
+		game.add.sprite(64, 6, 'logo');
+
+		game.add.sprite(752, 458, 'stats_button');
+		game.add.sprite(752, 504, 'army_button');
+		game.add.sprite(752, 552, 'build_button');
+
+		game.add.text(10, 576, 'Build 101', {font: '14px Courier', fill: '#ffffff'});
+	}
+}
+
+game.state.add('boot', bootState);
+game.state.add('load', loadState);
+game.state.add('kingdom', kingdomState);
+game.state.start('boot');
+/*function preload() {
+    game.load.image('tilemap', '/media/game/tilemap.png');
+}
+
+var map;
+var grass_tile,
+    water_tile;
 
 function create() {
-    cup = game.add.sprite(150, 200, 'cup');
-    carrot = game.add.sprite(500, 300, 'carrot');
+    game.stage.backgroundColor = '#2d2d2d';
+    /*map = game.add.tilemap();
+    map.addTilesetImage('tilemap');
 
-	game.physics.enable(carrot, Phaser.Physics.ARCADE);
-    carrot.inputEnabled = true;
-    carrot.input.enableDrag(true);
-    carrot.events.onDragStart.add(startDrag, this);
-    carrot.events.onDragStop.add(stopDrag, this);
-
-    emitter = game.add.emitter(game.world.centerX, 250, 200);
-    emitter.makeParticles('smoke');
-    emitter.setRotation(0, 180);
-    emitter.setAlpha(0, 0.3);
-    emitter.setScale(0.5, 0.5);
-    emitter.gravity = -200;
-    emitter.start(false, 1500, 100);
-}
-
-function startDrag(sprite, pointer) {
-    game.add.tween(sprite).to( { angle: -45 }, 2000, Phaser.Easing.Linear.None, true);
-}
-
-function stopDrag(sprite, pointer) {
-	
-    game.add.tween(sprite).to( { angle: 0 }, 2000, Phaser.Easing.Linear.None, true);
-}
+    grass_tile = map.create('grass', )*/
+//}

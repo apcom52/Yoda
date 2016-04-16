@@ -1,14 +1,15 @@
 /* Sidebar Plugin */
-(function( $ ) {
+/*(function( $ ) {
 
 	$.extend($.fn, {
 		sidebar: function() {
 			var methods = {
 				el: $(this),
 				show: function(element = $(this)) {
+					console.log('show');
 					$('.sidebar').sidebar('hide');
 					element.addClass('sidebar--show');
-					if (('.overflow').length) {
+					if (('.overflow').length == 0) {
 						$('body').append('<div class="overflow"></div>');
 					}
 					if (element.hasClass('sidebar--under-taskbar')) {
@@ -77,7 +78,80 @@
 	    child.appendTo(target);                                                   
 	    return child;                                                             
 	};  
-})(jQuery);
+})(jQuery);*/
+
+
+
+/* Sidebar Module */
+
+function Sidebar(element) {
+	Sidebar.prototype.el = element;	
+}
+
+Sidebar.prototype.show = function() {
+	var element = this.el;
+	var target = this;
+	this.hide();
+	element.addClass('sidebar--show');
+	
+	if (!$('.overflow').length) {
+		$('body').append('<div class="overflow"></div>');
+	}
+
+	$('body').on('click', '.overflow', function() {
+		target.hide();
+	});
+
+	if (element.hasClass('sidebar--under-taskbar')) {
+		$('.overflow').addClass('overflow--under-taskbar');
+	}
+
+	
+	element.trigger("sidebar-show");
+
+	Sidebar.prototype.visible = true;
+}
+
+Sidebar.prototype.hide = function() {
+	var element = this.el;
+	element.removeClass('sidebar--show');
+	$('.overflow').remove();
+	element.trigger("sidebar-hide");
+
+	Sidebar.prototype.visible = false;
+}
+
+Sidebar.prototype.toggle = function() {
+	if (this.visible) this.hide();
+	else this.show();	
+}
+
+/* Toggle Button Module */
+ToggleButton = function(element) {
+	ToggleButton.prototype.el = element;
+}
+
+ToggleButton.prototype.activate = function() {
+	ToggleButton.prototype.activated = true;
+	var element = this.el;
+	element.addClass('button--checked');
+	element.trigger('toggle-button-activate');
+}
+
+ToggleButton.prototype.deactivate = function() {
+	ToggleButton.prototype.activated = false;
+	var element = this.el;
+	element.removeClass('button--checked');
+	element.trigger('toggle-button-deactivate');
+}
+
+ToggleButton.prototype.toggle = function() {
+	if (this.activated) this.deactivate();
+	else this.activate();
+}
+
+
+/* Toast уведомления */
 
 function showToast(message = '', duration = 2) {
 	if ($('.toast-collection').length < 1) {
@@ -90,4 +164,49 @@ function showToast(message = '', duration = 2) {
 	setTimeout(function() {
 		current.remove();
 	}, duration * 1000 + 300);
+}
+
+
+/* Модальные окна */
+Modal = function(element) {
+	Modal.prototype.el = element;
+	Modal.prototype.visible = false;
+}
+
+Modal.prototype.show = function() {
+	var element = this.el;
+	var target = this;
+	this.visible = true;
+
+	console.log($('.overflow').length);
+
+	if (!$('.overflow').length) {
+		$('body').append('<div class="overflow"></div>');
+	}
+
+	$('body').on('click', '.overflow', function() {
+		target.hide();
+	});
+
+	element.find('.modal__discard').click(function() {
+		target.hide();
+	});
+
+	element.show();
+	element.trigger('modal-show');
+
+	console.log(element);
+}
+
+Modal.prototype.hide = function() {
+	this.visible = false;
+	var element = this.el;
+	$('.overflow').remove();
+	element.hide();
+	element.trigger('modal-hide');
+}
+
+Modal.prototype.toggle = function() {
+	if (this.visible) this.hide();
+	else this.show();
 }

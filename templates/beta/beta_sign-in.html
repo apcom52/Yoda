@@ -32,12 +32,12 @@
 			<div class="alert__content">Возникла ошибка при входе. {{error_text}}</div>
 		</div>
 		{% endif %}
-		<form class="form form--transparent form--rounded margin-top-1 form--center" method="post" action="" id="signInForm">
+		<form class="form form--transparent form--rounded margin-top-1 form--centered" method="post" action="" id="signInForm">
 			{% csrf_token %}
 			<input type="password" name="password" id="userPassword" placeholder="Ваш пароль">
 			<input type="hidden" name="username" id="userName" value="{{olduser.username}}">
 		</form>
-		<button class="button--only-borders" id="signInBtn">ВОЙТИ</button><br>
+		<button class="" id="signInBtn">ВОЙТИ</button><br>
 		<a href="/auth/up"><button class="button--transparent-full button--size-small">Создать аккаунт</button></a>
 	</div>
 	<div class="col-4 col-t-2">.</div>

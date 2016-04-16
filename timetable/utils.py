@@ -7,7 +7,7 @@ from django.db.models import Q
 from user.models import *
 from polls.models import QueAns
 from events.models import UserVisitEvent
-from achievements.models import Action, AchUnlocked, Rank, Achievement#, Notification
+from achievements.models import Action, AchUnlocked, Rank, Achievement, Notification
 from inventory.models import Item, UserInventoryItem, Catapult #Smile, SmileCollection
 import datetime
 
@@ -163,6 +163,7 @@ def setAch(user, id):
 			user_unlock.login = user
 			user_unlock.ach_id = achievement
 			user_unlock.save()
+			sendNotification(user = user, title = "Новое достижение", text = 'Вы получили новое достижение "%s"' % (achievement.title,), type = 3)
 			addAction(user, 'получил достижение<div class="comments"><div class="comment"><span class="avatar"><img src="%s"></span><div class="content"><span class="author">%s</span><div class="text">%s</div></div></div></div>' % (achievement.icon, achievement.title, achievement.description))
 	except ObjectDoesNotExist:
 		pass
@@ -596,6 +597,19 @@ def bingo(_user):
 	else:
 		return 0	
 
+def sendNotification(options):
+	user = options['user']
+	title = options['title']
+	type = options['type']
+	text = options['text']
+
+	notification = Notification()
+	notification.login = user
+	notification.title = title
+	notification.type = type
+	notification.text = text
+	notification.save()
+
 def set_cookie(response, key, value, days_expire = 7):
   if days_expire is None:
     max_age = 365 * 24 * 60 * 60  #one year
@@ -603,6 +617,7 @@ def set_cookie(response, key, value, days_expire = 7):
     max_age = days_expire * 24 * 60 * 60 
   expires = datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(seconds=max_age), "%a, %d-%b-%Y %H:%M:%S GMT")
   response.set_cookie(key, value, max_age=max_age, expires=expires, domain=settings.SESSION_COOKIE_DOMAIN, secure=settings.SESSION_COOKIE_SECURE or None)
+
 
 
 '''def parseSmiles(text):
