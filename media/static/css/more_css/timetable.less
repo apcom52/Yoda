@@ -21,7 +21,7 @@
 		}
 	}
 
-	.timetable-view__content {
+	.timetable-view__content-day {
 		display: table;
 		width: 100%;
 
@@ -93,6 +93,45 @@
 
 				&.ended {
 					opacity: 0.5;
+				}
+			}
+		}
+	}
+
+	.timetable-view__content-week {
+		.row {
+			display: flex;
+
+			.date {
+				text-align: center;
+				flex: 1;
+
+				.date__day {
+					font-size: 2em;
+				}
+			}
+
+			.shedule {
+				flex: 5;
+
+				.lesson {
+					display: block;
+					width: 100%;
+					box-sizing: border-box;
+					border-left: 5px solid @m-gray;
+					padding: 0.5em 1em;
+
+					&.lection {
+						border-color: @olive;
+					}
+
+					&.practice {
+						border-color: @blue; 
+					}
+
+					&.lab {
+						border-color: @red; 
+					}
 				}
 			}
 		}

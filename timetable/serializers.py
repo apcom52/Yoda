@@ -1,11 +1,13 @@
 import datetime
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist 
+from django.utils import dateformat
+from django.conf import settings
 from rest_framework import serializers
 from .models import *
 from .utils import TimetableControl
 
-class TimetableSerializer(serializers.ModelSerializer):
+class TimetableSerializer(serializers.ModelSerializer):	
 	title = serializers.CharField(source = 'lesson.title', allow_blank = True)
 	time = serializers.SerializerMethodField()
 	teacher = serializers.CharField(source = 'teacher.name', allow_blank = True)
@@ -119,7 +121,7 @@ class TimetableWeekSerializer():
 		self.timetable = []
 		for i in range(1, 8):
 			current_date = datetime.datetime.date(self.start + datetime.timedelta(days = i-1))
-			date = datetime.datetime.strftime(self.start + datetime.timedelta(days = i-1), "%d %B")
+			# date = datetime.datetime.strftime(self.start + datetime.timedelta(days = i-1), "%d %B")
 			tt = Timetable.objects.all().filter(semester = self.semester, week = self.week_type, day = i).filter(Q(group = 1) | Q(group = (self.group + 1))).order_by('time')
 			serializer = TimetableSerializer(tt, many = True, context = {'date': current_date})
 			today = False
@@ -132,11 +134,10 @@ class TimetableWeekSerializer():
 
 			self.timetable.append({
 				'timetable': serializer.data,
-				'date': date,
+				'date': dateformat.format(current_date, settings.DATE_FORMAT),
 				'weekend': is_weekend,
 				'today': today,
 				})
-
 		return self.timetable
 
 class TimetableMonthSerializer():

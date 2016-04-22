@@ -1,6 +1,8 @@
 $(function() {
 	moment.locale('ru');
 
+	var accent = $('body').data('accent');
+
 
 	/* Модальные окна новых фич и рейтинга */
 	var context = 'day';
@@ -110,14 +112,23 @@ $(function() {
 	});
 
 	$('body').on('click', '.showNextDay', function() {
-		targetDay.setDate(targetDay.getDate() + 1);
-		window.location.hash = '#day/' + getParseDate(targetDay);
+		if (context == 'day') {
+			targetDay.setDate(targetDay.getDate() + 1);
+			window.location.hash = '#day/' + getParseDate(targetDay);
+		} else {
+			targetWeekDay.setDate(targetWeekDay.getDate() + 7);
+			window.location.hash = '#week/' + getParseDate(targetWeekDay);
+		}		
 	});
 
 	$('body').on('click', '.showPrevDay', function() {
-		targetDay.setDate(targetDay.getDate() - 1);
-		window.location.hash = '#day/' + getParseDate(targetDay);
-
+		if (context == 'day') {
+			targetDay.setDate(targetDay.getDate() - 1);
+			window.location.hash = '#day/' + getParseDate(targetDay);
+		} else {
+			targetWeekDay.setDate(targetWeekDay.getDate() - 7);
+			window.location.hash = '#week/' + getParseDate(targetWeekDay);
+		}
 	});
 
 	/* Модели */
@@ -136,7 +147,7 @@ $(function() {
 			var url = '/api/timetable?week=' + currentDate.format('DD/MM/YYYY');
 			return url;
 		}
-	})
+	});
 
 
 	/* Коллекции данных */
@@ -194,7 +205,7 @@ $(function() {
 
 	var WeekTimetableItemView = Backbone.View.extend({
 		tagName: 'div',
-		className: 'card card--no-smooth',
+		className: 'row padding-vertical-1 size-fix',
 		initialize: function(options) {
 			this.render();
 		},
@@ -202,25 +213,19 @@ $(function() {
 			$(this.el).empty();
 
 			if (this.model.get('today') == true) {
-				$(this.el).addClass('card--color-blue');
+				$(this.el).addClass('u-' + accent + '-bg');
 			}
 
 			var source = $('#WeekTimetableItemTemplate').html();
 			var template = Handlebars.compile(source);
+			var date = this.model.get('date').split(' ');
 			var context = { 
-				day: this.model.get('date'),
+				day: date[0],
+				month: date[1],
 				timetable: this.model.get('timetable'),
 				today: this.model.get('today'),
-				/*teacher: this.model.get('teacher'),
-				place: this.model.get('place'),
-				time: this.model.get('time'),
-				type: this.model.get('type'),
-				type_css: this.model.get('type_css'),
-				is_ended: this.model.get('is_ended'),
-				homework: this.model.get('homework'),
-				control: this.model.get('control'),
-				is_canceled: this.model.get('is_canceled'),
-				new_place: this.model.get('new_place')*/
+				parsing_date: getParseDate(targetWeekDay),
+				accent: accent,
 			};
 
 			$(this.el).html(template(context));

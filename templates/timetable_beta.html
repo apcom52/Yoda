@@ -36,11 +36,10 @@
 				<div class="timetable-view__label__meta"></div>
 			</div>
 
-			<div class="timetable-view__content" id="dayView">				
+			<div class="timetable-view__content-day" id="dayView">				
 			</div>
 
-			<div class="timetable-view__content vertical-layout vertical-layout--stripped" id="weekView">		
-				<p>Неделя</p>		
+			<div class="timetable-view__content-week vertical-layout vertical-layout--stripped" id="weekView">	
 			</div>
 		</div>
 
@@ -264,19 +263,33 @@
 </script>
 
 <script src="text/html" id="WeekTimetableItemTemplate">
-	<div class="card__header"><div class="card__header__title">{{day}}</div></div>
-	<div class="card__content padding-0">
+	<div class="date">
+		<div class="date__day helvetica-thin">{{day}}</div>{{month}}<br>
+	</div>
+	<div class="shedule">
 		{{#if timetable}}
-			<div class="vertical-layout vertical-layout--stripped">
 			{{#each timetable}}
-				<div class="row padding-1">{{time}} -> {{title}}</div>
-			{{/each}}		
-			</div>
+				<div class="lesson {{type_css}}">
+					<div class="helvetica-medium">{{title}}</div>
+					<div class="m-gray">{{time}} в {{place}}</div>
+					{{#if double}}
+					<div class="blue-fg">две пары</div>
+					{{/if}}
+					{{#if is_earlier}}
+					<div class="red-fg">начнется раньше</div>
+					{{/if}}
+					{{#if homework}}
+					<div class="violet-fg">задано домашнее задание</div>
+					{{/if}}
+					{{#if control}}
+					<div class="red-fg">контрольная</div>
+					{{/if}}
+				</div>
+			{{/each}}
 		{{else}}
 		<b class="margin-1">Выходной</b>
 		{{/if}}
 	</div>
-
 </script>
 
 <script src="text/html" id="dayTimetableViewErrorTemplate">
@@ -288,3 +301,4 @@
 {% endverbatim %}
 
 {% endblock %}
+
