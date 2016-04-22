@@ -26,20 +26,21 @@
 		width: 100%;
 
 		.row {
-			display: table-row;
+			display: flex;
 			color: @d-gray;
 
 			.time {
 				text-align: center;
 				width: 3em;
 				font-size: 1.5em;
-				display: table-cell;
 				font-family: HelveticaNeueThin;
 				font-weight: 100;
+				flex: 1;
 			}
 
 			.subject {
 				padding: 0.5em;
+				flex: 9;
 
 				.title {
 					font-size: 2em;
@@ -49,7 +50,7 @@
 
 				.meta {
 					font-size: 0.9em;
-					font-family: HelveticaNeueLight, sans-serif;
+					font-family: HelveticaNeueMedium, sans-serif;
 				}
 
 				.homework {

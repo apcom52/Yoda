@@ -4,38 +4,43 @@
 	<link href="/media/static/css/more_css/timetable.css" rel="stylesheet"/>
 	<script type="text/javascript" src="/media/static/js/more_js/timetable.js"></script>
 {% endblock %}
-{% block bodyclass %}{{request.user.userprofile.theme}}-bg{% endblock %}
+{% block bodyclass %}u-{{request.user.userprofile.accent}}-bg{% endblock %}
 {% block content %}
-<div class="card  {% if request.user.userprofile.theme == 'dark'%}card--color-black card--colored{%endif%} card--no-smooth" style="margin-left: 0.25em; margin-right: 0.25em; overflow: hidden;">
+<div class="card  {% if request.user.userprofile.theme == 'dark'%}card--color-black card--colored{%endif%} card--no-smooth margin-horizontal-1">
 	<div class="card__content card__content--no-padding">
 		
-		<div class="grid">
-			<div class="col-4 col-lt-2 hide-m">
-				<button class="button--only-icon button--size-small"><i class="flaticon-settings"></i></button>
-			</div>
-			<div class="col-4 col-lt-4 col-lm-6">
-				<div class="button-group" style="align-items: center;">
-					<button style="flex: 1;" class="button--icon-only bold {% if request.user.userprofile.theme == 'dark' %}button--color-white{% else %}{% endif %} showPrevDay"><i class="flaticon-left"></i></button>
-					<button style="flex: 2;" class="{% if request.user.userprofile.theme == 'dark' %}button--color-white{% endif %} bold" id="currentDayLabel">{% now "j E" %}</button>
-					<button style="flex: 1;" class="button--icon-only bold {% if request.user.userprofile.theme == 'dark' %}button--color-white{% else %}{% endif %} showNextDay"><i class="flaticon-right1"></i></button>
-				</div>
+		<div class="grid u-gray-bg">
+			<div class="col-5 col-t-4 col-lm-6 col-m-4">
+				<button class="button--only-icons button--no-smooth showPrevDay bold margin-0" data-tooltip="Предыдущий день"><i class="flaticon-left1"></i></button>
+				<button class="button--only-icons button--no-smooth showNextDay bold margin-0" data-tooltip="Следующий день"><i class="flaticon-right"></i></button>
+				<button class="button--no-smooth button--only-icon bold margin-left-1 margin-0" data-tooltip="Обновить"><i class="flaticon-refresh-single"></i></button>
+				<button class="button--no-smooth button--only-icon bold margin-0" data-tooltip="Выбрать дату"><i class="flaticon-calendar-ok"></i></button>
+				<button class="button--no-smooth button--only-icon bold margin-0 margin-left-1" data-tooltip="Мероприятия"><i class="flaticon-award"></i></button>				
+				<button class="button--no-smooth button--only-icon bold margin-0" data-tooltip="Задания"><i class="flaticon-bookmark"></i></button>				
 			</div>	
-			<div class="col-4 col-lt-4 col-lm-6">
-				<div class="tabs tabs--transparent tabs--centered">
-					<div class="tabs__item tabs__item--active">ДЕНЬ</div>
-					<div class="tabs__item">НЕДЕЛЯ</div>
+			<div class="col-5 col-t-3 col-lm-5 col-m-4">
+				<div class="tabs tabs--transparent tabs--color-{{request.user.userprofile.accent}} tabs--centered" id="switchTabs">
+					<div class="tabs__item openDay" data-tab-target="dayView">ДЕНЬ</div>
+					<div class="tabs__item openWeek" data-tab-target="weekView">НЕДЕЛЯ</div>
 					<div class="tabs__item">МЕСЯЦ</div>
 				</div>
+			</div>
+			<div class="col-2 col-t-1 col-lm-1 align-right">
+				<button class="button--no-smooth button--only-icon bold margin-0" data-dropdown-target="appMenu"><i class="flaticon-more"></i></button>
 			</div>
 		</div>
 
 		<div class="timetable-view">
 			<div class="timetable-view__label {{request.user.userprofile.accent}}-bg white-fg" id="timetable-label">
-				<div class="timetable-view__label__title">22 марта</div>
-				<div class="timetable-view__label__meta">вторник, нечетная неделя</div>
+				<div class="timetable-view__label__title"></div>
+				<div class="timetable-view__label__meta"></div>
 			</div>
 
 			<div class="timetable-view__content" id="dayView">				
+			</div>
+
+			<div class="timetable-view__content vertical-layout vertical-layout--stripped" id="weekView">		
+				<p>Неделя</p>		
 			</div>
 		</div>
 
@@ -45,6 +50,13 @@
 			<div class="dropdown__item" id="dropdownChangePlace">Изменить аудиторию</div>
 			<div class="dropdown__item" id="dropdownTransferLesson">Перенести пару</div>
 			<div class="dropdown__item" id="dropdownCancelLesson">Отменить пару</div>
+		</div>
+
+		<div class="dropdown" id="appMenu">
+			<div class="dropdown__item">Добавить пару</div>
+			<div class="dropdown__item">Добавить мероприятие</div>
+			<div class="dropdown__item">Оценить приложение</div>
+			<div class="dropdown__item">Настройки</div>
 		</div>
 
 		<!-- <div class="horizontal-layout horizontal-layout--centered">
@@ -68,6 +80,72 @@
 		</div> -->		
 	</div>
 </div>	
+
+<div class="modal" id="newFeatures">
+	<div class="modal__header">
+		<div class="modal__header__title">Новые функции расписания</div>
+	</div>
+	<div class="modal__content">
+		<h3>Новый интерфейс</h3>
+		<div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita rerum quasi totam non dolorem sit repellat voluptatem itaque et ab voluptate odit voluptates praesentium molestias veritatis id, eum vel. Ut!</div>
+		<div>Aliquam assumenda, cumque facilis laudantium voluptates quaerat accusantium maiores totam dignissimos nihil voluptate eius. Odio, blanditiis, omnis! Sed, voluptatibus maiores! Totam dolorem reprehenderit distinctio ratione, consequuntur error, porro aliquam temporibus!</div>
+
+		<h3>День, неделя, месяц</h3>
+		<div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita rerum quasi totam non dolorem sit repellat voluptatem itaque et ab voluptate odit voluptates praesentium molestias veritatis id, eum vel. Ut!</div>
+		<div>Aliquam assumenda, cumque facilis laudantium voluptates quaerat accusantium maiores totam dignissimos nihil voluptate eius. Odio, blanditiis, omnis! Sed, voluptatibus maiores! Totam dolorem reprehenderit distinctio ratione, consequuntur error, porro aliquam temporibus!</div>
+
+		<h3>Новые возможности!</h3>
+		<div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita rerum quasi totam non dolorem sit repellat voluptatem itaque et ab voluptate odit voluptates praesentium molestias veritatis id, eum vel. Ut!</div>
+		<div>Aliquam assumenda, cumque facilis laudantium voluptates quaerat accusantium maiores totam dignissimos nihil voluptate eius. Odio, blanditiis, omnis! Sed, voluptatibus maiores! Totam dolorem reprehenderit distinctio ratione, consequuntur error, porro aliquam temporibus!</div>
+	</div>
+	<div class="modal__footer align-center">
+		<button class="button--color-{{request.user.userprofile.accent}} button--icon" id="startRating"><i class="flaticon-star"></i>Оценить</button><button class="modal__discard">Закрыть</button>
+	</div>
+</div>
+
+<div class="modal" id="rateApp">
+	<div class="modal__header">
+		<div class="modal__header__title">Оценить приложение</div>
+	</div>
+	<div class="modal__content">
+		<div class="alert">
+			<div class="alert__content">Просим вас уделить минутку вашего времени и оставить отзывы о новых функциях приложения</div>
+		</div>
+
+		<div class="grid">
+			<div class="col-6 col-lm-6 padding-1 size-fix">Оцените новый интерфейс</div>
+			<div class="col-6 col-lm-6 gpadding-1 size-fix">
+				<div class="select select--color-{{request.user.userprofile.accent}}" id="rate1"></div>
+			</div>
+		</div>
+		<div class="grid">
+			<div class="col-6 col-lm-6 padding-1 size-fix">Оцените удобство обновленного приложения</div>
+			<div class="col-6 col-lm-6 gpadding-1 size-fix">
+				<div class="select select--color-{{request.user.userprofile.accent}}" id="rate2"></div>
+			</div>
+		</div>
+		<div class="grid">
+			<div class="col-6 col-lm-6 padding-1 size-fix">Оцените удобство представления "Неделя" и "Месяц"</div>
+			<div class="col-6 col-lm-6 gpadding-1 size-fix">
+				<div class="select select--color-{{request.user.userprofile.accent}}" id="rate3"></div>
+			</div>
+		</div>
+		<div class="grid">
+			<div class="col-6 col-lm-6 padding-1 size-fix">Оцените скорость работы приложения</div>
+			<div class="col-6 col-lm-6 gpadding-1 size-fix">
+				<div class="select select--color-{{request.user.userprofile.accent}}" id="rate4"></div>
+			</div>
+		</div>
+
+		<div class="form form--fit">
+			<label for="rateReview">Напишите краткий отзыв</label>
+			<textarea id="rateReview" cols="30" rows="5" placeholder="Напишите рекомендации по улучшению или найденные вами ошибки"></textarea>
+		</div>
+	</div>
+	<div class="modal__footer align-center">
+		<button class="button--color-{{request.user.userprofile.accent}}">Отправить</button>
+	</div>
+</div>
 
 <div class="modal" id="addHomeworkModal">
 	<div class="modal__header">
@@ -147,7 +225,15 @@
 
 {% verbatim %}
 <script src="text/html" id="DayTimetableItemTemplate">
-	<div class="time">{{time}}<br><button class="button--icon-only button--size-small bold button--circle" data-dropdown-target="timetableMenu"><i class="flaticon-more"></i></button></div>
+	<div class="time">{{time}}<br>
+		{{#if double}}
+		<div class="blue-fg bold" style="font-size:0.6em;">две пары</div>
+		{{/if}}
+		{{#if is_earlier}}
+		<div class="red-fg bold" style="font-size:0.6em;">начнется раньше</div>
+		{{/if}}
+		<button class="button--icon-only button--size-small bold button--circle" data-dropdown-target="timetableMenu"><i class="flaticon-more"></i></button>		
+	</div>
 	<div class="subject {{type_css}} {{#if is_ended}}ended{{/if}}">
 		<div class="title">{{title}}</div>
 		{{#if is_canceled}}
@@ -161,6 +247,9 @@
 		{{#if homework}}
 			<div class="homework"><div class="homework__title">Домашнее задание</div>{{homework}}</div>
 		{{/if}}	
+		{{#if new_place}}
+			<div class="alert alert--color-red"><div class="alert__header">Аудитория изменилась на {{new_place}}</div></div>
+		{{/if}}
 		{{/if}}
 		<br>
 	</div>
@@ -175,14 +264,19 @@
 </script>
 
 <script src="text/html" id="WeekTimetableItemTemplate">
-	<div class="horizontal-layout week-timetable">		
-		<div class="column date"><h1>{{date}}</h1>{{month}}</div>
-		{{#each timetable}}
-			<div class="column {{type_css}}"><h1>{{title}}</h1>
-			{{place}} <br>
-			<b> {{time}} </b></div>
-		{{/each}}
+	<div class="card__header"><div class="card__header__title">{{day}}</div></div>
+	<div class="card__content padding-0">
+		{{#if timetable}}
+			<div class="vertical-layout vertical-layout--stripped">
+			{{#each timetable}}
+				<div class="row padding-1">{{time}} -> {{title}}</div>
+			{{/each}}		
+			</div>
+		{{else}}
+		<b class="margin-1">Выходной</b>
+		{{/if}}
 	</div>
+
 </script>
 
 <script src="text/html" id="dayTimetableViewErrorTemplate">

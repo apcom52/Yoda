@@ -226,11 +226,19 @@ function showToast(message, duration) {
 
 /* Модальные окна */
 Modal = function(element) {
+	if (Modal.prototype.collection == undefined)
+		Modal.prototype.collection = []
 	this.el = element;
 	this.visible = false;
+	Modal.prototype.collection.push(this);
 }
 
 Modal.prototype.show = function() {
+	var othersModals = Modal.prototype.collection;
+	othersModals.forEach(function (current, index, othersModals) {
+		if (current.visible)
+			current.hide();		
+	});
 	var height = this.el.innerHeight();
 	//height -= this.el.find('.modal__header').outerHeight() + this.el.find('.modal__footer').outerHeight();
 	this.el.find('.modal__content').css('height', height - 46 - 39);
@@ -329,6 +337,9 @@ Tabs.prototype.openTab = function(i) {
 
 /* Модуль Select */
 Select = function(element, options, index) {
+	if (Select.prototype.collection == undefined)
+		Select.prototype.collection = []
+	Select.prototype.collection.push(this);
 	this.el = element;
 	this.options = options;
 	this.el.append("<div class='select__menu'></div>");
@@ -357,7 +368,13 @@ Select = function(element, options, index) {
 }
 
 Select.prototype.open = function() {	
+	var othersSelects = Select.prototype.collection;
 	var target = this;
+	othersSelects.forEach(function (current, index, othersSelects) {
+		if (current != target && current.visible)
+			current.hide();		
+	});
+
 	var options_menu = this.el.find('.select__options');
 
 	if (this.visible) {
@@ -380,15 +397,21 @@ Select.prototype.open = function() {
 		this.el.append(html_string);
 		options_menu = this.el.find('.select__options');
 
+		var parent_left_padding = this.menu.css('margin-left');
+		var parent_top = this.menu.position().top;
+		var parent_left = this.menu.position().left + 16;
+		var parent_height = this.menu.outerHeight();
+
 		if (options_menu.outerWidth() <= this.menu.outerWidth()) {
 			options_menu.css('width', this.menu.outerWidth());
 		}
 
 		if (target.position == 'top') {
-			options_menu.css('top', this.menu.offset().top - options_menu.outerHeight());
+			options_menu.css('top', parent_top - options_menu.outerHeight());
 		}
 
-		options_menu.css('left', this.menu.offset().left);
+		options_menu.css('left', parent_left);
+		console.log(parent_top, parent_left);
 
 		if (target.position == 'bottom') 
 			options_menu.slideDown(300);

@@ -83,6 +83,7 @@ class Timetable(models.Model):
 	time = models.IntegerField('Номер пары', choices = lesson_nums, default = 1)
 	place = models.CharField('Аудитория', max_length = 16)
 	double = models.BooleanField('Сдвоенная пара', default = False)
+	is_earlier = models.BooleanField('Начнется раньше', default = False)
 
 	def __str__(self):
 		return '%s (%s / %s = %s %s %s)' % (self.lesson, self.teacher, self.group, self.week, self.day, self.time)

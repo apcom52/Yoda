@@ -255,6 +255,9 @@ class TimetableAPI(APIView):
 		elif data.get("week"):
 			serializer = TimetableWeekSerializer(str(data.get("week")), request.user.userprofile.group, settings.SEMESTER)
 			return Response(serializer.get_data())
+		elif data.get("month"):
+			serializer = TimetableMonthSerializer(int(data.get("month")), request.user.userprofile.group, settings.SEMESTER)
+			return Response(serializer.get_shedule())
 
 class TimetableManupulationsAPI(APIView):
 	def get(self, request, format = None):

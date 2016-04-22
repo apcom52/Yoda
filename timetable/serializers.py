@@ -96,6 +96,7 @@ class TimetableSerializer(serializers.ModelSerializer):
 		fields = (
 			'title', 'time', 'place', 'teacher', 'type', 'type_css', 
 			'is_ended', 'homework', 'control', 'is_canceled', 'new_place',
+			'double',	'is_earlier',
 		)
 
 class TimetableWeekSerializer():
@@ -117,10 +118,10 @@ class TimetableWeekSerializer():
 	def get_data(self):
 		self.timetable = []
 		for i in range(1, 8):
-			tt = Timetable.objects.all().filter(semester = self.semester, week = self.week_type, day = i).filter(Q(group = 1) | Q(group = (self.group + 1))).order_by('time')
-			serializer = TimetableSerializer(tt, many = True)
 			current_date = datetime.datetime.date(self.start + datetime.timedelta(days = i-1))
 			date = datetime.datetime.strftime(self.start + datetime.timedelta(days = i-1), "%d %B")
+			tt = Timetable.objects.all().filter(semester = self.semester, week = self.week_type, day = i).filter(Q(group = 1) | Q(group = (self.group + 1))).order_by('time')
+			serializer = TimetableSerializer(tt, many = True, context = {'date': current_date})
 			today = False
 			
 			if current_date.day == datetime.datetime.today().day and current_date.month == datetime.datetime.today().month:
@@ -137,3 +138,66 @@ class TimetableWeekSerializer():
 				})
 
 		return self.timetable
+
+class TimetableMonthSerializer():
+	date = None
+	timetable = None
+
+	def __init__(self, month, group, semester):
+		import datetime
+		now = datetime.datetime.today()
+		self.start_date = datetime.datetime(now.year, month, 1)
+		self.end_date = datetime.datetime(now.year, month+1, 1) - datetime.timedelta(days = 1)
+		self.group = group
+		self.semester = semester
+
+	def get_shedule(self):
+		self.timetable = []
+		import calendar
+		calendar = calendar.Calendar(firstweekday = 0)
+		day = datetime.timedelta(days = 1)
+		while self.start_date <= self.end_date:
+			week = self.start_date.isocalendar()[1]
+			week_type = 1
+			if week % 2 == 0:
+				week_type = 2
+			weekday = self.start_date.weekday() + 1
+			print(week, week_type, weekday)
+			timetable = Timetable.objects.all().filter(semester = self.semester, week = week_type, day = weekday, group = self.group)
+			last = 0
+			if len(timetable):
+				first_lesson = timetable[0]
+				last_lesson = timetable[len(timetable) - 1]
+				# if last_lesson.double:
+				# 	end_index = last_lesson.time + 1
+				# print('END INDEX:', end_index)
+				# last = self.get_end_time(end_index)				
+				self.timetable.append({
+					'date': self.start_date,
+					'first': str(first_lesson),
+					'last': str(len(timetable)),
+					'weekend': False,
+				})
+			else:
+				self.timetable.append({
+					'date': self.start_date,
+					'weekend': True,
+				})
+			self.start_date = self.start_date + day
+		return self.timetable
+
+	def get_start_time(self, index):
+		array = [
+			'8:20',	'10:00',	'11:45',
+			'14:00',	'15:45',	'17:20',
+			'18:55'
+		]
+		return array[index - 1]
+
+	def get_end_time(self, index):
+		array = [
+			'9:50',	'11:30',	'13:15',
+			'15:30',	'17:15',	'18:50',
+			'20:25'
+		]
+		return array[index - 1]

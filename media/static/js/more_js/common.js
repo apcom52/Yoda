@@ -37,7 +37,7 @@ $(function() {
     var notificationLength = 0;
     var notificationIsFirst = true;
     var alarmSong = new Audio('/media/audio/alarm.mp3');
-   	var notificationCenter = new Sidebar($('#notificationCenter'));
+   	var notificationCenter = new Sidebar($('#notificationCenter'), true);
     console.log(notificationCenter);
     checkNotification();
 
@@ -106,7 +106,7 @@ $(function() {
 
     // ---------
 
-	var sidebar = new Sidebar($('#sidebar'));
+	var sidebar = new Sidebar($('#sidebar'), true);
 	$('#mainMenu').click(function() {
 		sidebar.show();
 	});
