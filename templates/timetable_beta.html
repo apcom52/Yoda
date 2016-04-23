@@ -6,32 +6,30 @@
 {% endblock %}
 {% block bodyclass %}u-{{request.user.userprofile.accent}}-bg{% endblock %}
 {% block content %}
-<div class="card  {% if request.user.userprofile.theme == 'dark'%}card--color-black card--colored{%endif%} card--no-smooth margin-horizontal-1">
-	<div class="card__content card__content--no-padding">
-		
-		<div class="grid u-gray-bg">
+<div class="card  {% if request.user.userprofile.theme == 'dark'%}card--color-black card--colored{%endif%} card--no-smooth margin-horizontal-3 margin-t-horizontal-1 margin-lm-horizontal-0 shadow-2">
+	<div class="card__content card__content--no-padding">		
+		<div class="grid u-gray-bg align-lm-center">
 			<div class="col-5 col-t-4 col-lm-6 col-m-4">
-				<button class="button--only-icons button--no-smooth showPrevDay bold margin-0" data-tooltip="Предыдущий день"><i class="flaticon-left1"></i></button>
-				<button class="button--only-icons button--no-smooth showNextDay bold margin-0" data-tooltip="Следующий день"><i class="flaticon-right"></i></button>
-				<button class="button--no-smooth button--only-icon bold margin-left-1 margin-0" data-tooltip="Обновить"><i class="flaticon-refresh-single"></i></button>
-				<button class="button--no-smooth button--only-icon bold margin-0" data-tooltip="Выбрать дату"><i class="flaticon-calendar-ok"></i></button>
-				<button class="button--no-smooth button--only-icon bold margin-0 margin-left-1" data-tooltip="Мероприятия"><i class="flaticon-award"></i></button>				
-				<button class="button--no-smooth button--only-icon bold margin-0" data-tooltip="Задания"><i class="flaticon-bookmark"></i></button>				
+				<button class="button--transparent button--only-icons button--no-smooth showPrevDay bold margin-0" data-tooltip="Предыдущий день"><i class="flaticon-left1"></i></button>
+				<button class="button--transparent button--only-icons button--no-smooth showNextDay bold margin-0" data-tooltip="Следующий день"><i class="flaticon-right"></i></button>
+				<button class="button--transparent button--no-smooth button--only-icon bold margin-left-1 margin-0 refreshContent" data-tooltip="Обновить"><i class="flaticon-refresh-single"></i></button>
+				<button class="button--transparent button--no-smooth button--only-icon bold margin-0" data-tooltip="Выбрать дату"><i class="flaticon-calendar-ok"></i></button>
+				<button class="button--transparent button--no-smooth margin-0" data-tooltip="Помощь" id="showHelp">?</button>
 			</div>	
 			<div class="col-5 col-t-3 col-lm-6">
 				<div class="tabs tabs--transparent tabs--color-{{request.user.userprofile.accent}} tabs--centered" id="switchTabs">
-					<div class="tabs__item openDay" data-tab-target="dayView">ДЕНЬ</div>
-					<div class="tabs__item openWeek" data-tab-target="weekView">НЕДЕЛЯ</div>
-					<div class="tabs__item">МЕСЯЦ</div>
+					<div class="tabs__item openDay">ДЕНЬ</div>
+					<div class="tabs__item openWeek">НЕДЕЛЯ</div>
+					<div class="tabs__item openMonth">МЕСЯЦ</div>
 				</div>
 			</div>
 			<div class="col-2 col-t-1 col-lm-6 align-right">
-				<button class="button--no-smooth button--only-icon bold margin-0" data-dropdown-target="appMenu"><i class="flaticon-more"></i></button>
+				<button class="button--transparent button--no-smooth button--only-icon bold margin-0" data-dropdown-target="appMenu"><i class="flaticon-more"></i></button>
 			</div>
 		</div>
 
 		<div class="timetable-view">
-			<div class="timetable-view__label {{request.user.userprofile.accent}}-bg white-fg" id="timetable-label">
+			<div class="timetable-view__label l-{{request.user.userprofile.accent}}-bg" id="timetable-label">
 				<div class="timetable-view__label__title"></div>
 				<div class="timetable-view__label__meta"></div>
 			</div>
@@ -40,6 +38,9 @@
 			</div>
 
 			<div class="timetable-view__content-week vertical-layout vertical-layout--stripped" id="weekView">	
+			</div>
+
+			<div class="timetable-view__content-month vertical-layout vertical-layout--stripped" id="monthView">	
 			</div>
 		</div>
 
@@ -54,29 +55,9 @@
 		<div class="dropdown" id="appMenu">
 			<div class="dropdown__item">Добавить пару</div>
 			<div class="dropdown__item">Добавить мероприятие</div>
-			<div class="dropdown__item">Оценить приложение</div>
+			<div class="dropdown__item" id="openRatingModal">Оценить приложение</div>
 			<div class="dropdown__item">Настройки</div>
 		</div>
-
-		<!-- <div class="horizontal-layout horizontal-layout--centered">
-
-
-			
-			<div class="column column--centered">
-				<div class="button-group">
-					<button class="button--icon-only {% if request.user.userprofile.theme == 'dark' %}button--color-white{% else %}button--color-black{% endif %} button--transparent-full showPrevDay"><i class="flaticon-left"></i></button>
-					<button class="{% if request.user.userprofile.theme == 'dark' %}button--color-white{% else %}button--color-black{% endif %} bold button--transparent-full" id="currentDayLabel">{% now "j E" %}</button>
-					<button class="button--icon-only {% if request.user.userprofile.theme == 'dark' %}button--color-white{% else %}button--color-black{% endif %} button--transparent-full showNextDay"><i class="flaticon-right1"></i></button>
-				</div>
-			</div>
-			<div class="column">
-				<div class="tabs tabs--pin-right tabs--transparent {% if request.user.userprofile.theme == 'dark' %}tabs--invert{% endif %}" id="switch-view-tabs">
-					<a href="#"><div class="tabs__item tabs__item--active" id="day">День</div></a>
-					<a href="#week/20"><div class="tabs__item" id="week">Неделя</div></a>
-					<a href="#month"><div class="tabs__item" id="month">Месяц</div></a>
-				</div>
-			</div>
-		</div> -->		
 	</div>
 </div>	
 
@@ -99,6 +80,31 @@
 	</div>
 	<div class="modal__footer align-center">
 		<button class="button--color-{{request.user.userprofile.accent}} button--icon" id="startRating"><i class="flaticon-star"></i>Оценить</button><button class="modal__discard">Закрыть</button>
+	</div>
+</div>
+
+<div class="modal" id="help">
+	<div class="modal__header">
+		<div class="modal__header__title">Справка</div>
+	</div>
+	<div class="modal__content">
+		<h4>Представление "День"</h4>
+		<p>Вкладка "День" показывает расписание лишь на один день. Чтобы показать другой день, воспользуйтесь кнопками <i class="flaticon-left1 bold"></i> или <i class="flaticon-right bold"></i>. Также вы можете выбрать определенный день с помощью кнопки <i class="flaticon-calendar-ok bold"></i>. </p>
+		<p>Представление "День" может отображать следующую информацию: название предмета, ФИО преподавателя, время начала пары, номер аудитории и тип предмета, домашние и контрольные работы, изменение аудитории, перенос и отмена пары, информацию о том, что пара может начинаться раньше или сведения о сдвоенной паре.</p>
+		<p>При нажатии на кнопку <i class="flaticon-more bold"></i> под временем вызовет дополнительное меню, с помощью которого можно изменять расписание - добавлять различные сведения, отменять и переносить пары.</p>
+
+		<h4>Представление "Неделя"</h4>
+		<p>Вкладка "Неделя" показывает расписание на всю неделю. Чтобы показать расписание на другие недели, воспользуйтесь кнопками <i class="flaticon-left1 bold"></i> или <i class="flaticon-right bold"></i>. Также вы можете выбрать определенную неделю с помощью кнопки <i class="flaticon-calendar-ok bold"></i>. </p>
+		<p>Представление "Неделя" отображает следующую информацию: название предмета, время и место проведения занятия, отметка "контрольная", "домашнее задание", "две пары", "начнется раньше", "пара отменена".</p>
+		<p>При нажатии на кнопку <i class="flaticon-expand bold"></i> приложение переключается в режим "День" с выбранной датой.</p>
+
+		<h4>Представление "Месяц"</h4>
+		<p>Вкладка "Месяц" показывает сведения о занятости на весь месяц. Чтобы выбрать другой месяц, воспользуйтесь кнопками <i class="flaticon-left1 bold"></i> или <i class="flaticon-right bold"></i>. Также вы можете выбрать определенный месяц с помощью кнопки <i class="flaticon-calendar-ok bold"></i>. </p>
+		<p>Представление "Месяц" отображает следующую информацию: дата, время начала и окончания пар. Если в данный день запланированы контрольные или домашние задания, то этот день отмечен соответствующим кружочком.</p>
+		<p>Если кликнуть два раза на дату, то приложение переключится в режим "День" на выбранную вами дату</p>
+	</div>
+	<div class="modal__footer align-center">
+		<button class="modal__discard">Закрыть</button>
 	</div>
 </div>
 
@@ -262,9 +268,11 @@
 	</div>
 </script>
 
+
 <script src="text/html" id="WeekTimetableItemTemplate">
 	<div class="date">
 		<div class="date__day helvetica-thin">{{day}}</div>{{month}}<br>
+		<a href="#day/{{date_parsing}}"><button class="button--size-small button--transparent button--icon"><i class="flaticon-expand"></i>Развернуть</button></a>
 	</div>
 	<div class="shedule">
 		{{#if timetable}}
@@ -272,17 +280,21 @@
 				<div class="lesson {{type_css}}">
 					<div class="helvetica-medium">{{title}}</div>
 					<div class="m-gray">{{time}} в {{place}}</div>
-					{{#if double}}
-					<div class="blue-fg">две пары</div>
-					{{/if}}
-					{{#if is_earlier}}
-					<div class="red-fg">начнется раньше</div>
-					{{/if}}
-					{{#if homework}}
-					<div class="violet-fg">задано домашнее задание</div>
-					{{/if}}
-					{{#if control}}
-					<div class="red-fg">контрольная</div>
+					{{#if is_canceled}}
+						<div class="label label--color-red">отменена</div>
+					{{else}}
+						{{#if double}}
+						<div class="blue-fg">две пары</div>
+						{{/if}}
+						{{#if is_earlier}}
+						<div class="red-fg">начнется раньше</div>
+						{{/if}}
+						{{#if homework}}
+						<div class="violet-fg">задано домашнее задание</div>
+						{{/if}}
+						{{#if control}}
+						<div class="red-fg">контрольная</div>
+						{{/if}}
 					{{/if}}
 				</div>
 			{{/each}}
@@ -290,6 +302,24 @@
 		<b class="margin-1">Выходной</b>
 		{{/if}}
 	</div>
+</script>
+
+<script src="text/html" id="MonthTimetableItemTemplate">
+{{#each month}}
+	<div class="row">
+	{{#each days}}
+		<div class="column padding-1 size-fix">
+		{{#if last_month}}
+		{{else}}
+			<div class="day helvetica-thin">{{date}}</div>
+			{{#if weekend}}{{else}}
+			<div class="meta">с {{start_time}}<br>до {{end_time}}</div>		
+			{{/if}}
+		{{/if}}
+		</div>
+	{{/each}}
+	</div>	
+{{/each}}
 </script>
 
 <script src="text/html" id="dayTimetableViewErrorTemplate">
@@ -301,4 +331,6 @@
 {% endverbatim %}
 
 {% endblock %}
+
+
 

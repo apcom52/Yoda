@@ -15,7 +15,6 @@
 
 		.timetable-view__label__meta {
 			font-size: 1em;
-			font-family: HelveticaNeueLight, sans-serif;
 			font-weight: 500;
 			text-transform: uppercase;
 		}
@@ -132,6 +131,30 @@
 					&.lab {
 						border-color: @red; 
 					}
+				}
+			}
+		}
+	}
+
+	.timetable-view__content-month {
+		.row {
+			display: flex;
+
+			.column {
+				flex: 1;
+				cursor: pointer;
+				
+				&:hover, &:active {
+					background-color: darken(@u-gray, 10%);
+					.anim(0.3s);
+				}
+
+				.day {
+					font-size: 2em;
+				}
+
+				.meta {
+					color: @m-gray;
 				}
 			}
 		}

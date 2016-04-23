@@ -139,6 +139,7 @@ class TimetableWeekSerializer():
 			self.timetable.append({
 				'timetable': timetable,
 				'date': dateformat.format(current_date, settings.DATE_FORMAT),
+				'date_parsing': datetime.datetime.strftime(current_date, "%d.%m"),
 				'weekend': is_weekend,
 				'today': today,
 				})
@@ -161,33 +162,49 @@ class TimetableMonthSerializer():
 		import calendar
 		calendar = calendar.Calendar(firstweekday = 0)
 		day = datetime.timedelta(days = 1)
+		current_week = 0
 		while self.start_date <= self.end_date:
 			week = self.start_date.isocalendar()[1]
+			weekday = self.start_date.weekday() + 1
+
+			if current_week == 0 and len(self.timetable) == 0:
+				self.timetable.append([])
+				current_day = 1
+				while current_day != weekday:
+					self.timetable[current_week].append({
+						'last_month': True,
+					})
+					current_day += 1				
+					continue
 			week_type = 1
 			if week % 2 == 0:
 				week_type = 2
-			weekday = self.start_date.weekday() + 1
 			print(week, week_type, weekday)
-			timetable = Timetable.objects.all().filter(semester = self.semester, week = week_type, day = weekday, group = self.group)
-			last = 0
-			if len(timetable):
-				first_lesson = timetable[0]
-				last_lesson = timetable[len(timetable) - 1]
-				# if last_lesson.double:
-				# 	end_index = last_lesson.time + 1
-				# print('END INDEX:', end_index)
-				# last = self.get_end_time(end_index)				
-				self.timetable.append({
-					'date': self.start_date,
-					'first': str(first_lesson),
-					'last': str(len(timetable)),
-					'weekend': False,
-				})
-			else:
-				self.timetable.append({
-					'date': self.start_date,
-					'weekend': True,
-				})
+			
+			try:
+				weekend = False
+				first_lesson = Timetable.objects.filter(semester = self.semester, week = week_type, day = weekday).filter(Q(group = 1) | Q(group = (self.group + 1))).order_by('time').first()
+				last_lesson = Timetable.objects.filter(semester = self.semester, week = week_type, day = weekday).filter(Q(group = 1) | Q(group = (self.group + 1))).order_by('time').last()
+				print('===', first_lesson, first_lesson.place)
+				start_time = self.get_start_time(first_lesson.time)
+				end_time = self.get_end_time(last_lesson.time)
+			except AttributeError:
+				weekend = True
+				start_time = ""
+				end_time = ""
+
+			
+			self.timetable[current_week].append({
+				'date': self.start_date.day,
+				'start_time': start_time,
+				'end_time': end_time,
+				'weekend': weekend,
+			})
+
+			if weekday == 7:
+				current_week += 1
+				self.timetable.append([])
+
 			self.start_date = self.start_date + day
 		return self.timetable
 

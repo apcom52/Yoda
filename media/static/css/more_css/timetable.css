@@ -18,7 +18,6 @@
 }
 .timetable-view .timetable-view__label .timetable-view__label__meta {
   font-size: 1em;
-  font-family: HelveticaNeueLight, sans-serif;
   font-weight: 500;
   text-transform: uppercase;
 }
@@ -112,6 +111,24 @@
 }
 .timetable-view .timetable-view__content-week .row .shedule .lesson.lab {
   border-color: #db2828;
+}
+.timetable-view .timetable-view__content-month .row {
+  display: flex;
+}
+.timetable-view .timetable-view__content-month .row .column {
+  flex: 1;
+  cursor: pointer;
+}
+.timetable-view .timetable-view__content-month .row .column:hover,
+.timetable-view .timetable-view__content-month .row .column:active {
+  background-color: #dcdcdc;
+  transition: all 0.3s linear;
+}
+.timetable-view .timetable-view__content-month .row .column .day {
+  font-size: 2em;
+}
+.timetable-view .timetable-view__content-month .row .column .meta {
+  color: #666666;
 }
 @media (max-width: 767px) {
   .timetable-view .timetable-view__label .timetable-view__label__meta {

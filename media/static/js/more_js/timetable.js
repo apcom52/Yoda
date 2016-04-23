@@ -8,6 +8,7 @@ $(function() {
 	var context = 'day';
 	var updateModal = new Modal($('#newFeatures'));
 	var rateModal = new Modal($('#rateApp'));
+	var helpModal = new Modal($('#help'));
 	//updateModal.show();
 
 	$('#startRating').click(function() {
@@ -17,6 +18,10 @@ $(function() {
 
 	$('#openRatingModal').click(function() {
 		rateModal.show();
+	});
+
+	$('#showHelp').click(function() {
+		helpModal.show();
 	});
 
 	var rateSelect1 = new Select($('#rate1'), ['Все отлично', 'Есть мелкие недочеты', 'Нормально', 'Плохо', 'Старый интерфейс был лучше'])
@@ -41,6 +46,7 @@ $(function() {
 
 	var dayTimetableCollection = null;
 	var weekTimetableCollection = null;
+	var monthTimetableCollection = null;
 
 	var Router = Backbone.Router.extend({
 		routes: {
@@ -55,6 +61,8 @@ $(function() {
 
 	router.on('route:getDay', function(date) {
 		context = 'day';
+		$('.openDay, .openWeek, .openMonth').removeClass('tabs__item--active');
+		$('.openDay').addClass('tabs__item--active');
 		$('#weekView, #monthView').hide();
 		$('#dayView').show();
 		var string_date = date.split('.');
@@ -76,12 +84,13 @@ $(function() {
 		$('.timetable-view__label__title, #currentDayLabel').html(day_title);
 		$('.timetable-view__label__meta').html(day_meta);
 		uploadDay();
-		// tabs.openTab(0);
 		console.log('show day');
 	});
 
 	router.on('route:getWeek', function(date) {
 		context = 'week';
+		$('.openDay, .openWeek, .openMonth').removeClass('tabs__item--active');
+		$('.openWeek').addClass('tabs__item--active');
 		if (date == undefined)
 			date = getParseDate(targetWeekDay);
 		$('#dayView, #monthView').hide();
@@ -94,8 +103,13 @@ $(function() {
 		console.log('show week');
 	});
 
-	router.on('route:getMonth', function(date) {
+	router.on('route:getMonth', function(date) {		
 		context = 'month';
+		$('.openDay, .openWeek, .openMonth').removeClass('tabs__item--active');
+		$('.openMonth').addClass('tabs__item--active');
+		if (date == undefined)
+			date = targetMonthDay.getMonth() + 1;
+		uploadMonth();
 		console.log('showMonth');
 	});
 
@@ -109,6 +123,19 @@ $(function() {
 	});
 	$('.openWeek').click(function() {
 		window.location.hash = '#week/' + getParseDate(targetWeekDay);
+	});
+	$('.openMonth').click(function() {
+		window.location.hash = '#month/' + (targetMonthDay.getMonth() + 1);
+	});
+
+	$('.refreshContent').click(function() {
+		if (context == 'day') {
+			uploadDay();
+		} else if (context == 'week') {
+			uploadWeek();
+		} else if (context == 'month') {
+			uploadMonth();
+		}
 	});
 
 	$('body').on('click', '.showNextDay', function() {
@@ -149,6 +176,14 @@ $(function() {
 		}
 	});
 
+	var MonthModel = Backbone.Model.extend({
+		url: function() {
+			var currentDate = moment(targetMonthDay);
+			var url = '/api/timetable?month=' + currentDate.format('MM');
+			return url;
+		}
+	});
+
 
 	/* Коллекции данных */
 	var DayTimetableList = Backbone.Collection.extend({
@@ -169,6 +204,14 @@ $(function() {
 		}
 	});
 
+	var MonthCollection = Backbone.Collection.extend({
+		model: MonthModel,
+		url: function() {
+			var currentDate = moment(targetMonthDay);
+			var url = '/api/timetable?month=' + currentDate.format('MM');
+			return url;
+		}
+	});
 
 	/* Представления */
 	var DayTimetableItemView = Backbone.View.extend({
@@ -224,7 +267,7 @@ $(function() {
 				month: date[1],
 				timetable: this.model.get('timetable'),
 				today: this.model.get('today'),
-				parsing_date: getParseDate(targetWeekDay),
+				date_parsing: this.model.get('date_parsing'),
 				accent: accent,
 			};
 
@@ -232,6 +275,29 @@ $(function() {
 			return this;
 		}
 	});
+
+	// var MonthTimetableItemView = Backbone.View.extend({
+	// 	tagName: 'div',
+	// 	className: 'row',
+	// 	initialize: function(options) {
+	// 		this.render();
+	// 	},
+	// 	render: function() {
+	// 		$(this.el).empty();
+
+	// 		var source = $('#WeekTimetableItemTemplate').html();
+	// 		var template = Handlebars.compile(source);
+	// 		var date = this.model.get('date').split(' ');
+	// 		var context = { 
+	// 			date: this.model.get('date'),
+	// 			start_time: this.model.get('today'),
+	// 			end_time: this.model.get('today'),
+	// 		};
+
+	// 		$(this.el).html(template(context));
+	// 		return this;
+	// 	}
+	// });
 
 	var TimetableView = Backbone.View.extend({
 		collection: null,
@@ -272,17 +338,48 @@ $(function() {
 			var element = $(this.el);
 			element.html('');
 
-			// if (this.collection.length) {
-				this.collection.forEach(function(item) {
-					var itemView = new WeekTimetableItemView({
-						model: item
-					});
-					element.append(itemView.el);
+			this.collection.forEach(function(item) {
+				var itemView = new WeekTimetableItemView({
+					model: item
 				});
-			// } else {
-				// var source = $('#DayTimetableHoliday').html();
-				// element.html(source);
-			// }		
+				element.append(itemView.el);
+			});
+
+			return this;
+		}
+	});
+
+	var TimetableMonthView = Backbone.View.extend({
+		collection: null,
+		el: '#monthView',
+		initialize: function(options) {
+			this.collection = options.collection;
+			this.render();
+		},
+		render: function() {
+			$(this.el).empty();
+
+			var monthCollection = [];
+			for (var i = 0; i < this.collection.length; i++) {
+				console.log('week ' + i);
+				monthCollection.push(new Object({days: []}));
+				var currentModel = this.collection.at(i);
+				
+				for (var j = 0; j < 7; j++) {
+					monthCollection[i].days.push(currentModel.get(j.toString()));
+				}
+			}
+
+			var source = $('#MonthTimetableItemTemplate').html();
+			var template = Handlebars.compile(source);
+			var context = { 
+				month: monthCollection,
+				accent: accent,
+			};
+
+			console.log(context);
+
+			$(this.el).html(template(context));
 
 			return this;
 		}
@@ -290,15 +387,18 @@ $(function() {
 
 	function uploadDay() {
 		this.async = true;		
+		$('.showPrevDay, .showNextDay').attr('disabled', true);
 		$('#dayView').html('<div class="loading-layout"></div>');
 		dayTimetableCollection = new DayTimetableList();
 		dayTimetableCollection.fetch({
 			success: function(data) {
 				var dayView = new TimetableView({ collection: dayTimetableCollection});
 				dayView.render();
+				$('.showPrevDay, .showNextDay').attr('disabled', false);
 			},
 			error: function(data) {
 				showToast('Возникла ошибка при загрузке данных');
+				$('.showPrevDay, .showNextDay').attr('disabled', false);
 			}
 		});
 	}
@@ -306,6 +406,7 @@ $(function() {
 	function uploadWeek() {
 		this.async = true;		
 		$('#weekView').html('<div class="loading-layout"></div>');
+		$('.showPrevDay, .showNextDay').attr('disabled', true);
 		weekTimetableCollection = new WeekCollection();
 		weekTimetableCollection.fetch({
 			success: function(data) {
@@ -314,10 +415,29 @@ $(function() {
 				startDate = weekTimetableCollection.models[0].get('date');
 				endDate = weekTimetableCollection.models[6].get('date');
 				$('.timetable-view__label__title, #currentDayLabel').html(startDate + ' - ' + endDate);
-				// $('.timetable-view__label__meta').html(day_meta);
+				$('.timetable-view__label__meta').html("");
+				$('.showPrevDay, .showNextDay').attr('disabled', false);
 			},
 			error: function(data) {
 				showToast('Возникла ошибка при загрузке данных');
+				$('.showPrevDay, .showNextDay').attr('disabled', false);
+			}
+		});
+	}
+
+	function uploadMonth() {
+		this.async = true;		
+		$('#monthView').html('<div class="loading-layout"></div>');
+		$('.showPrevDay, .showNextDay').attr('disabled', true);
+		monthTimetableCollection = new MonthCollection();
+		monthTimetableCollection.fetch({
+			success: function(data) {
+				var monthView = new TimetableMonthView({ collection: monthTimetableCollection});
+				$('.showPrevDay, .showNextDay').attr('disabled', false);
+			},
+			error: function(data) {
+				showToast('Возникла ошибка при загрузке данных');
+				$('.showPrevDay, .showNextDay').attr('disabled', false);
 			}
 		});
 	}
