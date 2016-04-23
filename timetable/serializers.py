@@ -124,16 +124,20 @@ class TimetableWeekSerializer():
 			# date = datetime.datetime.strftime(self.start + datetime.timedelta(days = i-1), "%d %B")
 			tt = Timetable.objects.all().filter(semester = self.semester, week = self.week_type, day = i).filter(Q(group = 1) | Q(group = (self.group + 1))).order_by('time')
 			serializer = TimetableSerializer(tt, many = True, context = {'date': current_date})
+			timetable = serializer.data
 			today = False
 			
 			if current_date.day == datetime.datetime.today().day and current_date.month == datetime.datetime.today().month:
 				today = True
+
 			is_weekend = False
-			if len(tt) < 1: 
+			dayoff = NotStudyTime.objects.all().filter(start_date__lte = current_date).filter(end_date__gte = current_date)
+			if len(tt) == 0 or len(dayoff):
+				timetable = []
 				is_weekend = True
 
 			self.timetable.append({
-				'timetable': serializer.data,
+				'timetable': timetable,
 				'date': dateformat.format(current_date, settings.DATE_FORMAT),
 				'weekend': is_weekend,
 				'today': today,

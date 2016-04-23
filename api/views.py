@@ -242,15 +242,25 @@ class TimetableAPI(APIView):
 			if weeknumber % 2 == 0:
 				week = 2
 
+			#Проверка номера подгруппы
 			if not data.get("group"):
 				group = request.user.userprofile.group
 			else:
 				group = int(data.get("group"))
 			semester = settings.SEMESTER
 
-			timetable = Timetable.objects.all().filter(week = week, day = weekday, semester = semester).filter(Q(group = 1) | Q(group = (group + 1))).order_by('time')
-			serializer = TimetableSerializer(timetable, many = True, context = {'date': date})		
-			return Response(serializer.data)
+			#Проверка на выходной в этот день			
+			dayoff = NotStudyTime.objects.all().filter(start_date__lte = date).filter(end_date__gte = date)
+			is_dayoff = False
+			if len(dayoff):
+				is_dayoff = True
+
+			if is_dayoff == False:
+				timetable = Timetable.objects.all().filter(week = week, day = weekday, semester = semester).filter(Q(group = 1) | Q(group = (group + 1))).order_by('time')
+				serializer = TimetableSerializer(timetable, many = True, context = {'date': date})		
+				return Response(serializer.data)
+			else:
+				return Response([]);
 
 		elif data.get("week"):
 			serializer = TimetableWeekSerializer(str(data.get("week")), request.user.userprofile.group, settings.SEMESTER)
