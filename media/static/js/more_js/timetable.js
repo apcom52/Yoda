@@ -107,6 +107,8 @@ $(function() {
 		context = 'month';
 		$('.openDay, .openWeek, .openMonth').removeClass('tabs__item--active');
 		$('.openMonth').addClass('tabs__item--active');
+		$('#dayView, #weekView').hide();
+		$('#monthView').show();
 		if (date == undefined)
 			date = targetMonthDay.getMonth() + 1;
 		uploadMonth();
