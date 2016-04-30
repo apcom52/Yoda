@@ -239,9 +239,8 @@ Modal.prototype.show = function() {
 		if (current.visible)
 			current.hide();		
 	});
-	var height = this.el.innerHeight();
-	//height -= this.el.find('.modal__header').outerHeight() + this.el.find('.modal__footer').outerHeight();
-	this.el.find('.modal__content').css('height', height - 46 - 39);
+	
+	this.resize();
 
 	var element = this.el;
 	var target = this;
@@ -269,6 +268,19 @@ Modal.prototype.hide = function() {
 	$('.overflow').remove();
 	element.hide();
 	element.trigger('modal-hide');
+}
+
+Modal.prototype.resize = function() {
+	console.log(this.el);
+	console.log(this.el.find('.modal__header'));
+	console.log(this.el.find('.modal__footer'));
+	var height = this.el.innerHeight();
+	console.log('height: ' + height);
+	height -= this.el.find('.modal__header').outerHeight();
+	console.log('height 2: ' + height);
+	height -= this.el.find('.modal__footer').outerHeight();
+	console.log('height 3: ' + height);
+	this.el.find('.modal__content').css('height', height);
 }
 
 Modal.prototype.toggle = function() {

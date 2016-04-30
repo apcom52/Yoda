@@ -114,10 +114,15 @@
 }
 .timetable-view .timetable-view__content-month .row {
   display: flex;
+  font-family: 'PT Sans', 'Segoe UI', sans-serif;
 }
 .timetable-view .timetable-view__content-month .row .column {
   flex: 1;
+  max-width: 14.28%;
   cursor: pointer;
+}
+.timetable-view .timetable-view__content-month .row .column:last-child {
+  max-width: 14.32%;
 }
 .timetable-view .timetable-view__content-month .row .column:hover,
 .timetable-view .timetable-view__content-month .row .column:active {
@@ -127,8 +132,28 @@
 .timetable-view .timetable-view__content-month .row .column .day {
   font-size: 2em;
 }
-.timetable-view .timetable-view__content-month .row .column .meta {
+.timetable-view .timetable-view__content-month .row .column.no-select {
+  background-color: transparent;
+  transition: all 0.3s linear;
+}
+.timetable-view .timetable-view__content-month .row .column .content .meta {
   color: #666666;
+  font-size: 0.9em;
+}
+.timetable-view .timetable-view__content-month .row .column .content .event {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0em -1em;
+  width: calc(100% + 2em);
+  padding: 0.25em 0.5em;
+  box-sizing: border-box;
+  font-size: 0.8em;
+  margin-top: 1px;
+}
+.timetable-view .timetable-view__content-month .row .column .content .event .time {
+  font-weight: bold;
+  margin-right: 0.25em;
 }
 @media (max-width: 767px) {
   .timetable-view .timetable-view__label .timetable-view__label__meta {
@@ -139,5 +164,33 @@
   }
   .timetable-view .timetable-view__content-day .row .subject .title {
     font-size: 1.25em;
+  }
+  .timetable-view .timetable-view__content-month.vertical-layout--stripped .row {
+    background-color: #f5f5f5 !important;
+  }
+  .timetable-view .timetable-view__content-month .row {
+    display: block;
+  }
+  .timetable-view .timetable-view__content-month .row .column {
+    display: flex;
+    max-width: 100%;
+  }
+  .timetable-view .timetable-view__content-month .row .column:last-child {
+    max-width: 100%;
+  }
+  .timetable-view .timetable-view__content-month .row .column.last-month {
+    display: none;
+  }
+  .timetable-view .timetable-view__content-month .row .column .day {
+    flex: 1;
+    min-width: 25%;
+  }
+  .timetable-view .timetable-view__content-month .row .column.no-select {
+    background-color: transparent;
+    transition: all 0.3s linear;
+  }
+  .timetable-view .timetable-view__content-month .row .column .content {
+    max-width: 75%;
+    flex: 3;
   }
 }

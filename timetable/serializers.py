@@ -1,11 +1,13 @@
 import datetime
+import pytz
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist 
 from django.utils import dateformat
 from django.conf import settings
 from rest_framework import serializers
 from .models import *
-from .utils import TimetableControl
+from .utils import TimetableControl, utc_to_local
+from events.models import Event
 
 class TimetableSerializer(serializers.ModelSerializer):	
 	title = serializers.CharField(source = 'lesson.title', allow_blank = True)
@@ -110,7 +112,7 @@ class TimetableWeekSerializer():
 		dt = datetime.datetime.strptime(data_day, '%d/%m/%Y')
 		self.start = dt - datetime.timedelta(days=dt.weekday())
 		self.end = self.start + datetime.timedelta(days=6)
-		self.week_num = self.start.day#self.start.isocalendar()[1]
+		self.week_num = self.start.isocalendar()[1] + settings.WEEK_SHIFT
 		self.week_type = 1
 		if self.week_num % 2 == 0: 
 			self.week_type = 2
@@ -153,20 +155,31 @@ class TimetableMonthSerializer():
 		import datetime
 		now = datetime.datetime.today()
 		self.start_date = datetime.datetime(now.year, month, 1)
-		self.end_date = datetime.datetime(now.year, month+1, 1) - datetime.timedelta(days = 1)
+		end_month = month + 1
+		end_year = now.year
+		if month == 12:
+			end_month = 1
+			end_year = now.year + 1
+		self.end_date = datetime.datetime(end_year, end_month, 1) - datetime.timedelta(days = 1)
 		self.group = group
 		self.semester = semester
 
 	def get_shedule(self):
+		import datetime
 		self.timetable = []
 		import calendar
 		calendar = calendar.Calendar(firstweekday = 0)
 		day = datetime.timedelta(days = 1)
 		current_week = 0
 		while self.start_date <= self.end_date:
-			week = self.start_date.isocalendar()[1]
+			week = self.start_date.isocalendar()[1] + settings.WEEK_SHIFT
 			weekday = self.start_date.weekday() + 1
 
+			is_today = False
+			if self.start_date.date() == datetime.datetime.today().date():
+				is_today = True
+
+			#Если месяц начинается не с понедельника, то заполняем пустыми днями
 			if current_week == 0 and len(self.timetable) == 0:
 				self.timetable.append([])
 				current_day = 1
@@ -176,20 +189,52 @@ class TimetableMonthSerializer():
 					})
 					current_day += 1				
 					continue
+
 			week_type = 1
 			if week % 2 == 0:
 				week_type = 2
-			print(week, week_type, weekday)
+
+			#Получаем ярлычки "есть контрольная" и "задано д/з"
+			has_control = False
+			has_homework = False
+			controls = Control.objects.all().filter(date = self.start_date)
+			homeworks = Homework.objects.all().filter(date = self.start_date)
+			if len(controls):	has_control = True
+			if len(homeworks):	has_homework = True
+
+			#Получаем мероприятия в этот день
+			events = []
+			events_list = Event.objects.all().filter(date__date = self.start_date).order_by('date')
+
+			#Проверяем, является ли этот день выходным
+			is_weekend = False
+			dayoff = NotStudyTime.objects.all().filter(start_date__lte = self.start_date).filter(end_date__gte = self.start_date)
+			if len(dayoff):
+				is_weekend = True
+
+			for event in events_list:
+				time = utc_to_local(event.date)
+				events.append({
+					'id': event.id,
+					'title': event.title,
+					'is_required': event.is_required,
+					'time': time.strftime('%H:%M'),
+					'hours': time.strftime('%H'),
+					'minutes': time.strftime('%M'),
+				})
 			
-			try:
-				weekend = False
+			try:				
 				first_lesson = Timetable.objects.filter(semester = self.semester, week = week_type, day = weekday).filter(Q(group = 1) | Q(group = (self.group + 1))).order_by('time').first()
-				last_lesson = Timetable.objects.filter(semester = self.semester, week = week_type, day = weekday).filter(Q(group = 1) | Q(group = (self.group + 1))).order_by('time').last()
-				print('===', first_lesson, first_lesson.place)
+				last_lesson = Timetable.objects.filter(semester = self.semester, week = week_type, day = weekday).filter(Q(group = 1) | Q(group = (self.group + 1))).last()
 				start_time = self.get_start_time(first_lesson.time)
-				end_time = self.get_end_time(last_lesson.time)
+				if last_lesson.double == True:					
+					end_time = self.get_end_time(last_lesson.time + 1)
+					print(self.start_date, 'double', last_lesson)
+				else:
+					end_time = self.get_end_time(last_lesson.time)
+					
 			except AttributeError:
-				weekend = True
+				is_weekend = True
 				start_time = ""
 				end_time = ""
 
@@ -198,7 +243,11 @@ class TimetableMonthSerializer():
 				'date': self.start_date.day,
 				'start_time': start_time,
 				'end_time': end_time,
-				'weekend': weekend,
+				'weekend': is_weekend,
+				'today': is_today,
+				'control': has_control,
+				'homework': has_homework,
+				'events': events,
 			})
 
 			if weekday == 7:

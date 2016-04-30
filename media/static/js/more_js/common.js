@@ -38,12 +38,10 @@ $(function() {
     var notificationIsFirst = true;
     var alarmSong = new Audio('/media/audio/alarm.mp3');
    	var notificationCenter = new Sidebar($('#notificationCenter'), true);
-    console.log(notificationCenter);
     checkNotification();
 
     $('#openNotifications').click(function() {
         notificationCenter.toggle();
-        console.log(notificationCenter);
         checkNotification(false);
     });
 
@@ -55,8 +53,7 @@ $(function() {
     	$('#notificationCenterContent').html('<div class="loading-layout"></div>');
 
         $.get("/api/notifications?login=" + login, 
-            function (response) {         
-
+            function (response) {  
                 if (response.length) {
                     $('#openNotifications').addClass(accent + '-bg white-fg');
                     $('#openNotifications > i').removeClass('flaticon-alarm').addClass('flaticon-alarm-fill');
@@ -86,7 +83,6 @@ $(function() {
     };
 
     var notificationCheck = setInterval(function() {
-        console.log('Проверено уведомление');
         checkNotification();
     }, 30000);
 
@@ -235,4 +231,28 @@ $(function() {
 			friends_visible = false;
 		}
 	});	
+
+	Handlebars.registerHelper('ifCond', function (v1, operator, v2, options) {
+
+    switch (operator) {
+        case '==':
+            return (v1 == v2) ? options.fn(this) : options.inverse(this);
+        case '===':
+            return (v1 === v2) ? options.fn(this) : options.inverse(this);
+        case '<':
+            return (v1 < v2) ? options.fn(this) : options.inverse(this);
+        case '<=':
+            return (v1 <= v2) ? options.fn(this) : options.inverse(this);
+        case '>':
+            return (v1 > v2) ? options.fn(this) : options.inverse(this);
+        case '>=':
+            return (v1 >= v2) ? options.fn(this) : options.inverse(this);
+        case '&&':
+            return (v1 && v2) ? options.fn(this) : options.inverse(this);
+        case '||':
+            return (v1 || v2) ? options.fn(this) : options.inverse(this);
+        default:
+            return options.inverse(this);
+    }
+});
 });

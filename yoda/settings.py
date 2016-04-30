@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     #'debug_toolbar',
     'rest_framework',
+    'pytz',
     'bbcode',
     'pymorphy2',
     'markdown2',
@@ -161,5 +162,5 @@ REST_FRAMEWORK = {
 
 #Настройки приложения
 SEMESTER = 4 #Текущий семестр
-WEEK_SHIFT = 0 #0 - если нет необходимости сдвигать недели, 1 если нужно сдвинуть на одну (для четных/нечетных)
+WEEK_SHIFT = 1 #0 - если нет необходимости сдвигать недели, 1 если нужно сдвинуть на одну (для четных/нечетных)
 NO_AVATAR = '/media/img/noavatar.jpg' #без аватара

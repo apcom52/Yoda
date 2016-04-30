@@ -139,10 +139,16 @@
 	.timetable-view__content-month {
 		.row {
 			display: flex;
+			.pt();
 
 			.column {
 				flex: 1;
+				max-width: 14.28%;
 				cursor: pointer;
+
+				&:last-child {
+					max-width: 14.32%;
+				}
 				
 				&:hover, &:active {
 					background-color: darken(@u-gray, 10%);
@@ -153,9 +159,34 @@
 					font-size: 2em;
 				}
 
-				.meta {
-					color: @m-gray;
+				&.no-select {
+					background-color: transparent;
+					.anim(0.3s);
 				}
+
+				.content {
+					.meta {
+						color: @m-gray;
+						font-size: 0.9em;
+					}
+
+					.event {
+						overflow: hidden;
+						text-overflow: ellipsis;
+						white-space: nowrap;
+						margin: 0em -1em;
+						width: ~"calc(100% + 2em)";
+						padding: 0.25em 0.5em;
+						box-sizing: border-box;
+						font-size: 0.8em;
+						margin-top: 1px;
+
+						.time {
+							font-weight: bold;
+							margin-right: 0.25em;
+						}
+					}
+				}				
 			}
 		}
 	}
@@ -179,6 +210,46 @@
 					.title {
 						font-size: 1.25em;
 					}
+				}
+			}
+		}
+
+		.timetable-view__content-month {
+			&.vertical-layout--stripped {
+				.row {
+					background-color: @u-gray !important;					
+				}
+			}
+
+			.row {
+				display: block;
+
+				.column {
+					display: flex;
+					max-width: 100%;
+
+					&:last-child {
+						max-width: 100%;
+					}
+
+					&.last-month {
+						display: none;
+					}
+
+					.day {
+						flex: 1;
+						min-width: 25%;
+					}
+
+					&.no-select {
+						background-color: transparent;
+						.anim(0.3s);
+					}
+
+					.content {
+						max-width: 75%;
+						flex: 3;
+					}					
 				}
 			}
 		}

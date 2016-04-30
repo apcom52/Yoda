@@ -29,5 +29,8 @@ urlpatterns = [
 	url('^change_timetable/$', views.TimetableManupulationsAPI.as_view()),
 
 	url('^blog/$', views.BlogPostAPI.as_view()),
+	
+	url('^event/$', views.EventAPI.as_view()),
+
 	#url('^', include(router.urls)),
 ]

@@ -19,6 +19,7 @@ from favorites.serializers import *
 from timetable.serializers import *
 from feedback.serializers import *
 from achievements.serializers import *
+from events.serializers import *
 
 from library.models import *
 from notes.models import Note
@@ -237,7 +238,7 @@ class TimetableAPI(APIView):
 			year = today.year
 			date = datetime.date(year, month, day)
 			weekday = date.weekday() + 1
-			weeknumber = date.isocalendar()[1] + 1
+			weeknumber = date.isocalendar()[1] + settings.WEEK_SHIFT
 			week = 1
 			if weeknumber % 2 == 0:
 				week = 2
@@ -325,4 +326,21 @@ class NotificationAPI(APIView):
 				n.view = True
 				n.save()
 
+		return Response(serializer.data)
+
+class EventAPI(APIView):
+	def get(self, request, format = None):
+		data = request.GET
+
+		if data.get('login', False):
+			login = data.get('login')
+		else:
+			login = request.user.username
+
+		if data.get('id', False):
+			events = Event.objects.get(id = int(data.get('id', 0)))
+			serializer = EventSerializer(events, many = False, context = {'login': login})
+		else:
+			events = Event.objects.all()			
+			serializer = EventSerializer(events, many = True, context = {'login': login})
 		return Response(serializer.data)

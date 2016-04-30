@@ -212,6 +212,10 @@
 	<div class="modal__footer align-center"><button class="button--color-{{request.user.userprofile.accent}}">ОК</button><button class="modal__discard">Отмена</button></div>
 </div>
 
+<div class="modal modal--size-large" id="eventModal">
+	<!-- Содержимое модального окна про мероприятия -->
+</div>
+
 <script type="text/javascript">
 	$(function() {
 		var addHomework = new Modal($('#addHomeworkModal'));
@@ -264,7 +268,7 @@
 	<div class="align-center">
 		<h1 class="helvetica-thin"><img src="/media/img/day_off.png" style="width: 6em;"><br>Выходной</h1>
 		<p class="helvetica-light">На этот день пар не назначено</p>
-		<button class="{% endverbatim %}button--color-{{request.user.userprofile.accent}}{% verbatim %} showNextDay">Расписание на следующий день</button>
+		<button class="{% endverbatim %}button--color-{{request.user.userprofile.accent}}{% verbatim %} button--size-small showNextDay">Расписание на следующий день</button>
 	</div>
 </script>
 
@@ -307,18 +311,24 @@
 <script src="text/html" id="MonthTimetableItemTemplate">
 {{#each month}}
 	<div class="row">
-	{{#each days}}
-		<div class="column padding-1 size-fix">
-		{{#if last_month}}
-		{{else}}
-			<div class="day helvetica-thin">{{date}}</div>
-			{{#if weekend}}{{else}}
-			<div class="meta">с {{start_time}}<br>до {{end_time}}</div>		
+		{{#each days}}
+			<div class="column padding-1 size-fix {{#if last_month}}last-month no-select{{/if}}{{#if today}}u-{{../../accent}}-bg{{/if}}" data-day="{{date}}">
+			{{#if last_month}}
+			{{else}}
+				<div class="day helvetica-thin {{#if weekend}}{{../../accent}}-fg{{/if}}">{{date}}</div>
+				<div class="content">
+					{{#if weekend}}<div class="meta">выходной</div>{{else}}
+					<div class="meta">с {{start_time}}<br>до {{end_time}}</div><br>
+					{{/if}}
+					{{#each events}}
+					<div class="event {{#if ../today}}l-{{../../../accent}}-bg{{else}}u-{{../../../accent}}-bg{{/if}}" data-event-id="{{id}}"><span class="time">{{#if is_required}}<i class="flaticon-alert"></i>{{/if}} {{hours}}<sup>{{minutes}}</sup></span>{{title}}</div>
+					{{/each}}
+				</div>
 			{{/if}}
-		{{/if}}
-		</div>
-	{{/each}}
-	</div>	
+			</div>
+		{{else}}
+		{{/each}}
+	</div>		
 {{/each}}
 </script>
 
@@ -328,9 +338,64 @@
 		<p>Проверьте ваше интернет-соединение или правильность отправляемых данных</p>
 	</div>
 </script>
+
+<script src="text/html" id="eventTemplate">
+	<div class="modal__content padding-0">
+		<div class="grid">
+			<div class="col-6 col-lm-6 u-gray-bg">
+				<div class="l-{{accent}}-bg padding-1 size-fix">
+					<h1 class="white-fg align-center"><i class="flaticon-calendar-ok"></i></h1>
+					<h1 class="helvetica-thin">{{title}}</h1>
+					<h3 class="margin-vertical-0 helvetica-light">{{date}}</h3>
+				</div>
+				<div class="margin-1 size-fix">
+					<div class="alert alert--color-green">
+						<div class="alert__content">Вы пойдете на это мероприятие</div>
+					</div>
+					<div class="alert alert--color-yellow">
+						<div class="alert__content">Вы возможно пойдете на это мероприятие</div>
+					</div>
+					<div class="alert alert--color-red">
+						<div class="alert__content">Вы не пойдете на это мероприятие</div>
+					</div>
+					{{#if is_required}}
+					<div class="alert alert--color-red">
+						<div class="alert__content"><i class="flaticon-alert"></i>&nbsp;Это обязательное мероприятие</div>
+					</div>
+					{{/if}}
+					{{#unless is_required}}
+					<button class="button--color-green {{#if is_visit '==' 1}}button--only-borders{{/if}} button--size-small">Пойду</button>
+					<button class="button--color-yellow {{#if is_visit '==' 2}}button--only-borders{{/if}} button--size-small">Возможно пойду</button>
+					<button class="button--color-red {{#if is_visit '==' 3}}button--only-borders{{/if}} button--size-small">Не пойду</button><br>
+					{{/unless}}
+					<b>О мероприятии:</b><br>
+					<p>{{description}}</p>
+				</div>
+			</div>
+			<div class="col-6 col-lm-6 padding-1 size-fix">
+				<div class="form form--fit padding-horizontal-0 form--no-smooth">
+					<textarea placeholder="Введите ваш комментарий" rows="2"></textarea>
+					<button class="button--color-{{accent}}">Отправить</button>
+				</div>
+				<div class="feed">
+					<div class="feed__item">
+						<div class="feed__item__image">
+							<img src="http://vsu-it.ru/media/img/2015/09/01/Team_Fortress_2__Sniper_by_jRace.jpg" class="img--circle" alt="">
+						</div>
+						<div class="feed__item__content">
+							<div class="feed__item__content__title">Александр Перевезенцев</div>
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti ipsum odio debitis rem asperiores non, aliquam accusantium a praesentium, dicta quo nulla ducimus, deserunt aut facere obcaecati fugiat atque esse.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</script>
+
+
 {% endverbatim %}
 
 {% endblock %}
-
 
 

@@ -618,6 +618,11 @@ def set_cookie(response, key, value, days_expire = 7):
   expires = datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(seconds=max_age), "%a, %d-%b-%Y %H:%M:%S GMT")
   response.set_cookie(key, value, max_age=max_age, expires=expires, domain=settings.SESSION_COOKIE_DOMAIN, secure=settings.SESSION_COOKIE_SECURE or None)
 
+def utc_to_local(utc_dt):
+	import pytz
+	local_tz = pytz.timezone('Europe/Moscow')
+	local_dt = utc_dt.replace(tzinfo=pytz.utc).astimezone(local_tz)
+	return local_tz.normalize(local_dt)
 
 
 '''def parseSmiles(text):

@@ -14,6 +14,8 @@ class Lesson_Item(models.Model):
 	title = models.CharField('Название предмета', max_length = 64, unique = False)
 	semester = models.IntegerField('Семестр', choices = semesters, default = 1)
 
+	
+
 	def __str__(self):
 		return '%s (%s)' % (self.title, self.semester)
 
@@ -46,7 +48,7 @@ class Teacher(models.Model):
 	)
 	name = models.CharField('ФИО преподавателя', max_length = 128, unique = False)
 	semester = models.IntegerField('Семестр', choices = semesters)
-	lessons = models.ManyToManyField(Lesson)
+	lessons = models.ManyToManyField(Lesson, verbose_name=u"Предметы, которые ведет этот преподаватель")
 	avatar = models.ImageField(upload_to='img/%Y/%m/%d/', verbose_name='Фотография преподавателя', default='img/2015/08/04/ufo.jpg')
 
 	def __str__(self):
@@ -54,6 +56,7 @@ class Teacher(models.Model):
 
 class TeacherAdmin(admin.ModelAdmin):	
 	list_display = ('name', 'semester')
+	filter_horizontal = ('lessons', )
 
 class Timetable(models.Model):
 	weeks = ((1, 'Нечетная неделя'), (2, 'Четная неделя'))
@@ -90,6 +93,8 @@ class Timetable(models.Model):
 
 class TimetableAdmin(admin.ModelAdmin):	
 	list_display = ('lesson', 'teacher', 'semester', 'week', 'day', 'time', 'group', 'place', 'double')
+	list_filter = ('semester', 'week', 'day')
+	search_fields = ('lesson__title',)
 
 	def get_form(self, request, obj=None, **kwargs):
 		semester = settings.SEMESTER
