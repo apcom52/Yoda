@@ -11,6 +11,17 @@
 .dark-bg {
   background: gray;
 }
+.avatar-animation {
+  transform: rotate(0deg) !important;
+  opacity: 1 !important;
+  margin-left: 0em !important;
+}
+.avatar-start {
+  transform: rotate(-90deg);
+  opacity: 0.35;
+  margin-left: -10em;
+  transition: all 0.5s linear;
+}
 .y-sidebar {
   width: 450px;
   height: 100%;

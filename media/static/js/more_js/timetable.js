@@ -140,6 +140,11 @@ $(function() {
 		}
 	});
 
+	$('body').on('dblclick', '#monthView .row .column', function() {
+		var monthDate = new Date(targetMonthDay.getFullYear(), targetMonthDay.getMonth(), parseInt($(this).data('day')));
+		window.location.hash = '#day/' + getParseDate(monthDate);
+	});
+
 	$('body').on('click', '.showNextDay', function() {
 		if (context == 'day') {
 			targetDay.setDate(targetDay.getDate() + 1);
@@ -436,6 +441,8 @@ $(function() {
 			success: function(data) {
 				var monthView = new TimetableMonthView({ collection: monthTimetableCollection});
 				$('.showPrevDay, .showNextDay').attr('disabled', false);
+				$('.timetable-view__label__title, #currentDayLabel').html(moment(targetMonthDay).format('MMMM YYYY'));
+				$('.timetable-view__label__meta').html("");
 			},
 			error: function(data) {
 				showToast('Возникла ошибка при загрузке данных');

@@ -24,6 +24,8 @@
 .timetable-view .timetable-view__content-day {
   display: table;
   width: 100%;
+  opacity: 1;
+  transition: all 0.15s linear;
 }
 .timetable-view .timetable-view__content-day .row {
   display: flex;
@@ -83,6 +85,11 @@
 .timetable-view .timetable-view__content-day .row .subject.ended {
   opacity: 0.5;
 }
+.timetable-view .timetable-view__content-week {
+  transform: scale(1);
+  opacity: 1;
+  transition: all 0.15s linear;
+}
 .timetable-view .timetable-view__content-week .row {
   display: flex;
 }
@@ -111,6 +118,11 @@
 }
 .timetable-view .timetable-view__content-week .row .shedule .lesson.lab {
   border-color: #db2828;
+}
+.timetable-view .timetable-view__content-month {
+  transform: scale(1);
+  opacity: 1;
+  transition: all 0.15s linear;
 }
 .timetable-view .timetable-view__content-month .row {
   display: flex;

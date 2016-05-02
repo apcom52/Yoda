@@ -102,9 +102,20 @@ $(function() {
 
     // ---------
 
-	var sidebar = new Sidebar($('#sidebar'), true);
+	var sidebar = new Sidebar($('#sidebar'), true, {
+		onShow: function() {
+			$('#sidebar .sidebar__cover img').addClass('avatar-animation');
+			console.log('onShow');
+		}, 
+		onHide: function() {
+			$('#sidebar .sidebar__cover img').removeClass('avatar-animation');
+			console.log('onHide');
+		}
+	});
+
 	$('#mainMenu').click(function() {
 		sidebar.show();
+		console.log(sidebar);
 	});
 
 	$('#back_menu').click(function() {

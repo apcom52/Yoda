@@ -122,7 +122,7 @@ $(function() {
 });
 
 /* Боковое меню */
-function Sidebar(element, enable_scroll) {
+function Sidebar(element, enable_scroll, callback = {}) {
 	// Sidebar.prototype.el = undefined;
 	if (Sidebar.prototype.collection == undefined)
 		Sidebar.prototype.collection = []
@@ -131,18 +131,21 @@ function Sidebar(element, enable_scroll) {
 		this.enable_scroll = enable_scroll;
 	this.el = element;	
 	Sidebar.prototype.collection.push(this);
+	this.onShow = callback.onShow || false;
+	this.onHide = callback.onHide || false;
 }
 
 Sidebar.prototype.show = function() {
 	// Пробегаемся по всем созданным сайдбарам и закрываем их, если они открыты
 	var otherSidebars = Sidebar.prototype.collection;
 	var target = this;
+	if (target.onShow) target.onShow();
 	otherSidebars.forEach(function (current, index, otherSidebars) {
 		if (current != target && current.visible)
 			current.hide();
 	});
 	var element = this.el;
-	target.hide();
+	//target.hide();
 	element.addClass('sidebar--show');
 	
 	if (!$('.overflow').length) {
@@ -164,6 +167,7 @@ Sidebar.prototype.show = function() {
 
 Sidebar.prototype.hide = function() {
 	var element = this.el;
+	if (this.onHide) this.onHide();
 	element.removeClass('sidebar--show');
 	$('.overflow').remove();
 
@@ -225,12 +229,16 @@ function showToast(message, duration) {
 
 
 /* Модальные окна */
-Modal = function(element) {
+Modal = function(element, params = {}, callback = {}) {
 	if (Modal.prototype.collection == undefined)
 		Modal.prototype.collection = []
 	this.el = element;
 	this.visible = false;
 	Modal.prototype.collection.push(this);
+
+	this.only_discarding = params.only_discarding || false;
+	this.onShow = callback.onShow || undefined;
+	this.onDiscard = callback.onDiscard || undefined;
 }
 
 Modal.prototype.show = function() {
@@ -239,27 +247,37 @@ Modal.prototype.show = function() {
 		if (current.visible)
 			current.hide();		
 	});
-	
-	this.resize();
+	var height = this.el.innerHeight();
+	this.el.find('.modal__content').css('height', height - 46 - 39);
 
 	var element = this.el;
 	var target = this;
 	this.visible = true;
+
+	if (target.onShow) target.onShow();
 
 	if (!$('.overflow').length) {
 		$('body').append('<div class="overflow"></div>');
 	}
 
 	$('body').on('click', '.overflow', function() {
-		target.hide();
-	});
+		if (target.only_discarding == false) {
+			if (target.onDiscard) target.onDiscard();
+			target.hide();				
+		} else {
+			target.el.addClass('modal--animation-attention');
+			setTimeout(function() {
+				target.el.removeClass('modal--animation-attention');
+			}, 150);
+		}
+	});	
 
 	element.find('.modal__discard').click(function() {
+		if (target.onDiscard) target.onDiscard();
 		target.hide();
 	});
 
 	element.show();
-	element.trigger('modal-show');
 }
 
 Modal.prototype.hide = function() {
@@ -267,20 +285,6 @@ Modal.prototype.hide = function() {
 	var element = this.el;
 	$('.overflow').remove();
 	element.hide();
-	element.trigger('modal-hide');
-}
-
-Modal.prototype.resize = function() {
-	console.log(this.el);
-	console.log(this.el.find('.modal__header'));
-	console.log(this.el.find('.modal__footer'));
-	var height = this.el.innerHeight();
-	console.log('height: ' + height);
-	height -= this.el.find('.modal__header').outerHeight();
-	console.log('height 2: ' + height);
-	height -= this.el.find('.modal__footer').outerHeight();
-	console.log('height 3: ' + height);
-	this.el.find('.modal__content').css('height', height);
 }
 
 Modal.prototype.toggle = function() {
@@ -289,7 +293,7 @@ Modal.prototype.toggle = function() {
 }
 
 /* Tabs */
-Tabs = function(element) {
+Tabs = function(element, callback) {
 	this.el = element;
 	this.currentIndex = -1;
 	this.tabs = [];
@@ -298,6 +302,12 @@ Tabs = function(element) {
 	this.el.find('.tabs__item').each(function (index) {
 		target.tabs[index] = $(this);
 	});
+
+	/* Присваиваем callback-функции */
+	if (callback != undefined) {
+		if (callback.onTabSelected != undefined) 
+			this.onTabSelected = callback.onTabSelected;
+	}
 
 	var tabs = target.tabs;
 
@@ -323,6 +333,9 @@ Tabs = function(element) {
 				$(targetTabContent).show();
 				target.currentIndex = index;
 				target.el.trigger('select tab', [index]);
+
+				if (target.onTabSelected != undefined)
+					target.onTabSelected(target.currentIndex);
 			} 
 		});			
 	});
@@ -343,6 +356,8 @@ Tabs.prototype.openTab = function(i) {
 			current.addClass('tabs__item--active');
 			target.currentIndex = index;
 			target.el.trigger('select tab', [index]);
+			if (target.onTabSelected != undefined)
+					target.onTabSelected(target.currentIndex);
 		}
 	});
 }
@@ -471,4 +486,35 @@ Select.prototype.set = function(index) {
 	if (index >= 0 && index < this.options.length)
 		this.selectedIndex = index;
 		target.menu.html(target.options[target.selectedIndex]);
+}
+
+
+/* Progressbar */
+Progress = function(element, max, current) {
+	this.el = element;
+	this.max = max;
+	this.current = current;
+	this.percent = (this.current / this.max) * 100;
+	this.active_el = this.el.find('.progress__active');
+	this.text_label = this.el.find('.progress__active .progress__active__text');
+	this.render();
+}
+
+Progress.prototype.set = function(value) {
+	var target = this;
+	if (value <= this.max) {
+		this.current = value;
+		this.render();
+	}
+}
+
+Progress.prototype.render = function() {
+	this.percent = (this.current / this.max) * 100;
+	this.text_label.html(this.percent + '%');
+	this.active_el.css('width', this.percent + '%');
+}
+
+Progress.prototype.setMaximum = function(max) {
+	this.max = max;
+	this.render();
 }

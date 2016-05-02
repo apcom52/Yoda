@@ -79,7 +79,7 @@
 
 <div class="sidebar sidebar--color-{{request.user.userprofile.accent}} sidebar--under-taskbar {% if request.user.userprofile.theme == 'dark' %}sidebar--invert{% endif %}" id="sidebar">
     <div class="sidebar__cover">
-        <img src="{{request.user.userprofile.avatar.url}}" alt="{{request.user.first_name}} {{request.user.last_name}}" style="width: 100px; height: 100px;" class="img--circle img--border user-avatar">
+        <img src="{{request.user.userprofile.avatar.url}}" alt="{{request.user.first_name}} {{request.user.last_name}}" style="width: 100px; height: 100px;" class="img--circle img--border user-avatar avatar-start">
         <div class="sidebar__cover__title">{{request.user.first_name}}<br>{{request.user.last_name}}</div>
     </div>
     <div class="sidebar__menu">
