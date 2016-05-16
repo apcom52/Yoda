@@ -9,6 +9,7 @@ $(function() {
 	var updateModal = new Modal($('#newFeatures'));
 	var rateModal = new Modal($('#rateApp'));
 	var helpModal = new Modal($('#help'));
+	var eventModal = new Modal($('#eventModal'));
 	//updateModal.show();
 
 	$('#startRating').click(function() {
@@ -22,6 +23,10 @@ $(function() {
 
 	$('#showHelp').click(function() {
 		helpModal.show();
+	});
+
+	$('body').on('click', '.event', function() {
+		eventModal.show();
 	});
 
 	var rateSelect1 = new Select($('#rate1'), ['Все отлично', 'Есть мелкие недочеты', 'Нормально', 'Плохо', 'Старый интерфейс был лучше'])
@@ -396,11 +401,14 @@ $(function() {
 		this.async = true;		
 		$('.showPrevDay, .showNextDay').attr('disabled', true);
 		$('#dayView').html('<div class="loading-layout"></div>');
+		$('.timetable-view__label__title, .timetable-view__label__meta').html("");
+		$('#timetable-label').append('<div class="loading-layout loading-layout--invert loading-layout--transparent"></div>');
 		dayTimetableCollection = new DayTimetableList();
 		dayTimetableCollection.fetch({
 			success: function(data) {
 				var dayView = new TimetableView({ collection: dayTimetableCollection});
 				dayView.render();
+				$('#timetable-label .loading-layout').remove();
 				$('.showPrevDay, .showNextDay').attr('disabled', false);
 			},
 			error: function(data) {
@@ -414,6 +422,8 @@ $(function() {
 		this.async = true;		
 		$('#weekView').html('<div class="loading-layout"></div>');
 		$('.showPrevDay, .showNextDay').attr('disabled', true);
+		$('.timetable-view__label__title, .timetable-view__label__meta').html("");
+		$('#timetable-label').append('<div class="loading-layout loading-layout--transparent"></div>');
 		weekTimetableCollection = new WeekCollection();
 		weekTimetableCollection.fetch({
 			success: function(data) {
@@ -421,8 +431,8 @@ $(function() {
 				weekView.render();
 				startDate = weekTimetableCollection.models[0].get('date');
 				endDate = weekTimetableCollection.models[6].get('date');
+				$('#timetable-label .loading-layout').remove();
 				$('.timetable-view__label__title, #currentDayLabel').html(startDate + ' - ' + endDate);
-				$('.timetable-view__label__meta').html("");
 				$('.showPrevDay, .showNextDay').attr('disabled', false);
 			},
 			error: function(data) {
@@ -436,6 +446,8 @@ $(function() {
 		this.async = true;		
 		$('#monthView').html('<div class="loading-layout"></div>');
 		$('.showPrevDay, .showNextDay').attr('disabled', true);
+		$('.timetable-view__label__title, .timetable-view__label__meta').html("");
+		$('#timetable-label').append('<div class="loading-layout loading-layout--invert loading-layout--transparent"></div>');
 		monthTimetableCollection = new MonthCollection();
 		monthTimetableCollection.fetch({
 			success: function(data) {
@@ -443,6 +455,7 @@ $(function() {
 				$('.showPrevDay, .showNextDay').attr('disabled', false);
 				$('.timetable-view__label__title, #currentDayLabel').html(moment(targetMonthDay).format('MMMM YYYY'));
 				$('.timetable-view__label__meta').html("");
+				$('#timetable-label .loading-layout').remove();
 			},
 			error: function(data) {
 				showToast('Возникла ошибка при загрузке данных');

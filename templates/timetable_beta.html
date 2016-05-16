@@ -213,7 +213,25 @@
 </div>
 
 <div class="modal modal--size-large" id="eventModal">
-	<!-- Содержимое модального окна про мероприятия -->
+	<div class="grid">
+		<div class="col-12">
+			<div class="padding-horizontal-5 padding-vertical-2 size-fix u-{{request.user.userprofile.accent}}-bg">
+				<h1>Event Title</h1>				
+				<h5>Monday, 9 May 2016 at 12:00</h5>				
+			</div>
+			<div class="horizontal-layout">
+				<div class="column u-gray-bg padding-1 size-fix">
+					<b>Event Description:</b>
+					<p class="margin-top-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias saepe, quos voluptatibus obcaecati facilis et beatae earum ipsam deleniti. A, incidunt maxime eius ea fugiat provident autem! Vitae, consequuntur nam.</p>
+					<br>
+					<p class="bold green-fg">Вы ответили, что пойдете на данное мероприятие</p>
+					<div class="{{request.user.userprofile.accent}}-fg">Изменить решение</div>
+				</div>
+				<div class="column"></div>
+			</div>
+		</div>
+		<div class="col-12"></div>
+	</div>
 </div>
 
 <script type="text/javascript">
@@ -224,7 +242,7 @@
 		var transferLesson = new Modal($('#transferLessonModal'));
 		var cancelLesson = new Modal($('#cancelLessonModal'));
 
-		$('#dropdownAddHomework').click(function() { addHomework.show(); });
+		$('#dropdownAddHomework').click(function  () { addHomework.show(); });
 		$('#dropdownAddControl').click(function() { addControl.show(); });
 		$('#dropdownChangePlace').click(function() { changePlace.show(); });
 		$('#dropdownTransferLesson').click(function() { transferLesson.show(); });
