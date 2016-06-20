@@ -11,6 +11,25 @@ from achievements.models import Action, AchUnlocked, Rank, Achievement, Notifica
 from inventory.models import Item, UserInventoryItem, Catapult #Smile, SmileCollection
 import datetime
 
+class TimetableManager:
+	timetable = None
+	def __init__(self):
+		pass
+
+	#Получить данные о дне: номер дня недели, четная/нечетная неделя
+	def getDayDetails(self, date):
+		today = datetime.datetime.today()
+		semester = settings.SEMESTER
+		day = self.today.weekday() + 1
+		week = 1 if (self.weeknumber + settings.WEEK_SHIFT) % 2 else 2
+		
+
+	def byDay(self, date):
+		
+
+		timetable = Timetable
+
+
 class DTControl:
 	def __init__(self):
 		self.today = datetime.datetime.today()

@@ -383,7 +383,7 @@ def index(request):
 	# if request.user.userprofile.beta:	
 	# 	return render(request, 'index_beta.html', context)
 	# else:	
-	return render(request, 'index.html', context)
+	return render(request, 'index_beta.html', context)
 
 
 def teacher(request, id):

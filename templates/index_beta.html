@@ -7,6 +7,9 @@
 {% block bodyclass %}{{request.user.userprofile.theme}}-bg{% endblock %}
 {% block content %}
 <div class="grid">
+	<div class="col-12"><img src="/media/img/index_page.png" class="img--response" alt=""></div>
+</div>
+<div class="grid">
 	<div class="col-4">
 		<div class="card margin-left-0 margin-vertical-0 card--no-smooth" style="height: 100%; width: 33.33%; position: absolute;">
 			<h1>{{current_date|date:"l, j E Y"}}</h1>
