@@ -12,7 +12,7 @@ from events.models import Event, UserVisitEvent
 from notes.models import Note
 from polls.models import Question
 from inventory.models import UserInventoryItem, Item, Catapult
-from .utils import DTControl, avatar, addAction, checkAchievements, setAch, dateInfo, getTimetable, UpdateStatus, setBonusPoints, bingo#, getNotifications
+from .utils import TimetableManager, DTControl, avatar, addAction, checkAchievements, setAch, dateInfo, getTimetable, UpdateStatus, setBonusPoints, bingo#, getNotifications
 from .forms import *
 from .weather import *
 import datetime
@@ -22,6 +22,10 @@ import datetime
 def index(request):
 	if not request.user.is_authenticated(): return redirect('/auth/in')
 	#if request.user.userprofile.beta == False:
+
+	tm = TimetableManager()
+	print(tm.byDay(datetime.datetime.today()))
+
 	page = request.GET.get('page', 1)
 	important = request.GET.get('filter', False)
 	new_achievements = []

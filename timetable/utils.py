@@ -20,13 +20,18 @@ class TimetableManager:
 	def getDayDetails(self, date):
 		today = datetime.datetime.today()
 		semester = settings.SEMESTER
-		day = self.today.weekday() + 1
+		day = today.weekday() + 1
+		weeknumber = date.isocalendar()[1]
 		week = 1 if (self.weeknumber + settings.WEEK_SHIFT) % 2 else 2
-		
+		return {
+			'semester': semester,
+			'day': day,
+			'week': week,
+		}
 
 	def byDay(self, date):
-		
-
+		date_details = self.getDayDetails(date)
+		print(date_details)
 		timetable = Timetable
 
 
