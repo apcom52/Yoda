@@ -9,6 +9,7 @@ from polls.models import QueAns
 from events.models import UserVisitEvent
 from achievements.models import Action, AchUnlocked, Rank, Achievement, Notification
 from inventory.models import Item, UserInventoryItem, Catapult #Smile, SmileCollection
+from .models import *
 import datetime
 
 class TimetableManager:
@@ -22,17 +23,25 @@ class TimetableManager:
 		semester = settings.SEMESTER
 		day = today.weekday() + 1
 		weeknumber = date.isocalendar()[1]
-		week = 1 if (self.weeknumber + settings.WEEK_SHIFT) % 2 else 2
+		week = 1 if (weeknumber + settings.WEEK_SHIFT) % 2 else 2
 		return {
 			'semester': semester,
 			'day': day,
 			'week': week,
 		}
 
+	def getTimetable(self, date):
+		from .models import Timetable
+		details = self.getDayDetails(date)
+		semester = details['semester']
+		day = details['day']
+		week = details['week']
+		timetable = Timetable.objects.filter(semester = semester, week = week, day = day).order_by('time')
+		return timetable
+
 	def byDay(self, date):
-		date_details = self.getDayDetails(date)
-		print(date_details)
-		timetable = Timetable
+		print(self.getTimetable(date))
+		return self.getTimetable(date)
 
 
 class DTControl:

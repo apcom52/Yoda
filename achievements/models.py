@@ -11,9 +11,22 @@ class Action(models.Model):
 		verbose_name = 'Действие'
 		verbose_name_plural = 'Действия'
 
+	types = (
+		(0, 'Запись'),
+		(1, 'Достижение'),
+		(2, 'Случайный бонус'),
+		(3, 'Продажа'),
+		(4, 'Мероприятие'),
+		(5, 'Опрос'),
+		(6, 'Расписание'),
+		(7, 'Заметки'),
+	)
+
 	login = models.ForeignKey(User)
 	text = models.CharField('Сопроводительный текст', max_length = 1024)
 	pub_date = models.DateTimeField('Дата', auto_now = True)
+	type = models.IntegerField('Тип записи', choices = types, default = 0)
+	value = models.TextField('Значение', blank = True, null = True)
 	important = models.BooleanField('Важное сообщение', default = True)
 	
 	def __str__(self):

@@ -4,29 +4,105 @@
 	<link href="/media/static/css/more_css/timetable.css" rel="stylesheet"/>
 	<script type="text/javascript" src="/media/static/js/more_js/timetable.js"></script>
 {% endblock %}
-{% block bodyclass %}{{request.user.userprofile.theme}}-bg{% endblock %}
+{% block bodyclass %}u-{{request.user.userprofile.accent}}-bg{% endblock %}
 {% block content %}
 <div class="grid">
-	<div class="col-12"><img src="/media/img/index_page.png" class="img--response" alt=""></div>
-</div>
-<div class="grid">
-	<div class="col-4">
-		<div class="card margin-left-0 margin-vertical-0 card--no-smooth" style="height: 100%; width: 33.33%; position: absolute;">
-			<h1>{{current_date|date:"l, j E Y"}}</h1>
-			<table style="width: 100%;">
-			{% for week in calendar %}
-				<tr>
-				{% for day in week %}
-					<td>{% if day %}{{day}}{% endif %}</td>
-				{% endfor %}
-				</tr>
-			{% endfor %}
-			</table>
-		</div>
-	</div>
-	<div class="col-8">
-		<div class="card card--no-smooth" style="height: 100%;">
-			Расписание
+	<div class="col-12 padding-5 size-fix" style="background-image: url(/media/img/index_violet.png); background-position: top center; background-repeat: no-repeat; background-size: 100% auto;">
+		<div class="grid">
+			<div class="col-8 absolute" style="width:calc(66% - 7em);">
+
+				<!-- Добавить запись -->
+				<div class="card card--no-smooth">
+					<div class="card__header">
+						<div class="card__header__title">Добавить запись</div>
+					</div>
+					<div class="card__content">
+						<div class="form form--fit padding-horizontal-0">
+							<textarea class="margin-0" id="" rows="3" placeholder="Введите сообщение"></textarea>
+						</div>						
+						<list class="list list--image list--horizontal">
+							<div class="list__item"><img src="/media/img/ic/image.png" alt="">Изображение</div>
+							<div class="list__item"><img src="/media/img/ic/document.png" alt="">Документ</div>
+							<div class="list__item"><img src="/media/img/ic/poll.png" alt="">Опрос</div>
+							<div class="list__item"><img src="/media/img/ic/calendar.png" alt="">Мероприятие</div>
+						</list>
+						<button class="button--color-{{request.user.userprofile.accent}} margin-left-0">ОТПРАВИТЬ</button>
+					</div>
+				</div>
+
+				<!-- /// -->
+
+				<!-- Кнопка "Обновить" -->
+				<div class="grid-12 align-center">
+					<button class="button--rounded"><b>+2</b> новых записей</button>
+				</div>				
+				<!-- /// -->
+
+				<!-- Показываем ленту -->
+				
+				<div class="card card--no-smooth">
+					<div class="card__content">
+						<div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestias iste ex, libero excepturi alias nam laboriosam quibusdam tenetur enim officia, cum explicabo, dolor porro illo quaerat tempora, nihil eveniet ea?</div>
+						<div>Et quod magnam ducimus sed aperiam atque, numquam dolore totam esse, explicabo excepturi iure, dignissimos soluta reprehenderit commodi est! Nam est soluta, debitis inventore, totam similique optio. Iste, ratione blanditiis.</div>
+					</div>
+				</div>
+				<div class="card card--no-smooth">
+					<div class="card__content">
+						<div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt eius porro a perspiciatis nemo aliquam fuga quia, adipisci dolor vero suscipit ullam natus, amet, voluptatem doloribus rem dicta, id quae.</div>
+						<div>Soluta saepe, quam! Dolorum dolores dignissimos iure molestias quia nihil nisi praesentium molestiae vero unde. Repellat, quos, molestias enim minus iure dicta eos culpa quo odio impedit facere, sequi optio?</div>
+					</div>
+				</div>
+				<div class="card card--no-smooth">
+					<div class="card__content">
+						<div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni nam perferendis, consectetur! Et eius, dicta, voluptates ut libero necessitatibus iste optio itaque eligendi quibusdam repellendus tempore commodi, assumenda eaque debitis!</div>
+						<div>Minima expedita nam quidem aspernatur consequuntur, commodi iusto, suscipit unde laudantium, dolores nisi. Quos hic enim quia ad natus aut eius tempore delectus, ipsam, neque temporibus ut dolorem suscipit assumenda.</div>
+					</div>
+				</div>
+				<div class="card card--no-smooth">
+					<div class="card__content">
+						<div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo hic aliquid nam commodi sunt rem, necessitatibus optio, tempore vitae recusandae pariatur! Earum nesciunt doloribus nam alias quisquam, veniam nihil deserunt.</div>
+						<div>Voluptatibus distinctio assumenda unde repellendus quo ex, enim iure. Rem expedita perferendis placeat neque, asperiores dignissimos est nam dicta reiciendis dolorem officia voluptatem illum, nihil, quis sunt quas recusandae eveniet!</div>
+					</div>
+				</div>
+				<div class="card card--no-smooth">
+					<div class="card__content">
+						<div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum consequuntur tenetur quos harum maiores. Laudantium error sequi harum, earum esse, voluptas maxime ullam consequatur nam quod magnam laboriosam ratione rem!</div>
+						<div>Explicabo animi blanditiis hic alias quaerat maiores necessitatibus, molestiae minima sed, corporis repellendus veniam labore eius laborum, aliquam asperiores quasi dolore. Architecto ullam tempore quas, soluta eum, aliquam quam facere.</div>
+					</div>
+				</div>
+
+				<!-- /// -->
+
+			</div>
+			<div class="col-4 offset-8">
+				<div class="card card--no-smooth card--image">
+					<div class="card__image">
+						<img src="/media/background/game.jpg" alt="">
+						<div class="card__image__header helvetica-light">
+							<div class="card__image__header__title">Начни игру!</div>	
+						</div>
+					</div>
+				</div>
+
+				<div class="card card--no-smooth margin-1">
+					<div class="card__header">
+						<div class="card__header__title">Расписание на сегодня</div>
+					</div>
+					<div class="card__content">
+						<div class="vertical-layout vertical-layout--stripped">
+						{% for t in timetable %}
+							<div class="row padding-1 size-fix">
+								<b class="{{request.user.userprofile.accent}}">{{t.lesson.title}}</b><br>
+								<i style="font-size: 0.9em;">{{t.time}} в {{t.place}}</i>
+							</div>
+						{% endfor %}
+						</div>
+					</div>
+					<div class="card__footer">
+						<div class="button button--color-{{request.user.userprofile.accent}} button--fit button--transparent align-center">ПОДРОБНЕЕ</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

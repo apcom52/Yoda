@@ -1,18 +1,18 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.contrib.auth.models import User
-from achievements.models import Action, AchUnlocked
 from django.db.models.fields import related
 from django.core.exceptions import ObjectDoesNotExist 
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.utils import timezone
-from .models import Lesson, Teacher, Timetable, Homework, Control, NewPlace, TeacherTimetable, NotStudyTime, TransferredLesson, CanceledLesson
+from achievements.models import Action, AchUnlocked
 from events.models import Event, UserVisitEvent
 from notes.models import Note
 from polls.models import Question
 from inventory.models import UserInventoryItem, Item, Catapult
 from .utils import TimetableManager, DTControl, avatar, addAction, checkAchievements, setAch, dateInfo, getTimetable, UpdateStatus, setBonusPoints, bingo#, getNotifications
+from .models import Lesson, Teacher, Timetable, Homework, Control, NewPlace, TeacherTimetable, NotStudyTime, TransferredLesson, CanceledLesson
 from .forms import *
 from .weather import *
 import datetime
@@ -24,7 +24,14 @@ def index(request):
 	#if request.user.userprofile.beta == False:
 
 	tm = TimetableManager()
-	print(tm.byDay(datetime.datetime.today()))
+
+	if request.user.userprofile.beta:
+		context = {
+			'title': 'Yoda',
+			'timetable': tm.byDay(datetime.datetime.today()),
+		}
+
+		return render(request, 'index_beta.html', context)
 
 	page = request.GET.get('page', 1)
 	important = request.GET.get('filter', False)
