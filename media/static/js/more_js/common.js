@@ -42,6 +42,11 @@ $(function() {
 
     $('#openNotifications').click(function() {
         notificationCenter.toggle();
+        if (notificationCenter.visible) {
+        	$('#page-content').foggy();
+        } else {
+        	$('#page-content').foggy(false);
+        }
         checkNotification(false);
     });
 
@@ -106,10 +111,12 @@ $(function() {
 		onShow: function() {
 			$('#sidebar .sidebar__cover img').addClass('avatar-animation');
 			console.log('onShow');
+			$('#page-content').foggy();
 		}, 
 		onHide: function() {
 			$('#sidebar .sidebar__cover img').removeClass('avatar-animation');
 			console.log('onHide');
+			$('#page-content').foggy(false);
 		}
 	});
 

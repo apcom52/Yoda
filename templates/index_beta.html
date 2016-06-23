@@ -1,15 +1,17 @@
 {% extends 'basic/beta_base.html' %}
 {% block title %}{{title}}{% endblock %}
 {% block more_head %}
-	<link href="/media/static/css/more_css/timetable.css" rel="stylesheet"/>
-	<script type="text/javascript" src="/media/static/js/more_js/timetable.js"></script>
+	<!-- <link href="/media/static/css/more_css/timetable.css" rel="stylesheet"/> -->
+	<link href="/media/static/css/more_css/index.css" rel="stylesheet"/>
+	<!-- <script type="text/javascript" src="/media/static/js/more_js/timetable.js"></script> -->
+	<script type="text/javascript" src="/media/static/js/more_js/index.js"></script>
 {% endblock %}
 {% block bodyclass %}u-{{request.user.userprofile.accent}}-bg{% endblock %}
 {% block content %}
-<div class="grid">
+<div class="grid" id="page-content">
 	<div class="col-12 padding-5 size-fix" style="background-image: url(/media/img/index_violet.png); background-position: top center; background-repeat: no-repeat; background-size: 100% auto;">
 		<div class="grid">
-			<div class="col-8 absolute" style="width:calc(66% - 7em);">
+			<div class="col-8">
 
 				<!-- Добавить запись -->
 				<div class="card card--no-smooth">
@@ -39,42 +41,40 @@
 				<!-- /// -->
 
 				<!-- Показываем ленту -->
-				
+
+				{% for f in feed %}
 				<div class="card card--no-smooth">
-					<div class="card__content">
-						<div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestias iste ex, libero excepturi alias nam laboriosam quibusdam tenetur enim officia, cum explicabo, dolor porro illo quaerat tempora, nihil eveniet ea?</div>
-						<div>Et quod magnam ducimus sed aperiam atque, numquam dolore totam esse, explicabo excepturi iure, dignissimos soluta reprehenderit commodi est! Nam est soluta, debitis inventore, totam similique optio. Iste, ratione blanditiis.</div>
+					<div class="user-list">
+						<div class="user-list__item">
+							<div class="user-list__item__avatar">
+								<img src="{{f.login.userprofile.avatar.url}}" class="img--circle" alt="">
+							</div>
+							<div class="user-list__item__username"><b>{{f.login.first_name}} {{f.login.last_name}}</b><br><span class="m-gray-fg" style="font-size: 0.8em;">{{f.pub_date}}</span></div>
+						</div>
+					</div>
+
+					{% if f.type == 0 %}
+					<div class="card__content padding-1">
+						{{f.value}}
+					</div>					
+					{% endif %}
+
+					
+					<div class="taskbar">
+						<div class="taskbar__item"><i class="flaticon-heart bold"></i></div>
+						<div class="taskbar__item" id="commentButton"><i class="flaticon-speach-square bold"></i></div>
+						{% if request.user == f.login %}
+						<div class="taskbar__item taskbar__item--pin-right taskbar__item--hover-color-red bold"><i class="flaticon-trash"></i></div>
+						<div class="taskbar__item taskbar__item--pin-right bold"><i class="flaticon-edit"></i></div>
+						{% endif %}
 					</div>
 				</div>
-				<div class="card card--no-smooth">
-					<div class="card__content">
-						<div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt eius porro a perspiciatis nemo aliquam fuga quia, adipisci dolor vero suscipit ullam natus, amet, voluptatem doloribus rem dicta, id quae.</div>
-						<div>Soluta saepe, quam! Dolorum dolores dignissimos iure molestias quia nihil nisi praesentium molestiae vero unde. Repellat, quos, molestias enim minus iure dicta eos culpa quo odio impedit facere, sequi optio?</div>
-					</div>
-				</div>
-				<div class="card card--no-smooth">
-					<div class="card__content">
-						<div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni nam perferendis, consectetur! Et eius, dicta, voluptates ut libero necessitatibus iste optio itaque eligendi quibusdam repellendus tempore commodi, assumenda eaque debitis!</div>
-						<div>Minima expedita nam quidem aspernatur consequuntur, commodi iusto, suscipit unde laudantium, dolores nisi. Quos hic enim quia ad natus aut eius tempore delectus, ipsam, neque temporibus ut dolorem suscipit assumenda.</div>
-					</div>
-				</div>
-				<div class="card card--no-smooth">
-					<div class="card__content">
-						<div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo hic aliquid nam commodi sunt rem, necessitatibus optio, tempore vitae recusandae pariatur! Earum nesciunt doloribus nam alias quisquam, veniam nihil deserunt.</div>
-						<div>Voluptatibus distinctio assumenda unde repellendus quo ex, enim iure. Rem expedita perferendis placeat neque, asperiores dignissimos est nam dicta reiciendis dolorem officia voluptatem illum, nihil, quis sunt quas recusandae eveniet!</div>
-					</div>
-				</div>
-				<div class="card card--no-smooth">
-					<div class="card__content">
-						<div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum consequuntur tenetur quos harum maiores. Laudantium error sequi harum, earum esse, voluptas maxime ullam consequatur nam quod magnam laboriosam ratione rem!</div>
-						<div>Explicabo animi blanditiis hic alias quaerat maiores necessitatibus, molestiae minima sed, corporis repellendus veniam labore eius laborum, aliquam asperiores quasi dolore. Architecto ullam tempore quas, soluta eum, aliquam quam facere.</div>
-					</div>
-				</div>
+				{% endfor %}
 
 				<!-- /// -->
 
 			</div>
-			<div class="col-4 offset-8">
+			<div class="col-4">
 				<div class="card card--no-smooth card--image">
 					<div class="card__image">
 						<img src="/media/background/game.jpg" alt="">
@@ -106,4 +106,13 @@
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript" id="addFeedComment">
+<div class="form form--fit">
+	<label for="commentText">Оставьте комментарий:</label>
+	<textarea name="" id="commentText" rows="2" placeholder="Текст комментария..."></textarea>
+	<button class="button--size-small button--color-{{request.user.userprofile.accent}}">Отправить</button>
+</div>
+</script>
+
 {% endblock %}

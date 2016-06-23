@@ -35,6 +35,32 @@ class Action(models.Model):
 class ActionAdmin(admin.ModelAdmin):
 	list_display = ('login', 'text', 'pub_date')
 
+class Feed(models.Model):
+	types = (
+		(0, 'Запись'),
+		(1, 'Достижение'),
+		(2, 'Случайный бонус'),
+		(3, 'Продажа'),
+		(4, 'Мероприятие'),
+		(5, 'Опрос'),
+		(6, 'Расписание'),
+		(7, 'Заметки'),
+	)
+
+	login = models.ForeignKey(User)
+	pub_date = models.DateTimeField('Дата публикации', auto_now = True)
+	type = models.IntegerField('Тип записи', choices = types, default = 0)
+	value = models.TextField('Значение')
+	extra = models.TextField('Дополнительные записи', blank = True, null = True)
+
+	def __str__(self):
+		return '%s (%s)' % (self.login.username, self.pub_date)
+
+class FeedAdmin(admin.ModelAdmin):
+	list_display = ('login', 'type', 'pub_date')
+	list_filter = ('login', 'type', 'pub_date')
+
+
 class Achievement(models.Model):
 	title = models.CharField('Название', max_length = 32)
 	description = models.CharField('Описание', max_length = 64)

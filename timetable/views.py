@@ -6,7 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.utils import timezone
-from achievements.models import Action, AchUnlocked
+from achievements.models import Action, AchUnlocked, Feed
 from events.models import Event, UserVisitEvent
 from notes.models import Note
 from polls.models import Question
@@ -26,8 +26,10 @@ def index(request):
 	tm = TimetableManager()
 
 	if request.user.userprofile.beta:
+		feed = Feed.objects.all().order_by('-pub_date')[:10]
 		context = {
 			'title': 'Yoda',
+			'feed': feed,
 			'timetable': tm.byDay(datetime.datetime.today()),
 		}
 
