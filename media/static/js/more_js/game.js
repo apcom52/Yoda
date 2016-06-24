@@ -11,9 +11,22 @@ function preload() {
 	game.load.image('water', '/media/game/water.png');
 	game.load.image('sand', '/media/game/sand.png');
 	game.load.image('mountains', '/media/game/mountains.png');
+
+	game.load.image('castle', '/media/game/castle.gif');
+	
+	game.load.image('stone', '/media/game/stone.png');
+	game.load.image('uran', '/media/game/uran.png');
+	game.load.image('wood', '/media/game/wood.png');
+	game.load.image('oil', '/media/game/oil.png');
+	game.load.image('aluminium', '/media/game/aluminium.png');
+	
+	game.load.image('flower', '/media/game/flower.png');
 }
 
 var map = createMatrix(24, 32);
+var resource_map = createMatrix(24, 32);
+var resource_amount_map = createMatrix(24, 32);
+var building_map = createMatrix(24, 32);
 
 function getRandomCell() {
 	var rnd = Math.random();
@@ -40,6 +53,8 @@ function create() {
 	for (var i = 0; i < 24; i++) {
 		map[i] = new Array(32);
 	}
+
+	building_map[11][16] = 'castle';	
 
 	for (var i = 0; i < 24; i++) {
 		for (var j = 0; j < 32; j++) {
@@ -136,8 +151,62 @@ function create() {
 	}
 
 	for (var i = 0; i < 24; i++) {
-		for (var j = 0; j < 32; j++) {			
-			game.add.sprite(32 * j, 32 * i, map[i][j]);
+		for (var j = 0; j < 32; j++) {
+			if (map[i][j] == 'water' || map[i][j] == 'mountains')
+				continue;
+			var rnd = Math.random();
+			var amount = null;
+			
+			if (rnd <= 0.14) {
+				var resRnd = Math.random();
+				if (resRnd <= 0.25) {
+					resource = 'stone';
+				} else if (resRnd > 0.25 && resRnd <= 0.5) {
+					resource = 'wood';
+				} else if (resRnd > 0.5 && resRnd <= 0.67) {
+					resource = 'oil';
+				} else if (resRnd > 0.67 && resRnd <= 0.9) {
+					resource = 'aluminium';
+				} else if (resRnd > 0.9) {
+					resource = 'uran';
+				}
+
+				var amountRnd = Math.random();
+				if (amountRnd <= 0.4) {
+					amount = 1;
+				} else if (amountRnd > 0.4 && amountRnd <= 0.65) {
+					amount = 2;
+				} else if (amountRnd > 0.65 && amountRnd <= 0.85) {
+					amount = 3;
+				} else if (amountRnd > 0.85 && amountRnd <= 0.96) {
+					amount = 4;
+				} else if (amountRnd > 0.96) {
+					amount = 5;
+				}	
+
+				resource_map[i][j] = resource;
+				resource_amount_map[i][j] = amount;
+			} else if (rnd > 0.14 && rnd <= 0.2) {
+				resource_map[i][j] = 'flower';
+				resource_amount_map[i][j] = 1;
+			}		
 		}
 	}
+
+	console.log(resource_map);
+
+	for (var i = 0; i < 24; i++) {
+		for (var j = 0; j < 32; j++) {			
+			game.add.sprite(32 * j, 32 * i, map[i][j]);
+			game.add.sprite(32 * j, 32 * i, resource_map[i][j])
+			if (resource_amount_map[i][j] > 0) {
+				game.add.text(32 * j, 32 * i, resource_amount_map[i][j].toString(), {font: "14px Arial"})
+			}
+			game.add.sprite(32 * j, 32 * i, building_map[i][j])			
+		}
+	}
+
+	game.add.text(0, 0, 'Тестовая версия', {
+		font: "10px Arial"
+	});
 }
