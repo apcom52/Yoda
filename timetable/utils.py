@@ -7,10 +7,58 @@ from django.db.models import Q
 from user.models import *
 from polls.models import QueAns
 from events.models import UserVisitEvent
-from achievements.models import Action, AchUnlocked, Rank, Achievement, Notification
+from achievements.models import Feed, Action, AchUnlocked, Rank, Achievement, Notification
 from inventory.models import Item, UserInventoryItem, Catapult #Smile, SmileCollection
 from .models import *
 import datetime
+
+class FeedManager:
+	feed = None
+	multi = True
+	user = None
+
+	def __init__(self, user = None):
+		if user:
+			self.multi = False
+			self.user = user
+
+	def get(self):
+		feed = Feed.objects.all().order_by('-pub_date')
+		feed_list = []
+
+		for post in feed:
+
+			# Стандартная запись на стене
+			if post.type == 0:
+				feed_list.append({
+					'type': 0,
+					'post': post,
+				})
+
+			# Получение достижения
+			elif post.type == 1:
+				achievement = Achievement.objects.get(pk = int(post.value))
+				feed_list.append({
+					'type': 1,
+					'post': post,
+					'achievement': achievement,
+				})
+
+			# Добавление мероприятия
+			elif post.type == 4:
+				from events.models import Event
+				event = Event.objects.get(pk = int(post.value))
+				feed_list.append({
+					'type': 4,
+					'post': post,
+					'event': event,
+					'date': {
+						'day': event.date.day,
+						'month': event.date.month,
+					}
+				})
+		return feed_list
+
 
 class TimetableManager:
 	timetable = None

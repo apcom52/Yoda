@@ -38,6 +38,10 @@ function getRandomCell() {
 	return sprite;
 }
 
+function getRandomInRange(min, max) {
+	return Math.random() * (max - min) + min;
+}
+
 function createMatrix(m, n) {
 	var matrix = [];
 	for (var i = 0; i < n; i++) {
@@ -54,7 +58,15 @@ function create() {
 		map[i] = new Array(32);
 	}
 
-	building_map[11][16] = 'castle';	
+	// Выбираем местоположение для ратуши
+	var castle_x, castle_y = 0;
+	var castle_cell_type = 'water';
+	while (castle_cell_type == 'water' || castle_cell_type == 'mountains') {
+		castle_x = Math.round(getRandomInRange(3, 28));
+		castle_y = Math.round(getRandomInRange(2, 20));
+		castle_cell_type = map[castle_y][castle_x];
+	}
+	building_map[castle_y][castle_x] = 'castle';
 
 	for (var i = 0; i < 24; i++) {
 		for (var j = 0; j < 32; j++) {

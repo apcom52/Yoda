@@ -11,7 +11,7 @@ from events.models import Event, UserVisitEvent
 from notes.models import Note
 from polls.models import Question
 from inventory.models import UserInventoryItem, Item, Catapult
-from .utils import TimetableManager, DTControl, avatar, addAction, checkAchievements, setAch, dateInfo, getTimetable, UpdateStatus, setBonusPoints, bingo#, getNotifications
+from .utils import FeedManager, TimetableManager, DTControl, avatar, addAction, checkAchievements, setAch, dateInfo, getTimetable, UpdateStatus, setBonusPoints, bingo#, getNotifications
 from .models import Lesson, Teacher, Timetable, Homework, Control, NewPlace, TeacherTimetable, NotStudyTime, TransferredLesson, CanceledLesson
 from .forms import *
 from .weather import *
@@ -26,10 +26,11 @@ def index(request):
 	tm = TimetableManager()
 
 	if request.user.userprofile.beta:
-		feed = Feed.objects.all().order_by('-pub_date')[:10]
+		fm = FeedManager()
+
 		context = {
 			'title': 'Yoda',
-			'feed': feed,
+			'feed': fm.get(),
 			'timetable': tm.byDay(datetime.datetime.today()),
 		}
 

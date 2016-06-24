@@ -1,4 +1,5 @@
 {% extends 'basic/beta_base.html' %}
+{% load humanize %}
 {% block title %}{{title}}{% endblock %}
 {% block more_head %}
 	<!-- <link href="/media/static/css/more_css/timetable.css" rel="stylesheet"/> -->
@@ -47,16 +48,45 @@
 					<div class="user-list">
 						<div class="user-list__item">
 							<div class="user-list__item__avatar">
-								<img src="{{f.login.userprofile.avatar.url}}" class="img--circle" alt="">
+								<img src="{{f.post.login.userprofile.avatar.url}}" class="img--circle" alt="">
 							</div>
-							<div class="user-list__item__username"><b>{{f.login.first_name}} {{f.login.last_name}}</b><br><span class="m-gray-fg" style="font-size: 0.8em;">{{f.pub_date}}</span></div>
+							<div class="user-list__item__username"><b>{{f.post.login.first_name}} {{f.post.login.last_name}}</b><br><span class="m-gray-fg" style="font-size: 0.8em;">{{f.post.pub_date|naturaltime}}</span></div>
 						</div>
 					</div>
 
 					{% if f.type == 0 %}
 					<div class="card__content padding-1">
-						{{f.value}}
-					</div>					
+						{{f.post.value}}
+					</div>		
+
+					{% elif f.type == 1 %}
+					<div class="card__content padding-1">
+						получил достижение<br>
+						<div class="horizontal-layout margin-top-1 horizontal-layout--centered">
+							<img src="{{f.achievement.icon}}" class="img--circle" style="width: 64px; height: 64px;">
+							<div class="column padding-left-1">
+								<b>{{f.achievement.title}}</b>
+								<div class="m-gray-fg">{{f.achievement.description}}</div>
+							</div>
+						</div>
+					</div>	
+
+					{% elif f.type == 4 %}
+					<div class="card__content card__content--no-padding">
+						<p class="margin-1">добавил мероприятие:</p>
+						<div class="horizontal-layout margin-top-1">
+							<div class="column white-fg align-center helvetica-thin {{request.user.userprofile.accent}}-bg padding-1 size-fix" style="flex: 1;">
+								<div style="font-size: 4em;">{{f.date.day}}</div>
+								<div class="helvetica-bold" style="font-size: 1.5em;">{{f.event.date|date:"E"}}</div>
+							</div>
+							<div class="column size-fix padding-1 u-{{request.user.userprofile.accent}}-bg" style="flex: 3;">
+								<div style="font-size: 1.5em;">{{f.event.title}}</div>
+								<div style="font-size: 0.9em;">{{f.event.description|truncatewords:10}}</div>
+								<button class="button--size-small button--color-{{request.user.userprofile.accent}} button--icon"><i class="flaticon-ok"></i>Я пойду</button>
+								<button class="button--size-small">Подробнее</button>
+							</div>
+						</div>
+					</div>	
 					{% endif %}
 
 					
