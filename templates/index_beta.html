@@ -93,7 +93,7 @@
 					<div class="taskbar">
 						<div class="taskbar__item"><i class="flaticon-heart bold"></i></div>
 						<div class="taskbar__item" id="commentButton"><i class="flaticon-speach-square bold"></i></div>
-						{% if request.user == f.login %}
+						{% if request.user == f.post.login %}
 						<div class="taskbar__item taskbar__item--pin-right taskbar__item--hover-color-red bold"><i class="flaticon-trash"></i></div>
 						<div class="taskbar__item taskbar__item--pin-right bold"><i class="flaticon-edit"></i></div>
 						{% endif %}
