@@ -2,8 +2,12 @@
 {% block title %}{{title}}{% endblock %}
 {% block more_head %}
 	<script type="text/javascript" src="/media/static/js/phaser.js"></script>
+	<script type="text/javascript" src="/media/static/js/game/math.js"></script>
 	<script type="text/javascript" src="/media/static/js/game/kinetic.js"></script>
+	<script type="text/javascript" src="/media/static/js/game/map.js"></script>
+	<script type="text/javascript" src="/media/static/js/game/render.js"></script>
 	<script type="text/javascript" src="/media/static/js/game/game.js"></script>
+	<link href="/media/static/css/font-awesome.css" rel="stylesheet">
 
 	<style>
 		body {
@@ -16,7 +20,23 @@
 	</style>
 {% endblock %}
 {% block content %}
-<div class="list list--icon">
-	<div class="list__item">Статистика <i class="flaticon-down"></i></div>
+<div class="list list--horizontal list--icon">
+	<div class="list__item" data-dropdown-target="statsMenu">Статистика <i class="flaticon-down"></i></div>
+	<div class="list__item olive-fg"><i class="fa fa-cutlery"></i>+11</div>
+	<div class="list__item blue-fg"><i class="fa fa-flask"></i>+15</div>
+	<div class="list__item orange-fg"><i class="fa fa-cog"></i>+8</div>
+	<div class="list__item yellow-fg"><i class="fa fa-money"></i>1205 (+14)</div>
+	<div class="list__item purple-fg"><i class="fa fa-pencil"></i>181 (+7)</div>
+	<div class="list__item white-fg"><i class="fa fa-twitter"></i>231 (+5)</div>
+	<div class="list__item pink-fg"><i class="fa fa-suitcase"></i>3</div>
+</div>
+<div class="dropdown dropdown--invert" id="statsMenu">
+	<div class="dropdown__item">Население</div>
+	<div class="dropdown__item">Ресурсы</div>
+	<div class="dropdown__item">Производство</div>
+	<div class="dropdown__item">Наука</div>
+	<div class="dropdown__item">Культура</div>
+	<div class="dropdown__item">Вера</div>
+	<div class="dropdown__item">Туризм</div>
 </div>
 {% endblock %}

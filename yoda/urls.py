@@ -28,6 +28,7 @@ urlpatterns = [
     url('^files/', include('library.urls')),
     url('^api/', include('api.urls')),
     url('^feedback/', include('feedback.urls')),
+    url('^game/', include('game.urls')),
     url('^', include('timetable.urls')),
     url(r'^__debug__/', include(debug_toolbar.urls)),
 ]

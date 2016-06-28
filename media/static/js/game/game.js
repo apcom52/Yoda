@@ -1,21 +1,37 @@
 //Build 100 - 09.04.16
-var game = new Phaser.Game(1024, 768, Phaser.AUTO, 'game', {
+var game = new Phaser.Game(1024, 768, Phaser.WEBGL, 'game', {
 	init: init,
 	preload: preload,
 	create: create,
+	update: update,
 });
+
+
 
 function init() {
 	game.kineticScrolling = game.plugins.add(Phaser.Plugin.KineticScrolling);
 }
 
 function preload() {
-	game.stage.backgroundColor = '#414a4c';
+	game.stage.backgroundColor = '#333333';
+	game.time.advancedTiming = true;
 
-	game.load.image('grass', '/media/game/grass.png');
-	game.load.image('water', '/media/game/water.png');
+	game.load.image('plain', '/media/game/grass.png');
 	game.load.image('sand', '/media/game/sand.png');
-	game.load.image('mountains', '/media/game/mountains.png');
+	game.load.image('mountain', '/media/game/mountains.png');
+	
+	game.load.image('sea', '/media/game/water.png');
+	game.load.image('seaE', '/media/game/waterE.png');
+	game.load.image('seaW', '/media/game/waterW.png');
+	game.load.image('seaS', '/media/game/waterS.png');
+	game.load.image('seaN', '/media/game/waterN.png');
+	game.load.image('seaEWNS', '/media/game/waterEWNS.png');
+	game.load.image('seaE', '/media/game/waterE.png');
+	game.load.image('seaW', '/media/game/waterW.png');
+	game.load.image('seaN', '/media/game/waterN.png');
+	game.load.image('seaS', '/media/game/waterS.png');
+	game.load.image('seaEW', '/media/game/waterEW.png');
+	game.load.image('seaNS', '/media/game/waterNS.png');
 
 	game.load.image('castle', '/media/game/castle.gif');
 	
@@ -26,13 +42,32 @@ function preload() {
 	game.load.image('aluminium', '/media/game/aluminium.png');
 	
 	game.load.image('flower', '/media/game/flower.png');
+
+	// game.load.tilemap('landscape', '/media/game/landscape_tilemap.png');
 }
 
-var map = createMatrix(24, 32);
+var map = new Map('RUS');
+var render = new Render(game);
+map.generate();
+
+function create() {
+	console.log(map.cells);
+	game.debug.text(game.time.fps, 8, 16, '#00FF00');
+	render.draw(map);
+}
+
+function update() {
+	game.debug.text(game.time.fps, 8, 16, '#00FF00');
+}
+
+/*var map = createMatrix(24, 32);
 var vsb_map = createMatrix(24, 32);
 var resource_map = createMatrix(24, 32);
 var resource_amount_map = createMatrix(24, 32);
 var building_map = createMatrix(24, 32);
+
+var CELL_WIDTH = 64;
+var CELL_HEIGHT = 64;
 
 function getRandomCell() {
 	var rnd = Math.random();
@@ -212,22 +247,41 @@ function create() {
 		}
 	}
 
+	/* Ищем крайние активные клетки */
+	// var actual_y = 0, actual_x = 0;
+	// for (var i = 0; i < 24; i++) {
+	// 	for (var j = 0; j < 32; j++) {
+	// 		if (map[i][j] != 0) {
+	// 			actual_y = i;
+	// 			actual_x = j;
+	// 			break;
+	// 		}
+	// 	}
+	// }
+
+	/*var y_counter = 2, x_counter = 2;
 	for (var i = 0; i < 24; i++) {
 		for (var j = 0; j < 32; j++) {			
 			if (vsb_map[i][j]) {
-				game.add.sprite(32 * j, 32 * i, map[i][j]);
-				game.add.sprite(32 * j, 32 * i, resource_map[i][j])
-				if (resource_amount_map[i][j] > 0) {
-					game.add.text(32 * j, 32 * i, resource_amount_map[i][j].toString(), {font: "14px Arial"})
-				}
-				game.add.sprite(32 * j, 32 * i, building_map[i][j])	
-			}					
+				game.add.sprite(CELL_WIDTH * j, CELL_HEIGHT * i, map[i][j]);
+				console.log('print');
+				x_counter -= 1;
+
+				// game.add.sprite(CELL_WIDTH * j, CELL_HEIGHT * i, resource_map[i][j])
+				// if (resource_amount_map[i][j] > 0) {
+				// 	game.add.text(CELL_WIDTH * j, CELL_HEIGHT * i, resource_amount_map[i][j].toString(), {font: "14px Arial"})
+				// }
+				// game.add.sprite(CELL_WIDTH * j, CELL_HEIGHT * i, building_map[i][j])	
+			}			
 		}
+		y_counter -= 1;
 	}
+
+	console.log(map.join('+'));
 
 	game.add.text(0, 0, 'Тестовая версия', {
 		font: "10px Arial"
 	});
 
-	var buildCastle = new Dialog('Постройте ратушу', 'Выберите наиболее удачное место для строительства ратуши.<br><a href="#">Как выбрать хорошее место для строительства ратуши</a>').show();
-}
+	// var buildCastle = new Dialog('Постройте ратушу', 'Выберите наиболее удачное место для строительства ратуши.<br><a href="#">Как выбрать хорошее место для строительства ратуши</a>').show();
+}*/

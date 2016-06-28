@@ -60,6 +60,7 @@ INSTALLED_APPS = (
     'api',
     'library', 
     'feedback',   
+    'game',
 )
 
 MIDDLEWARE_CLASSES = (

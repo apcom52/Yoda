@@ -1,0 +1,384 @@
+{% extends 'basic/beta_base.html' %}
+{% block title %}{{title}}{% endblock %}
+{% block more_head %}
+	<style>
+		body {
+			background-image: url(/media/game/grass.png);
+		}
+	</style>
+{% endblock %}
+{% block content %}
+<div class="grid">
+	<div class="col-10 offset-1">
+		<div class="card">
+			<div class="card__content">
+				<h1 class="helvetica-thin align-center">Выберите ваше государство</h1>	
+				<div class="alert alert--color-blue">Каждое государство имеет свои бонусы и свое уникальное здание. Сделайте правильный выбор и приведите свой народ к победе!</div>	
+				<div class="list u-gray-bg list--image list--animation-slide list--horizontal align-center">
+					<div class="list__item">
+						<img src="/media/game/flags/russia.png" alt="" class="img--circle img--border margin-right-1">
+						<br>
+						<b>Россия</b>
+					</div>
+					<div class="list__item list__item--active">
+						<img src="/media/game/flags/usa.png" alt="" class="img--circle img--border margin-right-1">
+						<br>
+						<b>США</b>
+					</div>
+					<div class="list__item">
+						<img src="/media/game/flags/china.png" alt="" class="img--circle img--border margin-right-1">
+						<br>
+						<b>Китай</b>
+					</div>
+					<div class="list__item">
+						<img src="/media/game/flags/japan.png" alt="" class="img--circle img--border margin-right-1">
+						<br>
+						<b>Япония</b>
+					</div>
+					<div class="list__item">
+						<img src="/media/game/flags/italy.png" alt="" class="img--circle img--border margin-right-1">
+						<br>
+						<b>Италия</b>
+					</div>
+					<div class="list__item">
+						<img src="/media/game/flags/france.png" alt="" class="img--circle img--border margin-right-1">
+						<br>
+						<b>Франция</b>
+					</div>
+					<div class="list__item">
+						<img src="/media/game/flags/uk.png" alt="" class="img--circle img--border margin-right-1">
+						<br>
+						<b>Великобритания</b>
+					</div>
+					<div class="list__item">
+						<img src="/media/game/flags/thailand.png" alt="" class="img--circle img--border margin-right-1">
+						<br>
+						<b>Таиланд</b>
+					</div>
+					<div class="list__item">
+						<img src="/media/game/flags/india.png" alt="" class="img--circle img--border margin-right-1">
+						<br>
+						<b>Индия</b>
+					</div>
+					<div class="list__item">
+						<img src="/media/game/flags/brasil.png" alt="" class="img--circle img--border margin-right-1">
+						<br>
+						<b>Бразилия</b>
+					</div>
+					<div class="list__item">
+						<img src="/media/game/flags/germany.png" alt="" class="img--circle img--border margin-right-1">
+						<br>
+						<b>Германия</b>
+					</div>
+					<div class="list__item">
+						<img src="/media/game/flags/sweden.png" alt="" class="img--circle img--border margin-right-1">
+						<br>
+						<b>Швеция</b>
+					</div>
+					<div class="list__item">
+						<img src="/media/game/flags/spain.png" alt="" class="img--circle img--border margin-right-1">
+						<br>
+						<b>Испания</b>
+					</div>
+					<div class="list__item">
+						<img src="/media/game/flags/israel.png" alt="" class="img--circle img--border margin-right-1">
+						<br>
+						<b>Израиль</b>
+					</div>
+					<div class="list__item">
+						<img src="/media/game/flags/australia.png" alt="" class="img--circle img--border margin-right-1">
+						<br>
+						<b>Австралия</b>
+					</div>
+				</div>
+
+				<div id="cou">
+					<h1 class="align-center helvetica-light">Россия</h1>
+					<div class="grid">
+						<div class="col-6 padding-1 size-fix">
+							<h3 class="green-fg">Бонус</h3>
+							<p>Увеличивает добычу ресурсов на 20%</p>
+						</div>
+						<div class="col-6 padding-1 size-fix">
+							<h3 class="blue-fg">Уникальное здание</h3>
+							<div class="grid">
+								<div class="col-3 align-center"><img src="/media/game/grass.png" alt="" class="img--circle"></div>
+								<div class="col-9 padding-horizontal-1 size-fix">
+									<b>Нефтяная компания</b>
+									<p>Увеличивает добычу с нефтяных месторождений на +1</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="cou">
+					<h1 class="align-center helvetica-light">США</h1>
+					<div class="grid">
+						<div class="col-6 padding-1 size-fix">
+							<h3 class="green-fg">Бонус</h3>
+							<p>Наука увеличивается на 10%</p>
+						</div>
+						<div class="col-6 padding-1 size-fix">
+							<h3 class="blue-fg">Уникальное здание</h3>
+							<div class="grid">
+								<div class="col-3 align-center"><img src="/media/game/grass.png" alt="" class="img--circle"></div>
+								<div class="col-9 padding-horizontal-1 size-fix">
+									<b>Белый дом</b>
+									<p>Дает +1 к настроению и +2 к золоту</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="cou">
+					<h1 class="align-center helvetica-light">Китай</h1>
+					<div class="grid">
+						<div class="col-6 padding-1 size-fix">
+							<h3 class="green-fg">Бонус</h3>
+							<p>Увеличивает производство на 10%</p>
+						</div>
+						<div class="col-6 padding-1 size-fix">
+							<h3 class="blue-fg">Уникальное здание</h3>
+							<div class="grid">
+								<div class="col-3 align-center"><img src="/media/game/grass.png" alt="" class="img--circle"></div>
+								<div class="col-9 padding-horizontal-1 size-fix">
+									<b>Запретный город</b>
+									<p>Дает +1 к производству и +1 к вере</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="cou">
+					<h1 class="align-center helvetica-light">Япония</h1>
+					<div class="grid">
+						<div class="col-6 padding-1 size-fix">
+							<h3 class="green-fg">Бонус</h3>
+							<p>Увеличивает культуру на 10%</p>
+						</div>
+						<div class="col-6 padding-1 size-fix">
+							<h3 class="blue-fg">Уникальное здание</h3>
+							<div class="grid">
+								<div class="col-3 align-center"><img src="/media/game/grass.png" alt="" class="img--circle"></div>
+								<div class="col-9 padding-horizontal-1 size-fix">
+									<b>Небоскреб</b>
+									<p>Может размещать 50 жителей</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="cou">
+					<h1 class="align-center helvetica-light">Италия</h1>
+					<div class="grid">
+						<div class="col-6 padding-1 size-fix">
+							<h3 class="green-fg">Бонус</h3>
+							<p>Увеличивает настроение на +1 за каждую культурную постройку</p>
+						</div>
+						<div class="col-6 padding-1 size-fix">
+							<h3 class="blue-fg">Уникальное здание</h3>
+							<div class="grid">
+								<div class="col-3 align-center"><img src="/media/game/grass.png" alt="" class="img--circle"></div>
+								<div class="col-9 padding-horizontal-1 size-fix">
+									<b>Колизей</b>
+									<p>Дает +1 настроение и +2 к туризму</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="cou">
+					<h1 class="align-center helvetica-light">Франция</h1>
+					<div class="grid">
+						<div class="col-6 padding-1 size-fix">
+							<h3 class="green-fg">Бонус</h3>
+							<p>После каждого строительства здания есть шанс 25%, что это здание даст 50% от стоимости производства золотом</p>
+						</div>
+						<div class="col-6 padding-1 size-fix">
+							<h3 class="blue-fg">Уникальное здание</h3>
+							<div class="grid">
+								<div class="col-3 align-center"><img src="/media/game/grass.png" alt="" class="img--circle"></div>
+								<div class="col-9 padding-horizontal-1 size-fix">
+									<b>Лувр</b>
+									<p>Дает +1 к культуре и +3 к туризму</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="cou">
+					<h1 class="align-center helvetica-light">Великобритания</h1>
+					<div class="grid">
+						<div class="col-6 padding-1 size-fix">
+							<h3 class="green-fg">Бонус</h3>
+							<p>Поля, плантации, рудники и лодки строятся на 40% быстрее</p>
+						</div>
+						<div class="col-6 padding-1 size-fix">
+							<h3 class="blue-fg">Уникальное здание</h3>
+							<div class="grid">
+								<div class="col-3 align-center"><img src="/media/game/grass.png" alt="" class="img--circle"></div>
+								<div class="col-9 padding-horizontal-1 size-fix">
+									<b>Вестминстерское Аббатство</b>
+									<p>Дает +1 культуры и +1 веры</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="cou">
+					<h1 class="align-center helvetica-light">Таиланд</h1>
+					<div class="grid">
+						<div class="col-6 padding-1 size-fix">
+							<h3 class="green-fg">Бонус</h3>
+							<p>Дает +1 дополнительного золота от каждого туриста</p>
+						</div>
+						<div class="col-6 padding-1 size-fix">
+							<h3 class="blue-fg">Уникальное здание</h3>
+							<div class="grid">
+								<div class="col-3 align-center"><img src="/media/game/grass.png" alt="" class="img--circle"></div>
+								<div class="col-9 padding-horizontal-1 size-fix">
+									<b>Аэропорт</b>
+									<p>Дает +5 туризма</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="cou">
+					<h1 class="align-center helvetica-light">Индия</h1>
+					<div class="grid">
+						<div class="col-6 padding-1 size-fix">
+							<h3 class="green-fg">Бонус</h3>
+							<p>Население растет на 20% быстрее</p>
+						</div>
+						<div class="col-6 padding-1 size-fix">
+							<h3 class="blue-fg">Уникальное здание</h3>
+							<div class="grid">
+								<div class="col-3 align-center"><img src="/media/game/grass.png" alt="" class="img--circle"></div>
+								<div class="col-9 padding-horizontal-1 size-fix">
+									<b>Тадж-Махал</b>
+									<p>Дает +2 к вере и +1 к туризму</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="cou">
+					<h1 class="align-center helvetica-light">Бразилия</h1>
+					<div class="grid">
+						<div class="col-6 padding-1 size-fix">
+							<h3 class="green-fg">Бонус</h3>
+							<p>Получает дополнительные 2 клетки с каждым увеличением территории</p>
+						</div>
+						<div class="col-6 padding-1 size-fix">
+							<h3 class="blue-fg">Уникальное здание</h3>
+							<div class="grid">
+								<div class="col-3 align-center"><img src="/media/game/grass.png" alt="" class="img--circle"></div>
+								<div class="col-9 padding-horizontal-1 size-fix">
+									<b>Стадион</b>
+									<p>Дает +3 к настроению</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="cou">
+					<h1 class="align-center helvetica-light">Германия</h1>
+					<div class="grid">
+						<div class="col-6 padding-1 size-fix">
+							<h3 class="green-fg">Бонус</h3>
+							<p>Склады вмещают на 20% больше ресурсов</p>
+						</div>
+						<div class="col-6 padding-1 size-fix">
+							<h3 class="blue-fg">Уникальное здание</h3>
+							<div class="grid">
+								<div class="col-3 align-center"><img src="/media/game/grass.png" alt="" class="img--circle"></div>
+								<div class="col-9 padding-horizontal-1 size-fix">
+									<b>Бранденбургские ворота</b>
+									<p>Дают +2 к науке и +1 к производству</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="cou">
+					<h1 class="align-center helvetica-light">Швеция</h1>
+					<div class="grid">
+						<div class="col-6 padding-1 size-fix">
+							<h3 class="green-fg">Бонус</h3>
+							<p>Дает +1 к культуре за каждых 10 жителей</p>
+						</div>
+						<div class="col-6 padding-1 size-fix">
+							<h3 class="blue-fg">Уникальное здание</h3>
+							<div class="grid">
+								<div class="col-3 align-center"><img src="/media/game/grass.png" alt="" class="img--circle"></div>
+								<div class="col-9 padding-horizontal-1 size-fix">
+									<b>Королевский замок</b>
+									<p>Дает +3 к производству</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="cou">
+					<h1 class="align-center helvetica-light">Испания</h1>
+					<div class="grid">
+						<div class="col-6 padding-1 size-fix">
+							<h3 class="green-fg">Бонус</h3>
+							<p>Бонусы ратуши удваиваются</p>
+						</div>
+						<div class="col-6 padding-1 size-fix">
+							<h3 class="blue-fg">Уникальное здание</h3>
+							<div class="grid">
+								<div class="col-3 align-center"><img src="/media/game/grass.png" alt="" class="img--circle"></div>
+								<div class="col-9 padding-horizontal-1 size-fix">
+									<b>Храм</b>
+									<p>Дает +2 к вере и 200 очков веры</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="cou">
+					<h1 class="align-center helvetica-light">Израиль</h1>
+					<div class="grid">
+						<div class="col-6 padding-1 size-fix">
+							<h3 class="green-fg">Бонус</h3>
+							<p>Продажа ресурсов выгоднее на 10%</p>
+						</div>
+						<div class="col-6 padding-1 size-fix">
+							<h3 class="blue-fg">Уникальное здание</h3>
+							<div class="grid">
+								<div class="col-3 align-center"><img src="/media/game/grass.png" alt="" class="img--circle"></div>
+								<div class="col-9 padding-horizontal-1 size-fix">
+									<b>Петра</b>
+									<p>Клетки с пустыней дают +1 к золоту</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="cou">
+					<h1 class="align-center helvetica-light">Австралия</h1>
+					<div class="grid">
+						<div class="col-6 padding-1 size-fix">
+							<h3 class="green-fg">Бонус</h3>
+							<p>Вероятность получения клетки с ресурсами выше на 10%</p>
+						</div>
+						<div class="col-6 padding-1 size-fix">
+							<h3 class="blue-fg">Уникальное здание</h3>
+							<div class="grid">
+								<div class="col-3 align-center"><img src="/media/game/grass.png" alt="" class="img--circle"></div>
+								<div class="col-9 padding-horizontal-1 size-fix">
+									<b>Сиднейская опера</b>
+									<p>Дает +2 к культуре и +1 к настроению</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
