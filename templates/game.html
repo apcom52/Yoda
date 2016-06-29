@@ -2,7 +2,8 @@
 {% block title %}{{title}}{% endblock %}
 {% block more_head %}
 	<script type="text/javascript" src="/media/static/js/phaser.js"></script>
-	<script type="text/javascript" src="/media/static/js/game/math.js"></script>
+	<script type="text/javascript" src="/media/static/js/extjs.js"></script>
+	<script type="text/javascript" src="/media/static/js/game/vars.js"></script>
 	<script type="text/javascript" src="/media/static/js/game/kinetic.js"></script>
 	<script type="text/javascript" src="/media/static/js/game/map.js"></script>
 	<script type="text/javascript" src="/media/static/js/game/render.js"></script>
@@ -20,11 +21,11 @@
 	</style>
 {% endblock %}
 {% block content %}
-<div class="list list--horizontal list--icon">
+<div class="list list--horizontal list--image">
 	<div class="list__item" data-dropdown-target="statsMenu">Статистика <i class="flaticon-down"></i></div>
-	<div class="list__item olive-fg"><i class="fa fa-cutlery"></i>+11</div>
+	<div class="list__item olive-fg"><img src="/media/game/food.png" alt="">+11</div>
 	<div class="list__item blue-fg"><i class="fa fa-flask"></i>+15</div>
-	<div class="list__item orange-fg"><i class="fa fa-cog"></i>+8</div>
+	<div class="list__item orange-fg"><img src="/media/game/production.png" alt="">+8</div>
 	<div class="list__item yellow-fg"><i class="fa fa-money"></i>1205 (+14)</div>
 	<div class="list__item purple-fg"><i class="fa fa-pencil"></i>181 (+7)</div>
 	<div class="list__item white-fg"><i class="fa fa-twitter"></i>231 (+5)</div>

@@ -6,8 +6,6 @@ var game = new Phaser.Game(1024, 768, Phaser.WEBGL, 'game', {
 	update: update,
 });
 
-
-
 function init() {
 	game.kineticScrolling = game.plugins.add(Phaser.Plugin.KineticScrolling);
 }
@@ -33,15 +31,20 @@ function preload() {
 	game.load.image('seaEW', '/media/game/waterEW.png');
 	game.load.image('seaNS', '/media/game/waterNS.png');
 
-	game.load.image('castle', '/media/game/castle.gif');
+	// game.load.image('castle', '/media/game/castle.gif');
 	
-	game.load.image('stone', '/media/game/stone.png');
-	game.load.image('uran', '/media/game/uran.png');
+	game.load.image('stone_plain', '/media/game/stone_plain.png');
+	game.load.image('stone_sand', '/media/game/stone_sand.png');
 	game.load.image('wood', '/media/game/wood.png');
-	game.load.image('oil', '/media/game/oil.png');
-	game.load.image('aluminium', '/media/game/aluminium.png');
+	game.load.image('iron_plain', '/media/game/iron_plain.png');
+	game.load.image('iron_sand', '/media/game/iron_sand.png');
+	game.load.image('carbon', '/media/game/carbon_plain.png');
+	// game.load.image('uran', '/media/game/uran.png');
+	// game.load.image('wood', '/media/game/wood.png');
+	// game.load.image('oil', '/media/game/oil.png');
+	// game.load.image('aluminium', '/media/game/aluminium.png');
 	
-	game.load.image('flower', '/media/game/flower.png');
+	// game.load.image('flower', '/media/game/flower.png');
 
 	// game.load.tilemap('landscape', '/media/game/landscape_tilemap.png');
 }
@@ -56,8 +59,32 @@ function create() {
 	render.draw(map);
 }
 
+var mouseTrack = {
+	last: null,
+}
+
 function update() {
 	game.debug.text(game.time.fps, 8, 16, '#00FF00');
+
+	if (game.input.mousePointer.isDown) {
+		if (mouseTrack.last == null) {
+			mouseTrack.last = {
+				x: game.input.mousePointer.pageX,
+				y: game.input.mousePointer.pageY,				
+			}
+		} else {
+			current = {
+				x: game.input.mousePointer.pageX,
+				y: game.input.mousePointer.pageY,		
+			}
+			game.camera.x += current.x - mouseTrack.last.x;
+			game.camera.y += current.y - mouseTrack.last.y;
+			mouseTrack.last = current;
+			console.log("camera");
+		}
+	} else {
+		// console.log("up");
+	}
 }
 
 /*var map = createMatrix(24, 32);

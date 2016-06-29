@@ -13,6 +13,7 @@ Map = function(nation = undefined) {
 	this.y_size = 32;
 	this.cells = createArray(this.x_size, this.y_size);
 	this.nation = nation;
+	this.startPosition = [];
 
 	for (var i = 0; i < this.y_size; i++) {
 		for (var j = 0; j < this.x_size; j++) {
@@ -21,6 +22,7 @@ Map = function(nation = undefined) {
 				sprite: "",
 				resource: "",
 				building: "",
+				visible: false,
 				values: {
 					food: 0,
 					production: 0,
@@ -40,10 +42,15 @@ Map = function(nation = undefined) {
 	}
 }
 
-Map.prototype.PLAIN = "plain";
-Map.prototype.SAND = "sand";
-Map.prototype.SEA = "sea";
-Map.prototype.MOUNTAIN = "mountain";
+Map.PLAIN = "plain";
+Map.SAND = "sand";
+Map.SEA = "sea";
+Map.MOUNTAIN = "mountain";
+
+Map.RESOURCE_STONE = "stone";
+Map.RESOURCE_WOOD = "wood";
+Map.RESOURCE_IRON = "iron";
+Map.RESOURCE_CARBON = "carbon";
 
 Map.prototype.generate = function() {
 	var target = this;
@@ -52,6 +59,7 @@ Map.prototype.generate = function() {
 		for (var j = 0; j < target.x_size; j++) {
 			/* Генерация карты на основе окружающих клеток */
 			var type = "";
+			var sprite = "";
 
 			/* Если клетка первая, то генерируем случайную */
 			if (i == 0 && j == 0) {
@@ -176,28 +184,77 @@ Map.prototype.generate = function() {
 			var happiness = 0;
 			var gold = 0;
 
-			if (type == target.PLAIN) {
+			sprite = type;
+
+			if (type == Map.PLAIN) {
 				food = 1;
-				console.log("PLAIN");
 			}
 
-			if (type == target.SAND) {
+			if (type == Map.SAND) {
 				faith = 1;
 			}
 
-			if (type == target.SEA) {
+			if (type == Map.SEA) {
 				food = 1;
 			}
 
-			if (type == target.MOUNTAIN) {
+			if (type == Map.MOUNTAIN) {
 				production = 1;
 				science = 1;
 			}
 
+			/* Назначаем ресурсы
+			Вероятность появления стратегического ресурса - 17%
+			Редкого ресурса (рудник) - 8%
+			Редкого ресурса (плантация) - 9%
+			*/
+			var hasResource = Math.random();
+			var resource = "";
+			if (hasResource <= 0.25) {
+				/* Шансы появления ресурсов:
+				Камень	20%
+				Песок	18%
+				Лес		16%
+				Железо 	13%
+				Уголь	11%
+				Алюминий 9%
+				Нефть	8%
+				Уран	5%
+				*/
+				var resourceRnd = Math.random();
+				if (resourceRnd > STONE_RESOURCE_CHANCE.from && resourceRnd <= STONE_RESOURCE_CHANCE.to) {
+					if (type == Map.PLAIN || type == Map.SAND) {						
+						resource = Map.RESOURCE_STONE;
+						production = 1;
+						faith = 0;
+						food = 0;
+					}
+				} else if (resourceRnd > WOOD_RESOURCE_CHANCE.from && resourceRnd <= WOOD_RESOURCE_CHANCE.to) {
+					if (type == Map.PLAIN) {						
+						resource = Map.RESOURCE_WOOD;
+						production = 1;
+						food = 1;
+					}
+				} else if (resourceRnd > IRON_RESOURCE_CHANCE.from && resourceRnd <= IRON_RESOURCE_CHANCE.to) {
+					if (type == Map.PLAIN || type == Map.SAND) {						
+						resource = Map.RESOURCE_IRON;
+						production = 1;
+						faith = 0;
+						food = 0;
+					}
+				} else if (resourceRnd > CARBON_RESOURCE_CHANCE.from && resourceRnd <= CARBON_RESOURCE_CHANCE.to) {
+					if (type == Map.PLAIN) {						
+						resource = Map.RESOURCE_CARBON;
+						production = 1;
+						food = 0;
+					}
+				}
+			}
+
 			cells[i][j] = {
 				type: type,
-				sprite: type,
-				resource: "",
+				sprite: sprite,
+				resource: resource,
 				building: "",
 				values: {
 					food: food,
@@ -289,6 +346,7 @@ Map.prototype.generate = function() {
 				switch(str) {
 					case "11111111":
 						current.sprite = "seaEWNS";
+						current.values.culture += 1;
 						break;
 					case "10010100":
 					case "00010000":
@@ -318,14 +376,26 @@ Map.prototype.generate = function() {
 			}
 		}
 	}
+
+	/* Определяем стартовую позицию игрока */
+	var start_x = chooseInRange(2, 30);
+	var start_y = chooseInRange(2, 30);
+	while(cells[start_y][start_x].type == Map.SEA) {
+		var start_x = chooseInRange(2, 30);
+		var start_y = chooseInRange(2, 30);
+	}
+	target.startPosition = {
+		x: start_x,
+		y: start_y
+	}
 }
 
 Map.prototype.getRandomCell = function() {
 	var rnd = Math.random();
-	if (rnd <= 0.5) return this.PLAIN;
-	else if (rnd > 0.5 && rnd <= 0.7) return this.SAND;
-	else if (rnd > 0.7 && rnd <= 0.93) return this.SEA;
-	else return this.MOUNTAIN; 
+	if (rnd <= 0.5) return Map.PLAIN;
+	else if (rnd > 0.5 && rnd <= 0.7) return Map.SAND;
+	else if (rnd > 0.7 && rnd <= 0.93) return Map.SEA;
+	else return Map.MOUNTAIN; 
 }
 
 Map.prototype.onInputOver = function(item) {
