@@ -378,8 +378,8 @@ Map.prototype.generate = function() {
 	}
 
 	/* Определяем стартовую позицию игрока */
-	var start_x = chooseInRange(3, 30);
-	var start_y = chooseInRange(3, 30);
+	var start_x = chooseInRange(3, 29);
+	var start_y = chooseInRange(3, 29);
 	while(cells[start_y][start_x].type == Map.SEA) {
 		var start_x = chooseInRange(2, 30);
 		var start_y = chooseInRange(2, 30);

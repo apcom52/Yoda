@@ -40,4 +40,135 @@
 	<div class="dropdown__item">Вера</div>
 	<div class="dropdown__item">Туризм</div>
 </div>
+<div style="position: absolute; right: 0;" class="padding-right-3">
+	<button class="button--color-blue button--size-large button--circle button--only-icon shadow-2" id="scienceBtn"><i class="fa fa-flask"></i></button>
+	<button class="button--color-orange button--size-large button--circle button--only-icon shadow-2" id="buildingBtn"><i class="fa fa-wrench"></i></button>
+	<button class="button--color-purple button--size-large button--circle button--only-icon shadow-2"><i class="fa fa-user"></i></button>
+	<button class="button--color-olive button--size-large button--circle button--only-icon shadow-2"><i class="fa fa-book"></i></button>
+	<button class="button--size-large button--circle button--only-icon shadow-2"><i class="fa fa-question-circle"></i></button>
+</div>
+
+<div class="modal modal--size-xl" id="scienceModal">
+	<div class="modal__content">
+		<div class="grid">
+			<div class="col-4">
+				<h3>Доступные исследования:</h3>
+				<div class="vertical-layout vertical-layout--stripped">
+					<div class="row u-blue-bg">
+						<div class="horizontal_layout padding-1 size-fix" style="background-image: url(http://i.imgur.com/OGpHy9m.gif);">
+							<b css="font-size: 1.2em;">Письменность</b>
+							<br>
+							<i>50 очков</i>
+						</div>
+					</div>
+					<div class="row">
+						<div class="horizontal_layout padding-1 size-fix">
+							<b css="font-size: 1.2em;">Гончарное дело</b>
+							<br>
+							<i>50 очков</i>
+						</div>
+					</div>
+					<div class="row">
+						<div class="horizontal_layout padding-1 size-fix">
+							<b css="font-size: 1.2em;">Язычество</b>
+							<br>
+							<i>50 очков</i>
+						</div>
+					</div>
+					<div class="row">
+						<div class="horizontal_layout padding-1 size-fix">
+							<b css="font-size: 1.2em;">Земледелие</b>
+							<br>
+							<i>50 очков</i>
+						</div>
+					</div>
+					<div class="row">
+						<div class="horizontal_layout padding-1 size-fix">
+							<b css="font-size: 1.2em;">Торговля</b>
+							<br>
+							<i>50 очков</i>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-8 padding-horizontal-1 size-fix">
+				<h3>Информация об исследовании:</h3>
+				<p>Изучение технологии "Письменность" откроет для вас:</p>
+				<div class="vertical-layout vertical-layout--stripped">
+					<div class="row padding-1"><b>Склад</b><br>Позволяет хранить ресурсы</div>
+					<div class="row padding-1"><b>Библиотека</b><br>Увеличивает науку</div>
+				</div>
+				<button class="button--color-blue button--size-large">Изучить технологию (около 50 часов)</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal modal--size-xl" id="buildingModal">
+	<div class="modal__content">
+		<div class="grid">
+			<div class="col-4">
+				<h3>Доступные здания:</h3>
+				<div class="vertical-layout vertical-layout--stripped">
+					<div class="row u-orange-bg">
+						<div class="horizontal_layout padding-1 size-fix">
+							<b css="font-size: 1.2em;">Ратуша (1 уровень)</b>
+							<br>
+							<i>Строится (еще 3 часа)</i>
+						</div>
+					</div>
+					<div class="row">
+						<div class="horizontal_layout padding-1 size-fix">
+							<b css="font-size: 1.2em;">Склад</b>
+							<br>
+							<i>10 очков</i>
+						</div>
+					</div>
+					<div class="row">
+						<div class="horizontal_layout padding-1 size-fix">
+							<b css="font-size: 1.2em;">Амбар</b>
+							<br>
+							<i>40 очков</i>
+						</div>
+					</div>
+					<div class="row">
+						<div class="horizontal_layout padding-1 size-fix">
+							<b css="font-size: 1.2em;">Библиотека</b>
+							<br>
+							<i>45 очков</i>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-8 padding-horizontal-1 size-fix">
+				<h3>Ратуша (1 уровень)</h3>
+				<p>Ратуша - это самое главное здание в вашей империи. Ратуша дает очки науки, производства, веры, культуры, еды и золота. Ратуша - единственное здание в игре, которое можно улучшать. Ратуша имеет 5 уровней. На данный момент вам нужно построить Ратушу 1-го уровня.
+				</p>
+				<h5>Что дает?</h5>
+				<p>Ратуша 1-го уровня увеличивает следующие показатели:</p>
+				<div class="vertical-layout vertical-layout--stripped">
+					<div class="row padding-1"><b>+1</b> еды</div>
+					<div class="row padding-1"><b>+1</b> производства</div>
+					<div class="row padding-1"><b>+1</b> науки</div>
+					<div class="row padding-1"><b>+1</b> культуры</div>
+					<div class="row padding-1"><b>+1</b> веры</div>
+					<div class="row padding-1"><b>+5</b> золота</div>
+				</div>
+
+				<h5>Местоположение ратуши</h5>
+				<p>Ратуша может давать дополнительные очки, если она стоит на определенном месте. Учитывайте это при постройке ратуши, чтобы получить максимальную выгоду.</p>
+				<div class="vertical-layout vertical-layout--stripped">
+					<div class="row padding-1"><b>+1</b> еды, если стоит на равнине</div>
+					<div class="row padding-1"><b>+1</b> еды, если стоит рядом с морем или озером</div>
+					<div class="row padding-1"><b>+2</b> еды, если стоит на клетке с редким ресурсом (плантация)</div>
+					<div class="row padding-1"><b>+1</b> веры, если стоит на клетке с пустыней</div>
+					<div class="row padding-1"><b>+1</b> производства, если стоит рядом с горой</div>
+					<div class="row padding-1"><b>+1</b> производства, если стоит на клетке со стандартным ресурсом</div>
+					<div class="row padding-1"><b>+2</b> производства, если стоит на клетке с редким ресурсом (рудник)</div>
+				</div>
+				<button class="button--color-orange button--size-large">Построить (сейчас)</button>
+			</div>
+		</div>
+	</div>
+</div>
 {% endblock %}

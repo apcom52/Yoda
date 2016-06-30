@@ -12,7 +12,7 @@ function init() {
 }
 
 function preload() {
-	game.stage.backgroundColor = '#333333';
+	game.stage.backgroundColor = '#000000';
 	game.time.advancedTiming = true;
 
 	game.load.image('plain', '/media/game/grass.png');
@@ -61,7 +61,12 @@ function create() {
 	render.draw(map);
 
 	game.kineticScrolling.configure({
+		kineticMovement: false,
 		verticalScroll: true,
+		timeConstantScroll: 0,
+		horizontalWheel: false,
+		verticalWheel: false,
+		deltaWheel: 0
 	});
 	game.kineticScrolling.start();
 
@@ -95,8 +100,19 @@ function update() {
 }
 
 function render() {
-	game.debug.cameraInfo(game.camera, 32, 32);
+	game.debug.cameraInfo(game.camera, 32, 16);
 }
+
+$(function() {
+	var scienceModal = new Modal($('#scienceModal'));
+	var buildingModal = new Modal($('#buildingModal'));
+	$('#scienceBtn').click(function() {
+		scienceModal.show();
+	});
+	$('#buildingBtn').click(function() {
+		buildingModal.show();
+	});
+});
 
 /*var map = createMatrix(24, 32);
 var vsb_map = createMatrix(24, 32);
