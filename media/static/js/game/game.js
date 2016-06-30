@@ -4,6 +4,7 @@ var game = new Phaser.Game(1024, 768, Phaser.WEBGL, 'game', {
 	preload: preload,
 	create: create,
 	update: update,
+	render: render,
 });
 
 function init() {
@@ -55,8 +56,22 @@ map.generate();
 
 function create() {
 	console.log(map.cells);
+	game.world.setBounds(-1024, -768, 4096, 3072);
 	game.debug.text(game.time.fps, 8, 16, '#00FF00');
 	render.draw(map);
+
+	game.kineticScrolling.configure({
+		verticalScroll: true,
+	});
+	game.kineticScrolling.start();
+
+	/*game.input.mouse.onMouseMove = function(e) {
+		// if (game.input.mouse.isDown) {
+			game.camera.x = e.offsetX;
+			game.camera.y = e.offsetY;
+		// }		
+	}*/
+	console.log(game);
 }
 
 var mouseTrack = {
@@ -66,25 +81,21 @@ var mouseTrack = {
 function update() {
 	game.debug.text(game.time.fps, 8, 16, '#00FF00');
 
-	if (game.input.mousePointer.isDown) {
-		if (mouseTrack.last == null) {
-			mouseTrack.last = {
-				x: game.input.mousePointer.pageX,
-				y: game.input.mousePointer.pageY,				
-			}
-		} else {
-			current = {
-				x: game.input.mousePointer.pageX,
-				y: game.input.mousePointer.pageY,		
-			}
-			game.camera.x += current.x - mouseTrack.last.x;
-			game.camera.y += current.y - mouseTrack.last.y;
-			mouseTrack.last = current;
-			console.log("camera");
+	/*if (game.input.mousePointer.isDown) {	
+		if (game.origDragPoint) {	
+			game.camera.x += game.origDragPoint.x - game.input.mousePointer.position.x;		
+			game.camera.y += game.origDragPoint.y - game.input.mousePointer.position.y;	
+			game.canvas.style.cursor = "move";
 		}
+		this.game.origDragPoint = this.game.input.mousePointer.position.clone();
 	} else {
-		// console.log("up");
-	}
+		this.game.origDragPoint = null;
+		game.canvas.style.cursor = "default";
+	}*/
+}
+
+function render() {
+	game.debug.cameraInfo(game.camera, 32, 32);
 }
 
 /*var map = createMatrix(24, 32);

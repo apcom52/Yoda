@@ -58,15 +58,13 @@ Render.prototype.draw = function(map = undefined) {
 			visibleBounds.y2 = i;
 		}
 	}
-	console.log(visibleBounds);
 
-	for (var i = 0, m=0; i < map.y_size; i++, m++) {
-		var hasVisibleCells = false;
-		for (var j = 0, n=0; j < map.x_size; j++) {
+	for (var i = visibleBounds.y1, m = -(visibleBounds.y2 - visibleBounds.y1) / 2 + 1; i <= visibleBounds.y2; i++, m++) {
+		for (var j = visibleBounds.x1, n = -(visibleBounds.x2 - visibleBounds.x1) / 2 + 1; j <= visibleBounds.x2; j++) {
 			var cell = map.cells[i][j];
 			if (cell.visible) {
 				hasVisibleCells = true;
-				var current = game.add.sprite(64 * n, 64 * m, cell.sprite);
+				var current = game.add.sprite(512 - 64 * n, 384 - 64 * m, cell.sprite);
 				current.inputEnabled = true;
 				current.events.onInputOver.add(over, this);
 				current.events.onInputOut.add(out, this);
@@ -75,16 +73,16 @@ Render.prototype.draw = function(map = undefined) {
 				if (cell.resource != "") {
 					switch(cell.resource) {
 						case Map.RESOURCE_STONE:
-							game.add.sprite(64 * n, 64 * m, "stone_" + cell.type);
+							game.add.sprite(512 - 64 * n, 384 - 64 * m, "stone_" + cell.type);
 							break;
 						case Map.RESOURCE_WOOD:
-							game.add.sprite(64 * n, 64 * m, Map.RESOURCE_WOOD);
+							game.add.sprite(512 - 64 * n, 384 - 64 * m, Map.RESOURCE_WOOD);
 							break;
 						case Map.RESOURCE_IRON:
-							game.add.sprite(64 * n, 64 * m, "iron_" + cell.type);
+							game.add.sprite(512 - 64 * n, 384 - 64 * m, "iron_" + cell.type);
 							break;
 						case Map.RESOURCE_CARBON:
-							game.add.sprite(64 * n, 64 * m, Map.RESOURCE_CARBON);
+							game.add.sprite(512 - 64 * n, 384 - 64 * m, Map.RESOURCE_CARBON);
 							break;
 					}				
 				}
@@ -99,7 +97,7 @@ Render.prototype.draw = function(map = undefined) {
 				if (cell.values.science) str += "👓 " + cell.values.science + "\n";
 
 				if (str) {
-					game.add.text(64 * n, 64 * m, str, {
+					game.add.text(512 - 64 * n, 384 - 64 * m, str, {
 						font: "bold 14px Arial",
 						fill: "#000",					
 					})
