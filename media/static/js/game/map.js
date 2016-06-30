@@ -378,8 +378,8 @@ Map.prototype.generate = function() {
 	}
 
 	/* Определяем стартовую позицию игрока */
-	var start_x = chooseInRange(2, 30);
-	var start_y = chooseInRange(2, 30);
+	var start_x = chooseInRange(3, 30);
+	var start_y = chooseInRange(3, 30);
 	while(cells[start_y][start_x].type == Map.SEA) {
 		var start_x = chooseInRange(2, 30);
 		var start_y = chooseInRange(2, 30);
@@ -388,6 +388,11 @@ Map.prototype.generate = function() {
 		x: start_x,
 		y: start_y
 	}
+
+	for (i = target.startPosition.x - 3; i < target.startPosition.x + 2; i++)
+		for (j = target.startPosition.y - 3; j < target.startPosition.y + 2; j++)
+			cells[i][j].visible = true;
+
 }
 
 Map.prototype.getRandomCell = function() {
