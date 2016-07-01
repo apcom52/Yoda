@@ -19,6 +19,7 @@ from django.conf import settings
 import debug_toolbar
 
 urlpatterns = [
+    url('^gadmin/', include('grappelli.urls')),
     url('^admin/', include(admin.site.urls)),
     url('^notes/', include('notes.urls')),
     url('^auth/', include('auth.urls')),

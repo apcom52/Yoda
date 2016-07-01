@@ -35,6 +35,7 @@ ALLOWED_HOSTS = ['vsu-it.ru', 'www.vsu-it.ru', 'localhost', 'localhost:8000']
 
 # Application definition
 INSTALLED_APPS = (
+    'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
