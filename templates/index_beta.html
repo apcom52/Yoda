@@ -106,12 +106,58 @@
 			</div>
 			<div class="col-4">
 				<div class="card card--no-smooth card--image">
-					<div class="card__image">
-						<img src="/media/background/game.jpg" alt="">
-						<div class="card__image__header helvetica-light">
-							<div class="card__image__header__title">Начни игру!</div>	
+					<div class="card__content">
+						<div class="horizontal-layout horizontal-layout--centered">
+							<img src="{{request.user.userprofile.avatar.url}}" class="img--circle padding-1" style="width: 64px;">
+							<div class="column padding-1"><b>{{request.user.first_name}} {{request.user.last_name}}</b>
+							<br><span class="m-gray-fg" style="font-size: 0.9em;">1 уровень</span>
+							</div>
 						</div>
-					</div>
+						<div class="progress margin-bottom-0 progress--color-purple progress--size-thin"><div class="progress__active" style="width:20%"></div></div>
+						<div class="purple-fg" style="font-size: 0.9em;">еще 19 очков опыта до следующего уровня</div>
+					</div>					
+				</div>
+
+				<div class="card card--no-smooth card--image">
+					<div class="card__content">
+						<div class="horizontal-layout horizontal-layout--centered">
+							<img src="/media/game/flags/russia.png" class="img--circle padding-1" style="width: 32px;">
+							<div class="column padding-1"><b>Россия</b></div>
+						</div>
+						<div class="grid">
+							<div class="col-5">
+								<div class="col-6 align-center bold">
+									🍎<br>
+									🕮<br>
+									🐦
+								</div>
+								<div class="col-6 align-center bold">
+									+2<br>
+									+4<br>
+									+3
+								</div>
+							</div>
+							<div class="col-5 offset-2">
+								<div class="col-6 align-center bold">
+									🔨<br>
+									$<br>
+									👓
+								</div>
+								<div class="col-6 align-center bold">
+									+2<br>
+									455 (+4)<br>
+									+3
+								</div>
+							</div>
+						</div>
+						<div class="progress margin-bottom-0 progress--color-blue progress--size-thin"><div class="progress__active" style="width:44%"></div></div>
+						<div class="blue-fg" style="font-size: 0.9em;"><b>Актерская игра</b>. Исследовано 44% (еще 12 часов)</div>
+						<div class="progress margin-bottom-0 progress--color-orange progress--size-thin"><div class="progress__active" style="width:83%"></div></div>
+						<div class="orange-fg" style="font-size: 0.9em;"><b>Амбар</b>. Завершено 83% (еще 2 часа)</div>
+						<div class="card__footer margin-top-1">
+							<div class="button button--color-{{request.user.userprofile.accent}} button--fit button--transparent align-center">ВОЙТИ В ИГРУ</div>
+						</div>
+					</div>					
 				</div>
 
 				<div class="card card--no-smooth margin-1">
