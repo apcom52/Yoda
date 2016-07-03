@@ -20,7 +20,7 @@ class Note(models.Model):
  
 class NoteAdmin(admin.ModelAdmin):
 	fields = ('title', 'content', 'login')
-	list_display = ('title', 'pub_date', 'login')
+	list_display = ('id', 'title', 'pub_date', 'login')
 
 class NoteComment(models.Model):
 	login = models.ForeignKey(User)

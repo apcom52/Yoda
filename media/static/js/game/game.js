@@ -48,6 +48,8 @@ function preload() {
 	// game.load.image('flower', '/media/game/flower.png');
 
 	// game.load.tilemap('landscape', '/media/game/landscape_tilemap.png');
+
+	game.load.image('castle1', '/media/game/castle1.png');
 }
 
 var map = new Map('RUS');

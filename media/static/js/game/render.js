@@ -64,25 +64,32 @@ Render.prototype.draw = function(map = undefined) {
 			var cell = map.cells[i][j];
 			if (cell.visible) {
 				hasVisibleCells = true;
-				var current = game.add.sprite(512 - 64 * n, 384 - 64 * m, cell.sprite);
+				var current = game.add.sprite(512 + 64 * n, 384 + 64 * m, cell.sprite);
 				current.inputEnabled = true;
 				current.events.onInputOver.add(over, this);
 				current.events.onInputOut.add(out, this);
+				current.cell = cell;
 
 				/* Если есть ресурсы, то добавляем спрайт ресурсов */
-				if (cell.resource != "") {
+				if (cell.building != "") {
+					switch(cell.building) {
+						case Map.BUILDING_CASTLE1:
+							game.add.sprite(512 + 64 * n, 384 + 64 * m, Map.BUILDING_CASTLE1);
+							break;
+					}
+				} else if (cell.resource != "") {
 					switch(cell.resource) {
 						case Map.RESOURCE_STONE:
-							game.add.sprite(512 - 64 * n, 384 - 64 * m, "stone_" + cell.type);
+							game.add.sprite(512 + 64 * n, 384 + 64 * m, "stone_" + cell.type);
 							break;
 						case Map.RESOURCE_WOOD:
-							game.add.sprite(512 - 64 * n, 384 - 64 * m, Map.RESOURCE_WOOD);
+							game.add.sprite(512 + 64 * n, 384 + 64 * m, Map.RESOURCE_WOOD);
 							break;
 						case Map.RESOURCE_IRON:
-							game.add.sprite(512 - 64 * n, 384 - 64 * m, "iron_" + cell.type);
+							game.add.sprite(512 + 64 * n, 384 + 64 * m, "iron_" + cell.type);
 							break;
 						case Map.RESOURCE_CARBON:
-							game.add.sprite(512 - 64 * n, 384 - 64 * m, Map.RESOURCE_CARBON);
+							game.add.sprite(512 + 64 * n, 384 + 64 * m, Map.RESOURCE_CARBON);
 							break;
 					}				
 				}
@@ -92,15 +99,15 @@ Render.prototype.draw = function(map = undefined) {
 				if (cell.values.food) str += "🍎 " + cell.values.food + "\n";
 				if (cell.values.production) str += "🔨 " + cell.values.production + "\n";
 				if (cell.values.culture) str += "🕮 " + cell.values.culture + "\n";
-				if (cell.values.gold) str += "○ " + cell.values.gold + "\n";
+				if (cell.values.gold) str += "$ " + cell.values.gold + "\n";
 				if (cell.values.faith) str += "🐦 " + cell.values.faith + "\n";
 				if (cell.values.science) str += "👓 " + cell.values.science + "\n";
 
 				if (str) {
-					game.add.text(512 - 64 * n, 384 - 64 * m, str, {
+					game.add.text(512 + 64 * n, 384 + 64 * m, str, {
 						font: "bold 14px Arial",
 						fill: "#000",					
-					})
+					});
 				}
 				n++;
 			}
@@ -111,6 +118,7 @@ Render.prototype.draw = function(map = undefined) {
 
 function over(item) {
 	item.alpha = 0.9;
+	console.log(item.cell.position);
 }
 
 function out(item) {

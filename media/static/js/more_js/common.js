@@ -40,6 +40,15 @@ $(function() {
    	var notificationCenter = new Sidebar($('#notificationCenter'), true);
     checkNotification();
 
+    $('body').on('click', '#notification-area__hide', function() {
+    	console.log('hide');
+    	$('body .notification-area .notification-area__notification').slideUp(300, function() {
+    		$('#page-content').foggy(false);
+    		$('.notification-area').remove();
+    		$('.overflow').remove();
+    	});
+    });
+
     $('#openNotifications').click(function() {
         notificationCenter.toggle();
         if (notificationCenter.visible) {
@@ -138,6 +147,14 @@ $(function() {
 		$('#back_menu').hide();
 		$('#mainMenu').show();
 	});
+
+	/* Всплывающее уведомление */
+	function notification(message = "Содержимое уведомления", options = {}) {
+		var title = options.title || null;
+		var icon = options.icon || null;
+	}
+
+
 
 	var Friend = Backbone.Model.extend({
 		defaults: {

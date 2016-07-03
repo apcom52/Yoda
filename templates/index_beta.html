@@ -48,7 +48,7 @@
 					<div class="user-list">
 						<div class="user-list__item">
 							<div class="user-list__item__avatar">
-								<img src="{{f.post.login.userprofile.avatar.url}}" class="img--circle" alt="">
+								<img src="{{f.post.login.userprofile.avatar.url}}" class="img--circle" style="height: 32px;">
 							</div>
 							<div class="user-list__item__username"><b>{{f.post.login.first_name}} {{f.post.login.last_name}}</b><br><span class="m-gray-fg" style="font-size: 0.8em;">{{f.post.pub_date|naturaltime}}</span></div>
 						</div>
@@ -87,6 +87,16 @@
 							</div>
 						</div>
 					</div>	
+
+					{% elif f.type == 7 %}
+					<div class="card__content card__content--no-padding">
+						<p class="margin-1">добавил заметку:</p>
+						<div class="u-{{request.user.userprofile.accent}}-bg padding-1">
+							<h2 class="helvetica-thin">{{f.note.title}}</h2>
+							<p>{{f.note.content|truncatewords:24}}</p>
+							<button class="button--size-small button--color-{{request.user.userprofile.accent}}">Открыть</button>
+						</div>
+					</div>	
 					{% endif %}
 
 					
@@ -102,7 +112,6 @@
 				{% endfor %}
 
 				<!-- /// -->
-
 			</div>
 			<div class="col-4">
 				<div class="card card--no-smooth card--image">
@@ -180,15 +189,15 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div>	
 </div>
 
-<script type="text/javascript" id="addFeedComment">
+<!-- <script type="text/javascript" id="addFeedComment">
 <div class="form form--fit">
 	<label for="commentText">Оставьте комментарий:</label>
 	<textarea name="" id="commentText" rows="2" placeholder="Текст комментария..."></textarea>
 	<button class="button--size-small button--color-{{request.user.userprofile.accent}}">Отправить</button>
 </div>
-</script>
+</script> -->
 
 {% endblock %}

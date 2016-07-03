@@ -201,3 +201,44 @@
 #back_menu {
   display: none;
 }
+.notification-area {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 480px;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 5;
+}
+.notification-area .notification-area__notification {
+  background-color: rgba(0, 0, 0, 0.75);
+  color: #ffffff;
+  margin: 1em 0.5em;
+  cursor: pointer;
+  border-radius: 1em;
+  padding: 1em;
+  box-sizing: box-sizing;
+  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
+  font-family: 'PT Sans', 'Segoe UI', sans-serif;
+}
+.notification-area .notification-area__notification .notification-area__notification__content .notification-area__notification__content__title {
+  font-weight: bold;
+}
+.notification-area .notification-area__notification .notification-area__notification__content .notification-area__notification__content__message {
+  font-size: 0.9em;
+}
+.notification-area .notification-area__notification.notification-area__notification--with-icon {
+  display: flex;
+  align-items: center;
+}
+.notification-area .notification-area__notification.notification-area__notification--with-icon img {
+  flex: 1;
+  max-width: 48px;
+  height: 48px;
+}
+.notification-area .notification-area__notification.notification-area__notification--with-icon .notification-area__notification__content {
+  flex: 1;
+  padding: 0.5em 1em;
+  box-sizing: border-box;
+}

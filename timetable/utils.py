@@ -57,6 +57,16 @@ class FeedManager:
 						'month': event.date.month,
 					}
 				})
+
+			#Добавление заметки
+			elif post.type == 7:
+				from notes.models import Note
+				note = Note.objects.get(pk = 56)
+				feed_list.append({
+					'type': 7,
+					'post': post,
+					'note': note,
+				})
 		return feed_list
 
 

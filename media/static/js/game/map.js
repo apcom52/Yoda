@@ -52,6 +52,8 @@ Map.RESOURCE_WOOD = "wood";
 Map.RESOURCE_IRON = "iron";
 Map.RESOURCE_CARBON = "carbon";
 
+Map.BUILDING_CASTLE1 = "castle1";
+
 Map.prototype.generate = function() {
 	var target = this;
 	var cells = this.cells;
@@ -388,6 +390,9 @@ Map.prototype.generate = function() {
 		x: start_x,
 		y: start_y
 	}
+
+	cells[start_y][start_x].building = Map.BUILDING_CASTLE1;
+	console.log(cells[start_y][start_x]);
 
 	for (i = target.startPosition.x - 3; i < target.startPosition.x + 2; i++)
 		for (j = target.startPosition.y - 3; j < target.startPosition.y + 2; j++)
