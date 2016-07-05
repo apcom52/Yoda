@@ -1,5 +1,4 @@
 //Build 100 - 09.04.16
-
 WebFontConfig = {
 	google: { families: [ 'Neucha::latin,cyrillic' ] }
 };
@@ -49,7 +48,6 @@ function preload() {
 	game.load.image('iron_sand', '/media/game/iron_sand.png');
 	game.load.image('carbon', '/media/game/carbon_plain.png');
 	// game.load.image('uran', '/media/game/uran.png');
-	// game.load.image('wood', '/media/game/wood.png');
 	// game.load.image('oil', '/media/game/oil.png');
 	// game.load.image('aluminium', '/media/game/aluminium.png');
 	
@@ -87,13 +85,6 @@ function create() {
 		deltaWheel: 0
 	});
 	game.kineticScrolling.start();
-
-	/*game.input.mouse.onMouseMove = function(e) {
-		// if (game.input.mouse.isDown) {
-			game.camera.x = e.offsetX;
-			game.camera.y = e.offsetY;
-		// }		
-	}*/
 	console.log(game);
 }
 
@@ -103,18 +94,6 @@ var mouseTrack = {
 
 function update() {
 	game.debug.text(game.time.fps, 8, 16, '#00FF00');
-
-	/*if (game.input.mousePointer.isDown) {	
-		if (game.origDragPoint) {	
-			game.camera.x += game.origDragPoint.x - game.input.mousePointer.position.x;		
-			game.camera.y += game.origDragPoint.y - game.input.mousePointer.position.y;	
-			game.canvas.style.cursor = "move";
-		}
-		this.game.origDragPoint = this.game.input.mousePointer.position.clone();
-	} else {
-		this.game.origDragPoint = null;
-		game.canvas.style.cursor = "default";
-	}*/
 }
 
 function render() {
@@ -129,5 +108,9 @@ $(function() {
 	});
 	$('#buildingBtn').click(function() {
 		buildingModal.show();
+	});
+
+	$('#help_button').click(function() {
+		buildCastle = !buildCastle;
 	});
 });

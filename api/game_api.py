@@ -29,10 +29,12 @@ class TechnologiesList(APIView):
 			if current_tech:
 				available_techs.append(current_tech)
 
-		response = []
+		available_response = []
 		for tech in available_techs:
-			response.append({
+			available_response.append({
 				'name': tech.name,
 				'sp': tech.sp,
 			})
-		return Response(response)
+		return Response({
+			'available': available_response,
+			})

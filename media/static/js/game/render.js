@@ -1,3 +1,5 @@
+var buildCastle = false;
+
 Render = function(game, map = null) {
 	this.game = game;
 	this.map = map;
@@ -6,6 +8,13 @@ Render = function(game, map = null) {
 Render.prototype.draw = function(map = undefined) {
 	if (map != undefined) this.map = map;
 	target = this;
+	console.log('start rendering');
+	console.log(target);
+	if (target.cells) {
+		game.world.forEach(function(item) {
+			item.destroy();
+		});
+	}	
 	map = target.map;
 	cells = map.cells;
 	game = target.game;
@@ -68,29 +77,31 @@ Render.prototype.draw = function(map = undefined) {
 				current.inputEnabled = true;
 				current.events.onInputOver.add(over, this);
 				current.events.onInputOut.add(out, this);
+				current.events.onInputDown.add(cellClick, this);
 				current.cell = cell;
 
 				/* Если есть ресурсы, то добавляем спрайт ресурсов */
-				if (cell.building != "") {
-					console.log('find building!');
-					switch(cell.building) {
-						case Map.BUILDING_CASTLE1:
-							game.add.sprite(512 + 64 * n, 384 + 64 * m, Map.BUILDING_CASTLE1);
-							break;
-					}
+				if (cell.building) {
+					console.log('find building!');				
+					var building_sprite = game.add.sprite(512 + 64 * n, 384 + 64 * m, cell.building.params.sprite);
+					target.cells.add(building_sprite);
 				} else if (cell.resource != "") {
 					switch(cell.resource) {
 						case Map.RESOURCE_STONE:
-							game.add.sprite(512 + 64 * n, 384 + 64 * m, "stone_" + cell.type);
+							var res_sprite = game.add.sprite(512 + 64 * n, 384 + 64 * m, "stone_" + cell.type);
+							target.cells.add(res_sprite);
 							break;
 						case Map.RESOURCE_WOOD:
-							game.add.sprite(512 + 64 * n, 384 + 64 * m, Map.RESOURCE_WOOD);
+							var res_sprite = game.add.sprite(512 + 64 * n, 384 + 64 * m, Map.RESOURCE_WOOD);
+							target.cells.add(res_sprite);
 							break;
 						case Map.RESOURCE_IRON:
-							game.add.sprite(512 + 64 * n, 384 + 64 * m, "iron_" + cell.type);
+							var res_sprite = game.add.sprite(512 + 64 * n, 384 + 64 * m, "iron_" + cell.type);
+							target.cells.add(res_sprite);
 							break;
 						case Map.RESOURCE_CARBON:
-							game.add.sprite(512 + 64 * n, 384 + 64 * m, Map.RESOURCE_CARBON);
+							var res_sprite = game.add.sprite(512 + 64 * n, 384 + 64 * m, Map.RESOURCE_CARBON);
+							target.cells.add(res_sprite);
 							break;
 					}				
 				}
@@ -105,10 +116,11 @@ Render.prototype.draw = function(map = undefined) {
 				if (cell.values.science) str += "👓 " + cell.values.science + "\n";
 
 				if (str) {
-					game.add.text(512 + 64 * n, 384 + 64 * m, str, {
+					var values_txt = game.add.text(512 + 64 * n, 384 + 64 * m, str, {
 						font: "bold 14px Arial",
 						fill: "#000",					
 					});
+					target.cells.add(values_txt);
 				}
 				n++;
 			}
@@ -118,10 +130,20 @@ Render.prototype.draw = function(map = undefined) {
 }
 
 function over(item) {
-	item.alpha = 0.9;
-	console.log(item.cell.position);
+	item.alpha = 0;
+	// console.log(item.cell.position);
 }
 
 function out(item) {
 	item.alpha = 1; 
+}
+
+function cellClick(item) {
+	if (buildCastle) {
+		console.log('build activate');
+		item.cell.building = new Building(Building.CASTLE);
+		this.draw();
+		console.log(item);
+		buildCastle = false;
+	}
 }

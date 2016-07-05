@@ -4,6 +4,8 @@ Building = function(type = null) {
 	} else {
 		throw new Error("NULL Building Type!");
 	}
+
+	this.setParams();
 }
 
 Building.CASTLE = "castle";
@@ -13,14 +15,17 @@ Building.prototype.setParams = function() {
 	var target = this;
 	switch(target.type) {
 		case Building.CASTLE:
-			target.level = 1;
-			target.values = {
-				food: 1 * target.level,
-				production: 1 * target.level,
-				faith: 1 * target.level,
-				science: 1 * target.level,
-				gold: 5 * target.level,
-				culture: 1 * target.level,
+			target.params = {
+				level: 1,
+				sprite: 'castle1',
+				values: {
+					food: 1 * target.level,
+					production: 1 * target.level,
+					faith: 1 * target.level,
+					science: 1 * target.level,
+					gold: 5 * target.level,
+					culture: 1 * target.level,
+				}
 			}
 			break;
 		default:
