@@ -91,10 +91,14 @@
 					{% elif f.type == 7 %}
 					<div class="card__content card__content--no-padding">
 						<p class="margin-1">добавил заметку:</p>
-						<div class="u-{{request.user.userprofile.accent}}-bg padding-1">
+						<div class="u-{{request.user.userprofile.accent}}-bg padding-horizontal-1">
 							<h2 class="helvetica-thin">{{f.note.title}}</h2>
-							<p>{{f.note.content|truncatewords:24}}</p>
+							<p>{% autoescape off %}{{f.note.content|truncatewords_html:24}}{% endautoescape %}</p>
 							<button class="button--size-small button--color-{{request.user.userprofile.accent}}">Открыть</button>
+							{% if f.post.login == request.user %}
+							<button class="button--size-small bold button--only-icon"><i class="flaticon-edit"></i></button>
+							<button class="button--size-small bold button--only-icon"><i class="flaticon-trash"></i></button>
+							{% endif %}
 						</div>
 					</div>	
 					{% endif %}

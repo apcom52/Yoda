@@ -25,7 +25,7 @@ from library.models import *
 from notes.models import Note
 from timetable.models import Timetable
 from feedback.models import *
-from achievements.models import Notification
+from achievements.models import Notification, Feed
 
 # Create your views here.
 class LibraryFilesAPI(APIView):	
@@ -343,4 +343,15 @@ class EventAPI(APIView):
 		else:
 			events = Event.objects.all()			
 			serializer = EventSerializer(events, many = True, context = {'login': login})
+		return Response(serializer.data)
+
+class FeedAPI(APIView):
+	def get(self, request, format = None):
+		data = request.GET
+		if data.get('login', False):
+			#Общая лента
+			pass
+		else:
+			feed = Feed.objects.order_by('-id')
+			serializer = FeedSerializer(feed, many = True, context = {'login': request.user})
 		return Response(serializer.data)

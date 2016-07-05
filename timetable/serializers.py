@@ -6,8 +6,29 @@ from django.utils import dateformat
 from django.conf import settings
 from rest_framework import serializers
 from .models import *
+from achievements.models import Feed
+from user.serializers import UserSerializer
 from .utils import TimetableControl, utc_to_local
 from events.models import Event
+
+class FeedSerializer(serializers.ModelSerializer):
+	login = UserSerializer(many = False)
+	value = serializers.SerializerMethodField()
+
+	def get_value(self, obj):
+		if obj.type == 0:
+			return obj.value
+		elif obj.type == 4:
+			from events.serializers import EventSerializer
+			event = Event.objects.get(pk = int(obj.value))
+			serializer = EventSerializer(event, many = False, context = {'login': self.context['login']})
+			return serializer.data
+
+	class Meta:
+		model = Feed
+		fields = (
+			'id', 'login', 'type', 'value'
+		)
 
 class TimetableSerializer(serializers.ModelSerializer):	
 	title = serializers.CharField(source = 'lesson.title', allow_blank = True)

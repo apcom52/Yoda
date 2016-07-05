@@ -28,6 +28,8 @@ urlpatterns = [
 	url('^timetable/$', views.TimetableAPI.as_view()),
 	url('^change_timetable/$', views.TimetableManupulationsAPI.as_view()),
 
+	url('^feed/$', views.FeedAPI.as_view()),
+
 	url('^blog/$', views.BlogPostAPI.as_view()),
 	
 	url('^event/$', views.EventAPI.as_view()),

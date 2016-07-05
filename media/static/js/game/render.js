@@ -72,6 +72,7 @@ Render.prototype.draw = function(map = undefined) {
 
 				/* Если есть ресурсы, то добавляем спрайт ресурсов */
 				if (cell.building != "") {
+					console.log('find building!');
 					switch(cell.building) {
 						case Map.BUILDING_CASTLE1:
 							game.add.sprite(512 + 64 * n, 384 + 64 * m, Map.BUILDING_CASTLE1);

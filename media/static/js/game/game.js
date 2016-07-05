@@ -1,4 +1,9 @@
 //Build 100 - 09.04.16
+
+WebFontConfig = {
+	google: { families: [ 'Neucha::latin,cyrillic' ] }
+};
+
 var game = new Phaser.Game(1024, 768, Phaser.WEBGL, 'game', {
 	init: init,
 	preload: preload,
@@ -14,6 +19,9 @@ function init() {
 function preload() {
 	game.stage.backgroundColor = '#000000';
 	game.time.advancedTiming = true;
+
+	game.load.image('loading-screen', '/media/game/loading_screen.jpg');
+	game.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js');
 
 	game.load.image('plain', '/media/game/grass.png');
 	game.load.image('sand', '/media/game/sand.png');
@@ -52,15 +60,23 @@ function preload() {
 	game.load.image('castle1', '/media/game/castle1.png');
 }
 
-var map = new Map('RUS');
-var render = new Render(game);
-map.generate();
+// var map = new Map('RUS');
+// var render = new Render(game);
+// map.generate();
 
 function create() {
-	console.log(map.cells);
-	game.world.setBounds(-1024, -768, 4096, 3072);
+	// console.log(map.cells);
+	// game.world.setBounds(-1024, -768, 4096, 3072);
+	game.world.setBounds(0, 0, 1024, 768);
 	game.debug.text(game.time.fps, 8, 16, '#00FF00');
-	render.draw(map);
+	var loading_screen = game.add.sprite(0, 0, 'loading-screen');
+	var loading_tooltip = game.add.text(game.world.centerX, 100, "Ратуша - основное здание в игре");
+	loading_tooltip.anchor.setTo(0.5);
+	loading_tooltip.font = 'Neucha';
+	loading_tooltip.fontSize = 14;
+	loading_tooltip.fill = "#ffd700";
+	loading_tooltip.setShadow(2, 2, 'rgba(0,0,0,0.5)', 2);
+	// render.draw(map);
 
 	game.kineticScrolling.configure({
 		kineticMovement: false,
@@ -70,7 +86,7 @@ function create() {
 		verticalWheel: false,
 		deltaWheel: 0
 	});
-	game.kineticScrolling.start();
+	// game.kineticScrolling.start();
 
 	/*game.input.mouse.onMouseMove = function(e) {
 		// if (game.input.mouse.isDown) {

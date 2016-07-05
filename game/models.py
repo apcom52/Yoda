@@ -142,3 +142,13 @@ class Dogma(models.Model):
 
 class DogmaAdmin(admin.ModelAdmin):
 	list_display = ('id', 'content', 'level')
+
+class Tooltip(models.Model):
+	class Meta():
+		verbose_name = 'Подсказка'
+		verbose_name_plural = 'Подсказки'
+
+	tooltip = models.CharField('Подсказка', max_length = 256)
+
+class TooltipAdmin(admin.ModelAdmin):
+	list_display = ('id', 'tooltip')

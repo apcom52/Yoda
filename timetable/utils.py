@@ -61,7 +61,10 @@ class FeedManager:
 			#Добавление заметки
 			elif post.type == 7:
 				from notes.models import Note
-				note = Note.objects.get(pk = 56)
+				from notes.views import wiki2html
+
+				note = Note.objects.get(pk = int(post.value))
+				note.content = wiki2html(note.content)
 				feed_list.append({
 					'type': 7,
 					'post': post,
