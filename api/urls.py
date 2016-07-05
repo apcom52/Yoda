@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, include, url
 from rest_framework.routers import DefaultRouter
 from . import views
+from . import game_api
 
 '''router = DefaultRouter()
 router.register(r'library/file', views.LibraryFilesAPI)
@@ -33,6 +34,8 @@ urlpatterns = [
 	url('^blog/$', views.BlogPostAPI.as_view()),
 	
 	url('^event/$', views.EventAPI.as_view()),
+
+	url('^game/technologies/$', game_api.TechnologiesList.as_view()),
 
 	#url('^', include(router.urls)),
 ]
