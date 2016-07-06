@@ -33,3 +33,9 @@ Building.prototype.setParams = function() {
 			break;
 	}
 }
+
+Building.prototype.build = function(sprite) {
+	var cell = sprite.cell;
+	var target = this;
+	cell.building = target;	
+}

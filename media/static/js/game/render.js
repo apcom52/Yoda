@@ -74,6 +74,7 @@ Render.prototype.draw = function(map = undefined) {
 			if (cell.visible) {
 				hasVisibleCells = true;
 				var current = game.add.sprite(512 + 64 * n, 384 + 64 * m, cell.sprite);
+				target.cells.add(current);
 				current.inputEnabled = true;
 				current.events.onInputOver.add(over, this);
 				current.events.onInputOut.add(out, this);
@@ -104,9 +105,7 @@ Render.prototype.draw = function(map = undefined) {
 							target.cells.add(res_sprite);
 							break;
 					}				
-				}
-
-				target.cells.add(current);
+				}				
 				var str = "";
 				if (cell.values.food) str += "🍎 " + cell.values.food + "\n";
 				if (cell.values.production) str += "🔨 " + cell.values.production + "\n";
@@ -130,8 +129,7 @@ Render.prototype.draw = function(map = undefined) {
 }
 
 function over(item) {
-	item.alpha = 0;
-	// console.log(item.cell.position);
+	item.alpha = 0.9;
 }
 
 function out(item) {
@@ -141,9 +139,9 @@ function out(item) {
 function cellClick(item) {
 	if (buildCastle) {
 		console.log('build activate');
-		item.cell.building = new Building(Building.CASTLE);
+		var castleBuilding = new Building(Building.CASTLE);
+		castleBuilding.build(item);
 		this.draw();
-		console.log(item);
 		buildCastle = false;
 	}
 }
