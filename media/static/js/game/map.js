@@ -51,6 +51,7 @@ Map.RESOURCE_STONE = "stone";
 Map.RESOURCE_WOOD = "wood";
 Map.RESOURCE_IRON = "iron";
 Map.RESOURCE_CARBON = "carbon";
+Map.RESOURCE_OIL = "oil";
 
 Map.BUILDING_CASTLE1 = "castle1";
 
@@ -249,6 +250,13 @@ Map.prototype.generate = function() {
 						resource = Map.RESOURCE_CARBON;
 						production = 1;
 						food = 0;
+					}
+				} else if (resourceRnd > OIL_RESOURCE_CHANCE.from && resourceRnd <= OIL_RESOURCE_CHANCE.to) {
+					if (type == Map.SAND || type == Map.SEA) {						
+						resource = Map.RESOURCE_OIL;
+						production = 1;
+						food = 0;
+						faith = 0;
 					}
 				}
 			}

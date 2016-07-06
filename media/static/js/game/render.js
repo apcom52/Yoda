@@ -104,6 +104,10 @@ Render.prototype.draw = function(map = undefined) {
 							var res_sprite = game.add.sprite(512 + 64 * n, 384 + 64 * m, Map.RESOURCE_CARBON);
 							target.cells.add(res_sprite);
 							break;
+						case Map.RESOURCE_OIL:
+							var res_sprite = game.add.sprite(512 + 64 * n, 384 + 64 * m, Map.RESOURCE_OIL);
+							target.cells.add(res_sprite);
+							break;
 					}				
 				}				
 				var str = "";

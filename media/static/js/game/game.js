@@ -47,6 +47,7 @@ function preload() {
 	game.load.image('iron_plain', '/media/game/iron_plain.png');
 	game.load.image('iron_sand', '/media/game/iron_sand.png');
 	game.load.image('carbon', '/media/game/carbon_plain.png');
+	game.load.image('oil', '/media/game/oil.png');
 	// game.load.image('uran', '/media/game/uran.png');
 	// game.load.image('oil', '/media/game/oil.png');
 	// game.load.image('aluminium', '/media/game/aluminium.png');

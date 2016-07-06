@@ -189,6 +189,8 @@
     </div>
 </div>
 
+
+
 <!-- <div class="overflow"></div>
     <div class="notification-area">
         <div class="notification-area__notification">
@@ -215,6 +217,17 @@
             <button class="button--circle button--only-icon bold shadow-2" id="notification-area__hide"><i class="flaticon-up"></i></button>
         </div>
     </div> -->
+
+    <div class="new-level-screen shadow-2">
+        <img src="{{request.user.userprofile.avatar.url}}" alt="">
+        <div class="user">
+            <div class="bold {{request.user.userprofile.accent}}-fg"> {{request.user.first_name}} {{request.user.last_name}}</div>
+            <div class="meta"><span id="new-level-screen-label">Новый уровень! </span><span id="new-level-screen-current">0</span>/<span id="new-level-screen-end">10</span> опыта</div>
+            <div class="progress progress--color-{{request.user.userprofile.accent}} progress--size-thin progress--rounded">
+                <div class="progress__active" id="new-level-screen-progress"></div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
 

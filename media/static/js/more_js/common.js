@@ -291,3 +291,69 @@ $(function() {
     }
 });
 });
+
+ExperienceScreen = function(params) {
+	var target = this;
+	target.visible = false;
+	target.level = params.level || null;
+	target.current = params.current || null;
+	var el = $('.new-level-screen');
+	target.el = el;
+	if (target.level == 1) {
+		target.start = 0;
+		target.end = 10;
+	} else {
+		target.start = 10 + 15 * (target.level - 2);
+		target.end = 10 + 15 * (target.level - 1);
+	}
+	target.percent = target.current / (target.end - target.start);
+	target.el.find('#new-level-screen-label').hide();
+	target.el.find('#new-level-screen-current').text(target.current);
+	target.el.find('#new-level-screen-end').text(target.end);
+	target.el.find('#new-level-screen-progress').css('width', (target.percent) * 100 + "%");
+
+	return target;
+}
+
+ExperienceScreen.prototype.add = function(xp = 0) {
+	var target = this;
+	target.visible = true;
+	var el = $('.new-level-screen');
+	target.el = el;	
+	target.current += xp;	
+
+	if (target.current >= target.end) {
+		target.level += 1;
+		target.start = 10 + 15 * (target.level - 2);
+		target.end = 10 + 15 * (target.level - 1);
+		target.el.find('#new-level-screen-label').show();
+	}
+	target.percent = (target.current - target.start) / (target.end - target.start);
+	target.show();
+}
+
+ExperienceScreen.prototype.show = function() {
+	var target = this;
+	target.el.addClass('new-level-screen--show');
+	setTimeout(function() {
+		target.el.find('#new-level-screen-current').text(target.current);
+		target.el.find('#new-level-screen-end').text(target.end);
+		target.el.find('#new-level-screen-progress').css('width', (target.percent) * 100 + "%");
+	}, 1000);
+	setTimeout(function() {
+		target.visible = false;
+		target.el.removeClass('new-level-screen--show');
+	}, 2500);
+}
+
+
+$(function() {
+	var p = new ExperienceScreen({
+		level: 1,
+		current: 2
+	});
+	p.add(5);
+	setTimeout(function() {
+		p.add(4);
+	}, 5000);
+});
