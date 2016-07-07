@@ -16,21 +16,23 @@
 
 				<!-- Добавить запись -->
 				<div class="card card--no-smooth">
-					<div class="card__header">
-						<div class="card__header__title">Добавить запись</div>
-					</div>
-					<div class="card__content">
-						<div class="form form--fit padding-horizontal-0">
-							<textarea class="margin-0" id="" rows="3" placeholder="Введите сообщение"></textarea>
-						</div>						
-						<list class="list list--image list--horizontal">
-							<div class="list__item"><img src="/media/img/ic/image.png" alt="">Изображение</div>
-							<div class="list__item"><img src="/media/img/ic/document.png" alt="">Документ</div>
-							<div class="list__item"><img src="/media/img/ic/poll.png" alt="">Опрос</div>
-							<div class="list__item"><img src="/media/img/ic/calendar.png" alt="">Мероприятие</div>
-						</list>
-						<button class="button--color-{{request.user.userprofile.accent}} margin-left-0">ОТПРАВИТЬ</button>
-					</div>
+					<form id="sendPostForm">
+						<div class="card__header">
+							<div class="card__header__title">Добавить запись</div>
+						</div>
+						<div class="card__content">
+							<div class="form form--fit padding-horizontal-0" id="postContent">
+								<textarea name="value" class="margin-0 postValueText" id="" rows="3" placeholder="Введите сообщение" id="postValueText"></textarea>
+							</div>						
+							<div class="list list--image list--horizontal">
+								<div class="list__item"><img src="/media/img/ic/image.png" alt="">Изображение</div>
+								<div class="list__item"><img src="/media/img/ic/document.png" alt="">Документ</div>
+								<div class="list__item"><img src="/media/img/ic/poll.png" alt="">Опрос</div>
+								<div class="list__item"><img src="/media/img/ic/calendar.png" alt="">Мероприятие</div>
+							</div>
+							<button class="button--color-{{request.user.userprofile.accent}} margin-left-0" id="sendPost">ОТПРАВИТЬ</button>
+						</div>
+					</form>
 				</div>
 
 				<!-- /// -->
