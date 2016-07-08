@@ -108,6 +108,26 @@ Render.prototype.draw = function(map = undefined) {
 							var res_sprite = game.add.sprite(512 + 64 * n, 384 + 64 * m, Map.RESOURCE_OIL);
 							target.cells.add(res_sprite);
 							break;
+						case Map.RESOURCE_URAN:
+							var res_sprite = game.add.sprite(512 + 64 * n, 384 + 64 * m, "uran_" + cell.type);
+							target.cells.add(res_sprite);
+							break;
+						case Map.RESOURCE_SANDS:
+							var res_sprite = game.add.sprite(512 + 64 * n, 384 + 64 * m, Map.RESOURCE_SANDS);
+							target.cells.add(res_sprite);
+							break;
+						case Map.RESOURCE_WHEAT:
+							var res_sprite = game.add.sprite(512 + 64 * n, 384 + 64 * m, Map.RESOURCE_WHEAT);
+							target.cells.add(res_sprite);
+							break;
+						case Map.RESOURCE_GRAPES:
+							var res_sprite = game.add.sprite(512 + 64 * n, 384 + 64 * m, Map.RESOURCE_GRAPES);
+							target.cells.add(res_sprite);
+							break;
+						case Map.RESOURCE_CITRUS:
+							var res_sprite = game.add.sprite(512 + 64 * n, 384 + 64 * m, Map.RESOURCE_CITRUS);
+							target.cells.add(res_sprite);
+							break;
 					}				
 				}				
 				var str = "";

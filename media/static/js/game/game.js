@@ -44,13 +44,20 @@ function preload() {
 	game.load.image('stone_plain', '/media/game/stone_plain.png');
 	game.load.image('stone_sand', '/media/game/stone_sand.png');
 	game.load.image('wood', '/media/game/wood.png');
+	game.load.image('sands', '/media/game/sands.png');
 	game.load.image('iron_plain', '/media/game/iron_plain.png');
 	game.load.image('iron_sand', '/media/game/iron_sand.png');
 	game.load.image('carbon', '/media/game/carbon_plain.png');
 	game.load.image('oil', '/media/game/oil.png');
+	game.load.image('uran_plain', '/media/game/uran_plain.png');
+	game.load.image('uran_sand', '/media/game/uran_sand.png');
 	// game.load.image('uran', '/media/game/uran.png');
 	// game.load.image('oil', '/media/game/oil.png');
 	// game.load.image('aluminium', '/media/game/aluminium.png');
+
+	game.load.image('wheat', '/media/game/wheat.png');
+	game.load.image('grapes', '/media/game/grapes.png');
+	game.load.image('citrus', '/media/game/citrus.png');
 	
 	// game.load.image('flower', '/media/game/flower.png');
 

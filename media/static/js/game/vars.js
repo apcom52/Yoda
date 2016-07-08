@@ -37,3 +37,28 @@ URAN_RESOURCE_CHANCE = {
 	from: 0.95,
 	to: 1
 }
+
+GRAPES_RESOURCE_CHANCE = {
+	from: 0,
+	to: 0.15
+}
+
+CITRUS_RESOURCE_CHANCE = {
+	from: 0.15,
+	to: 0.31
+}
+
+BANANES_RESOURCE_CHANCE = {
+	from: 0.31,
+	to: 0.62
+}
+
+COTTON_RESOURCE_CHANCE = {
+	from: 0.62,
+	to: 0.8
+}
+
+WHEAT_RESOURCE_CHANCE = {
+	from: 0.8,
+	to: 1
+}

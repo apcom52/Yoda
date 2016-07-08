@@ -49,9 +49,15 @@ Map.MOUNTAIN = "mountain";
 
 Map.RESOURCE_STONE = "stone";
 Map.RESOURCE_WOOD = "wood";
+Map.RESOURCE_SANDS = "sands";
 Map.RESOURCE_IRON = "iron";
 Map.RESOURCE_CARBON = "carbon";
 Map.RESOURCE_OIL = "oil";
+Map.RESOURCE_URAN = "uran";
+
+Map.RESOURCE_WHEAT = "wheat";
+Map.RESOURCE_GRAPES = "grapes";
+Map.RESOURCE_CITRUS = "citrus";
 
 Map.BUILDING_CASTLE1 = "castle1";
 
@@ -257,6 +263,41 @@ Map.prototype.generate = function() {
 						production = 1;
 						food = 0;
 						faith = 0;
+					}
+				} else if (resourceRnd > URAN_RESOURCE_CHANCE.from && resourceRnd <= URAN_RESOURCE_CHANCE.to) {
+					if (type == Map.PLAIN || type == Map.SAND) {						
+						resource = Map.RESOURCE_URAN;
+						production = 1;
+						food = 0;
+						faith = 0;
+					}
+				} else if (resourceRnd > SAND_RESOURCE_CHANCE.from && resourceRnd <= SAND_RESOURCE_CHANCE.to) {
+					if (type == Map.SAND) {						
+						resource = Map.RESOURCE_SANDS;
+						production = 1;
+						food = 0;
+						faith = 0;
+					}
+				}
+			} else if (hasResource > 0.25 && hasResource <= 0.34) {
+				var resourceRnd = Math.random();
+				if (resourceRnd > WHEAT_RESOURCE_CHANCE.from && resourceRnd <= WHEAT_RESOURCE_CHANCE.to) {
+					if (type == Map.PLAIN) {						
+						resource = Map.RESOURCE_WHEAT;
+						production = 0;
+						food = 2;
+					}
+				} else if (resourceRnd > GRAPES_RESOURCE_CHANCE.from && resourceRnd <= GRAPES_RESOURCE_CHANCE.to) {
+					if (type == Map.PLAIN) {						
+						resource = Map.RESOURCE_GRAPES;
+						production = 0;
+						food = 2;
+					}
+				} else if (resourceRnd > CITRUS_RESOURCE_CHANCE.from && resourceRnd <= CITRUS_RESOURCE_CHANCE.to) {
+					if (type == Map.PLAIN) {						
+						resource = Map.RESOURCE_CITRUS;
+						production = 0;
+						food = 2;
 					}
 				}
 			}
