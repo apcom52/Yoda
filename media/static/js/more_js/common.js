@@ -39,8 +39,8 @@ $(function() {
 	});
 
 	var nc = new NotificationCenter();
-	nc.push('Hello, everybody!');
-	nc.push('Вы получили 1 новый предмет', { title: 'Новый предмет', icon: 'https://theamazingkarj.files.wordpress.com/2016/01/card_back-edited.jpg?w=50&h=50&crop=1'})
+	// nc.push('Hello, everybody!');
+	// nc.push('Вы получили 1 новый предмет', { title: 'Новый предмет', icon: 'https://theamazingkarj.files.wordpress.com/2016/01/card_back-edited.jpg?w=50&h=50&crop=1'})
 
 	/* Центр уведомлений */
 	var notificationCenterTabs = new Tabs($('#notificationCenterTabs'));
@@ -348,6 +348,7 @@ NotificationCenter = function() {
 	this.alarm = new Audio('/media/audio/alarm.mp3');
 	var target = this;
 	this.el.find('#notification-area__hide').click(function() { target.hide(); });
+	this.el.find('#notification-area__clear').click(function() { target.clear(); });
 }
 
 NotificationCenter.prototype.push = function(message = '', options = {}) {
@@ -390,6 +391,11 @@ NotificationCenter.prototype.hide = function() {
 		$('.notification-area').hide();
 		$('.overflow').remove();
 	});
+}
+
+NotificationCenter.prototype.clear = function() {
+	this.notifications = [];
+	this.hide();
 }
 
 

@@ -84,48 +84,58 @@ Render.prototype.draw = function(map = undefined) {
 				/* Если есть ресурсы, то добавляем спрайт ресурсов */
 				if (cell.building) {
 					console.log('find building!');				
-					var building_sprite = game.add.sprite(512 + 64 * n, 384 + 64 * m, cell.building.params.sprite);
+					var building_sprite = game.add.sprite(512 + 64 * n + 32, 384 + 64 * m + 32, cell.building.params.sprite);
 					target.cells.add(building_sprite);
 				} else if (cell.resource != "") {
 					switch(cell.resource) {
 						case Map.RESOURCE_STONE:
-							var res_sprite = game.add.sprite(512 + 64 * n, 384 + 64 * m, "stone_" + cell.type);
+							var res_sprite = game.add.sprite(512 + 64 * n + 32, 384 + 64 * m + 32, "stone_" + cell.type);
+							res_sprite.anchor.setTo(0.5, 0.5);
 							target.cells.add(res_sprite);
 							break;
 						case Map.RESOURCE_WOOD:
-							var res_sprite = game.add.sprite(512 + 64 * n, 384 + 64 * m, Map.RESOURCE_WOOD);
+							var res_sprite = game.add.sprite(512 + 64 * n + 32, 384 + 64 * m + 32, Map.RESOURCE_WOOD);
+							res_sprite.anchor.setTo(0.5, 0.5);
 							target.cells.add(res_sprite);
 							break;
 						case Map.RESOURCE_IRON:
-							var res_sprite = game.add.sprite(512 + 64 * n, 384 + 64 * m, "iron_" + cell.type);
+							var res_sprite = game.add.sprite(512 + 64 * n + 32, 384 + 64 * m + 32, "iron_" + cell.type);
+							res_sprite.anchor.setTo(0.5, 0.5);
 							target.cells.add(res_sprite);
 							break;
 						case Map.RESOURCE_CARBON:
-							var res_sprite = game.add.sprite(512 + 64 * n, 384 + 64 * m, Map.RESOURCE_CARBON);
+							var res_sprite = game.add.sprite(512 + 64 * n + 32, 384 + 64 * m + 32, Map.RESOURCE_CARBON);
+							res_sprite.anchor.setTo(0.5, 0.5);
 							target.cells.add(res_sprite);
 							break;
 						case Map.RESOURCE_OIL:
-							var res_sprite = game.add.sprite(512 + 64 * n, 384 + 64 * m, Map.RESOURCE_OIL);
+							var res_sprite = game.add.sprite(512 + 64 * n + 32, 384 + 64 * m + 32, Map.RESOURCE_OIL);
+							res_sprite.anchor.setTo(0.5, 0.5);
 							target.cells.add(res_sprite);
 							break;
 						case Map.RESOURCE_URAN:
-							var res_sprite = game.add.sprite(512 + 64 * n, 384 + 64 * m, "uran_" + cell.type);
+							var res_sprite = game.add.sprite(512 + 64 * n + 32, 384 + 64 * m + 32, "uran_" + cell.type);
+							res_sprite.anchor.setTo(0.5, 0.5);
 							target.cells.add(res_sprite);
 							break;
 						case Map.RESOURCE_SANDS:
-							var res_sprite = game.add.sprite(512 + 64 * n, 384 + 64 * m, Map.RESOURCE_SANDS);
+							var res_sprite = game.add.sprite(512 + 64 * n + 32, 384 + 64 * m + 32, Map.RESOURCE_SANDS);
+							res_sprite.anchor.setTo(0.5, 0.5);
 							target.cells.add(res_sprite);
 							break;
 						case Map.RESOURCE_WHEAT:
-							var res_sprite = game.add.sprite(512 + 64 * n, 384 + 64 * m, Map.RESOURCE_WHEAT);
+							var res_sprite = game.add.sprite(512 + 64 * n + 32, 384 + 64 * m + 32, Map.RESOURCE_WHEAT);
+							res_sprite.anchor.setTo(0.5, 0.5);
 							target.cells.add(res_sprite);
 							break;
 						case Map.RESOURCE_GRAPES:
-							var res_sprite = game.add.sprite(512 + 64 * n, 384 + 64 * m, Map.RESOURCE_GRAPES);
+							var res_sprite = game.add.sprite(512 + 64 * n + 32, 384 + 64 * m + 32, Map.RESOURCE_GRAPES);
+							res_sprite.anchor.setTo(0.5, 0.5);
 							target.cells.add(res_sprite);
 							break;
 						case Map.RESOURCE_CITRUS:
-							var res_sprite = game.add.sprite(512 + 64 * n, 384 + 64 * m, Map.RESOURCE_CITRUS);
+							var res_sprite = game.add.sprite(512 + 64 * n + 32, 384 + 64 * m + 32, Map.RESOURCE_CITRUS);
+							res_sprite.anchor.setTo(0.5, 0.5);
 							target.cells.add(res_sprite);
 							break;
 					}				
@@ -139,10 +149,11 @@ Render.prototype.draw = function(map = undefined) {
 				if (cell.values.science) str += "👓 " + cell.values.science + "\n";
 
 				if (str) {
-					var values_txt = game.add.text(512 + 64 * n, 384 + 64 * m, str, {
+					var values_txt = game.add.text(512 + 64 * n + 32, 384 + 64 * m + 32, str, {
 						font: "bold 14px Arial",
 						fill: "#000",					
 					});
+					values_txt.anchor.setTo(0.5, 0.5);
 					target.cells.add(values_txt);
 				}
 				n++;
@@ -154,6 +165,7 @@ Render.prototype.draw = function(map = undefined) {
 
 function over(item) {
 	item.alpha = 0.9;
+	console.log(item.cell.position);
 }
 
 function out(item) {

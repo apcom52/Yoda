@@ -429,22 +429,22 @@ Map.prototype.generate = function() {
 	}
 
 	/* Определяем стартовую позицию игрока */
-	var start_x = chooseInRange(3, 29);
-	var start_y = chooseInRange(3, 29);
+	var start_x = chooseInRange(5, 25);
+	var start_y = chooseInRange(5, 25);
 	while(cells[start_y][start_x].type == Map.SEA) {
-		var start_x = chooseInRange(2, 30);
-		var start_y = chooseInRange(2, 30);
+		var start_x = chooseInRange(5, 25);
+		var start_y = chooseInRange(5, 25);
 	}
 	target.startPosition = {
 		x: start_x,
 		y: start_y
 	}
 
-	cells[start_y][start_x].building = Map.BUILDING_CASTLE1;
+	// cells[start_y][start_x].building = new Building(Building.CASTLE);
 	console.log(cells[start_y][start_x]);
 
-	for (i = target.startPosition.x - 3; i < target.startPosition.x + 2; i++)
-		for (j = target.startPosition.y - 3; j < target.startPosition.y + 2; j++)
+	for (i = target.startPosition.y - 2; i <= target.startPosition.y + 2; i++)
+		for (j = target.startPosition.x - 2; j <= target.startPosition.x + 2; j++)
 			cells[i][j].visible = true;
 
 }
