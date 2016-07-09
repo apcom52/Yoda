@@ -44,6 +44,7 @@ $(function() {
 						setTimeout(function() {
 							$('#sendPost').attr('disabled', false).html('ОТПРАВИТЬ');
 						}, 1500);
+						exp.add(1);
 					},
 					error: function(data) {
 						$('#postContent').append('<div class="red-fg" id="postMessage">' + data + '</div>');

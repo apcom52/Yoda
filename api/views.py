@@ -359,13 +359,10 @@ class FeedAPI(APIView):
 	def post(self, request, format = None):
 		data = request.POST
 		type = data.get('type', 0)
-		value = data.get('value', '')
-		if (type == 0):
-			if (len(value) >= 2):
-				print('true post feed')
-				feed = Feed()
-				feed.login = request.user
-				feed.type = type
-				feed.value = value
-				feed.save()
+		value = data.get('value')			
+		feed = Feed()
+		feed.login = request.user
+		feed.type = type
+		feed.value = value
+		feed.save()
 		return Response('type=' + type + '\nvalue=' + value);

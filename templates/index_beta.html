@@ -39,7 +39,8 @@
 
 				<!-- Кнопка "Обновить" -->
 				<div class="grid-12 align-center">
-					<button class="button--rounded"><b>+2</b> новых записей</button>
+					<button class="button--circle button--only-icon bold"><i class="flaticon-refresh-single"></i></button>
+					<button class="button--circle button--only-icon bold"><i class="flaticon-settings"></i></button>
 				</div>				
 				<!-- /// -->
 
@@ -128,8 +129,8 @@
 							<br><span class="m-gray-fg" style="font-size: 0.9em;">1 уровень</span>
 							</div>
 						</div>
-						<div class="progress margin-bottom-0 progress--color-purple progress--size-thin"><div class="progress__active" style="width:20%"></div></div>
-						<div class="purple-fg" style="font-size: 0.9em;">еще 19 очков опыта до следующего уровня</div>
+						<div class="progress margin-bottom-0 progress--color-{{request.user.userprofile.accent}} progress--size-thin"><div class="progress__active" style="width:20%"></div></div>
+						<div class="{{request.user.userprofile.accent}}-fg" style="font-size: 0.9em;">еще 19 очков опыта до следующего уровня</div>
 					</div>					
 				</div>
 
@@ -142,9 +143,9 @@
 						<div class="grid">
 							<div class="col-5">
 								<div class="col-6 align-center bold">
-									🍎<br>
-									🕮<br>
-									🐦
+									<img src="/media/game/icons/food.png" style="width: 1em; height: 1em;"><br>
+									<img src="/media/game/icons/culture.png" style="width: 1em; height: 1em;"><br>
+									<img src="/media/game/icons/faith.png" style="width: 1em; height: 1em;">
 								</div>
 								<div class="col-6 align-center bold">
 									+2<br>
@@ -154,9 +155,9 @@
 							</div>
 							<div class="col-5 offset-2">
 								<div class="col-6 align-center bold">
-									🔨<br>
-									$<br>
-									👓
+									<img src="/media/game/icons/production.png" style="width: 1em; height: 1em;"><br>
+									<img src="/media/game/icons/gold.png" style="width: 1em; height: 1em;"><br>
+									<img src="/media/game/icons/science.png" style="width: 1em; height: 1em;">
 								</div>
 								<div class="col-6 align-center bold">
 									+2<br>
@@ -177,22 +178,24 @@
 
 				<div class="card card--no-smooth margin-1">
 					<div class="card__header">
-						<div class="card__header__title">Расписание на сегодня</div>
+						<div class="card__header__title">Объявления о продаже</div>
 					</div>
 					<div class="card__content">
-						<div class="vertical-layout vertical-layout--stripped">
-						{% for t in timetable %}
-							<div class="row padding-1 size-fix">
-								<b class="{{request.user.userprofile.accent}}">{{t.lesson.title}}</b><br>
-								<i style="font-size: 0.9em;">{{t.time}} в {{t.place}}</i>
-							</div>
-						{% endfor %}
-						</div>
+						<i class="m-gray-fg">Нет объявлений о продаже</i>
 					</div>
-					<div class="card__footer">
-						<div class="button button--color-{{request.user.userprofile.accent}} button--fit button--transparent align-center">ПОДРОБНЕЕ</div>
+					<div class="card__footer align-center">
+						<div class="button button--color-{{request.user.userprofile.accent}} button--transparent align-center">ОТКРЫТЬ ВСЕ</div>
+						<div class="button button--color-{{request.user.userprofile.accent}} button--transparent align-center">ДОБАВИТЬ</div>
 					</div>
 				</div>
+
+				<div class="card card--no-smooth margin-1">
+					<div class="card__header">
+						<div class="card__header__title">Расписание на сегодня</div>
+					</div>					
+				</div>
+
+				
 			</div>
 		</div>
 	</div>	

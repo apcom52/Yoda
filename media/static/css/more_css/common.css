@@ -202,6 +202,7 @@
   display: none;
 }
 .notification-area {
+  display: none;
   position: fixed;
   right: 0;
   top: 0;
@@ -212,7 +213,7 @@
   z-index: 5;
 }
 .notification-area .notification-area__notification {
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: rgba(51, 51, 51, 0.5);
   color: #ffffff;
   margin: 1em 0.5em;
   cursor: pointer;

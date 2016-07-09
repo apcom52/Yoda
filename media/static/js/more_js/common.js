@@ -1,3 +1,5 @@
+exp = null;
+
 $(function() {
 	var accent = $('body').data('accent');
 
@@ -31,6 +33,15 @@ $(function() {
 		});
 	});*/
 
+	exp = new ExperienceScreen({
+		level: 1,
+		current: 2
+	});
+
+	var nc = new NotificationCenter();
+	nc.push('Hello, everybody!');
+	nc.push('Вы получили 1 новый предмет', { title: 'Новый предмет', icon: 'https://theamazingkarj.files.wordpress.com/2016/01/card_back-edited.jpg?w=50&h=50&crop=1'})
+
 	/* Центр уведомлений */
 	var notificationCenterTabs = new Tabs($('#notificationCenterTabs'));
     var login = $('body').data('user');
@@ -38,16 +49,7 @@ $(function() {
     var notificationIsFirst = true;
     var alarmSong = new Audio('/media/audio/alarm.mp3');
    	var notificationCenter = new Sidebar($('#notificationCenter'), true);
-    checkNotification();
-
-    $('body').on('click', '#notification-area__hide', function() {
-    	console.log('hide');
-    	$('body .notification-area .notification-area__notification').slideUp(300, function() {
-    		$('#page-content').foggy(false);
-    		$('.notification-area').remove();
-    		$('.overflow').remove();
-    	});
-    });
+    checkNotification();   
 
     $('#openNotifications').click(function() {
         notificationCenter.toggle();
@@ -147,14 +149,6 @@ $(function() {
 		$('#back_menu').hide();
 		$('#mainMenu').show();
 	});
-
-	/* Всплывающее уведомление */
-	function notification(message = "Содержимое уведомления", options = {}) {
-		var title = options.title || null;
-		var icon = options.icon || null;
-	}
-
-
 
 	var Friend = Backbone.Model.extend({
 		defaults: {
@@ -346,14 +340,59 @@ ExperienceScreen.prototype.show = function() {
 	}, 2500);
 }
 
+NotificationCenter = function() {
+	this.unreadNotification = 0;
+	this.notifications = [];
+	this.el = $('.notification-area');
+	this.visible = false;
+	this.alarm = new Audio('/media/audio/alarm.mp3');
+	var target = this;
+	this.el.find('#notification-area__hide').click(function() { target.hide(); });
+}
+
+NotificationCenter.prototype.push = function(message = '', options = {}) {
+	var target = this;
+	var title = options.title ? options.title : null;
+	var icon = options.icon ? options.icon : null;
+
+	target.notifications.push({
+		title: title,
+		message: message,
+		icon: icon
+	});
+
+	target.render();
+	target.alarm.play();
+}
+
+NotificationCenter.prototype.render = function() {
+	var target = this;
+	target.el.find('.notification-area__content').html('');
+	var notifications = target.notifications;
+	notifications.forEach(function (item) {
+		var html = '';
+		if (item.icon) html += '<div class="notification-area__notification notification-area__notification--with-icon">';
+		else html += '<div class="notification-area__notification">';
+		if (item.icon) html += '<img src="' + item.icon + '" alt="">';
+		html += '<div class="notification-area__notification__content">';
+		if (item.title) html += '<div class="notification-area__notification__content__title">' + item.title + '</div>';
+		html += '<div class="notification-area__notification__content__message">' + item.message + '</div></div></div>';
+		target.el.find('.notification-area__content').append(html);
+	});
+	$('body').append('<div class="overflow"></div>');
+	$('#page-content').foggy();
+	target.el.show();
+}
+
+NotificationCenter.prototype.hide = function() {
+	$('body .notification-area .notification-area__notification').slideUp(300, function() {
+		$('#page-content').foggy(false);
+		$('.notification-area').hide();
+		$('.overflow').remove();
+	});
+}
+
 
 $(function() {
-	var p = new ExperienceScreen({
-		level: 1,
-		current: 2
-	});
-	p.add(5);
-	setTimeout(function() {
-		p.add(4);
-	}, 5000);
+	
 });
