@@ -423,6 +423,30 @@ Map.prototype.generate = function() {
 					case "01000010":
 						current.sprite = "seaNS";
 						break;
+					case "11111000":
+					case "11111100":
+					case "11111101":
+					case "11111001":
+						current.sprite = "sea_S";
+						break;
+					case "01101011":
+					case "11101011":
+					case "11101111":
+					case "01101111":
+						current.sprite = "sea_W";
+						break;
+					case "00011111":
+					case "00111111":
+					case "10111111":
+					case "10011111":
+						current.sprite = "sea_N";
+						break;
+					case "11010110":
+					case "11110110":
+					case "11110111":
+					case "11010111":
+						current.sprite = "sea_E";
+						break;
 				}
 			}
 		}

@@ -22,6 +22,12 @@ function preload() {
 	game.load.image('loading-screen', '/media/game/loading_screen.jpg');
 	game.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js');
 
+	game.load.image('food', '/media/game/icons/food.png');
+	game.load.image('production', '/media/game/icons/production.png');
+	game.load.image('culture', '/media/game/icons/culture.png');
+	game.load.image('faith', '/media/game/icons/faith.png');
+	game.load.image('science', '/media/game/icons/science.png');
+
 	game.load.image('plain', '/media/game/grass.png');
 	game.load.image('sand', '/media/game/sand.png');
 	game.load.image('mountain', '/media/game/mountains.png');
@@ -38,6 +44,10 @@ function preload() {
 	game.load.image('seaS', '/media/game/waterS.png');
 	game.load.image('seaEW', '/media/game/waterEW.png');
 	game.load.image('seaNS', '/media/game/waterNS.png');
+	game.load.image('sea_W', '/media/game/water_W.png');
+	game.load.image('sea_E', '/media/game/water_E.png');
+	game.load.image('sea_N', '/media/game/water_N.png');
+	game.load.image('sea_S', '/media/game/water_S.png');
 
 	// game.load.image('castle', '/media/game/castle.gif');
 	

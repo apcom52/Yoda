@@ -85,6 +85,7 @@ Render.prototype.draw = function(map = undefined) {
 				if (cell.building) {
 					console.log('find building!');				
 					var building_sprite = game.add.sprite(512 + 64 * n + 32, 384 + 64 * m + 32, cell.building.params.sprite);
+					building_sprite.anchor.setTo(0.5, 0.5);
 					target.cells.add(building_sprite);
 				} else if (cell.resource != "") {
 					switch(cell.resource) {
@@ -140,8 +141,24 @@ Render.prototype.draw = function(map = undefined) {
 							break;
 					}				
 				}				
-				var str = "";
-				if (cell.values.food) str += "🍎 " + cell.values.food + "\n";
+				/*var cell_icons = [];
+				var params = ["food", "production", "culture", "faith", "science"];
+				for (param_id = 0; param_id < params.length; param_id++) {
+					if (cell.values[params[param_id]]) {
+						for (var i = 0; i < cell.values[params[param_id]]; i++) {
+							cell_icons[i] = params[param_id];
+						}
+					}
+				}*/
+
+				// var icons_group = game.add.group();
+				/*for (var i = 0; i < cell_icons.length; i++) {
+					var icon_sprite = game.add.sprite(512 + 64*n + 20 * i + 2, 512 + 64*m + 20 * i + 2, cell_icons[i]);
+				}*/
+
+				/*if (cell.values.food) {
+					str += "🍎 " + cell.values.food + "\n";
+				}
 				if (cell.values.production) str += "🔨 " + cell.values.production + "\n";
 				if (cell.values.culture) str += "🕮 " + cell.values.culture + "\n";
 				if (cell.values.gold) str += "$ " + cell.values.gold + "\n";
@@ -155,7 +172,7 @@ Render.prototype.draw = function(map = undefined) {
 					});
 					values_txt.anchor.setTo(0.5, 0.5);
 					target.cells.add(values_txt);
-				}
+				}*/
 				n++;
 			}
 			
