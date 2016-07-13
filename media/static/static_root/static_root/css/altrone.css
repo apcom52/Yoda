@@ -7879,6 +7879,8 @@ img.img--border {
   margin: 0px;
   zoom: 1;
   width: 100%;
+}
+.grid:not(.parallax__layer) {
   overflow: hidden;
 }
 .grid [class^='col-'] {
@@ -10571,6 +10573,7 @@ input[type="reset"].button--checked,
   height: 1em;
   border-radius: 0.2em;
   top: 0em;
+  transition: all 0.3s linear;
 }
 .progress.progress--color-red {
   background-color: #ea7f7f;
@@ -13322,6 +13325,25 @@ input[type="reset"].button--checked,
   background-color: #333333;
   color: #f5f5f5;
   border-color: #404040;
+}
+.parallax {
+  perspective: 1px;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.parallax .parallax__layer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+}
+.parallax .parallax__layer.parallax__layer--backstage {
+  transform: translateZ(-2px) scale(3);
+}
+.parallax .parallax__layer.parallax__layer--front {
+  transform: translateZ(0);
 }
 .card {
   display: block;

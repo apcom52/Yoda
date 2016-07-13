@@ -29,7 +29,11 @@ function preload() {
 	game.load.image('science', '/media/game/icons/science.png');
 
 	game.load.image('plain', '/media/game/grass.png');
+	game.load.image('plain1', '/media/game/grass1.png');
+	game.load.image('plain2', '/media/game/grass2.png');
 	game.load.image('sand', '/media/game/sand.png');
+	game.load.image('sand1', '/media/game/sand1.png');
+	game.load.image('sand2', '/media/game/sand2.png');
 	game.load.image('mountain', '/media/game/mountains.png');
 	
 	game.load.image('sea', '/media/game/water.png');
@@ -76,9 +80,9 @@ function preload() {
 	game.load.image('castle1', '/media/game/castle1.png');
 }
 
-var map = new Map('RUS');
+//var map = new Map('RUS');
 var render = new Render(game);
-map.generate();
+//map.generate();
 
 function create() {
 	// console.log(map.cells);
@@ -92,7 +96,15 @@ function create() {
 	// loading_tooltip.fontSize = 14;
 	// loading_tooltip.fill = "#ffd700";
 	// loading_tooltip.setShadow(2, 2, 'rgba(0,0,0,0.5)', 2);
-	render.draw(map);
+	$.get('/api/game/generatemap/', {},
+		function(response) {
+			console.log(response);
+			var m = {}
+			m.cells = response;
+			render.draw(m);
+		}
+	);
+	// render.draw(map);
 
 	game.kineticScrolling.configure({
 		kineticMovement: false,

@@ -193,8 +193,6 @@ Map.prototype.generate = function() {
 			var happiness = 0;
 			var gold = 0;
 
-			sprite = type;
-
 			if (type == Map.PLAIN) {
 				food = 1;
 			}
@@ -302,6 +300,21 @@ Map.prototype.generate = function() {
 				}
 			}
 
+			/* Генерируем разнообразие карты (кактусы, бочки и прочее) */
+			if (type == Map.PLAIN && resource == "") {
+				var spriteRandom = Math.random();
+				if (spriteRandom < 0.25) sprite = "plain1";
+				else if (spriteRandom >= 0.25 && spriteRandom < 0.41) sprite = "plain2";
+				else sprite = type;
+			} else if (type == Map.SAND && resource == "") {
+				var spriteRandom = Math.random();
+				if (spriteRandom < 0.23) sprite = "sand1";
+				else if (spriteRandom >= 0.23 && spriteRandom < 0.39) sprite = "sand2";
+				else sprite = type;
+			} else {
+				sprite = type;
+			}
+
 			cells[i][j] = {
 				type: type,
 				sprite: sprite,
@@ -332,6 +345,7 @@ Map.prototype.generate = function() {
 			var current = cells[i][j];
 			var type = current.type;
 			var str = "";
+
 			if (type == "sea") {	
 				/* 	Проверяем верхнюю строчку. 
 					Если строчка является первой, то заполняем 111. 

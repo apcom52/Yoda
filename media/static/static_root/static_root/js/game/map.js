@@ -49,8 +49,17 @@ Map.MOUNTAIN = "mountain";
 
 Map.RESOURCE_STONE = "stone";
 Map.RESOURCE_WOOD = "wood";
+Map.RESOURCE_SANDS = "sands";
 Map.RESOURCE_IRON = "iron";
 Map.RESOURCE_CARBON = "carbon";
+Map.RESOURCE_OIL = "oil";
+Map.RESOURCE_URAN = "uran";
+
+Map.RESOURCE_WHEAT = "wheat";
+Map.RESOURCE_GRAPES = "grapes";
+Map.RESOURCE_CITRUS = "citrus";
+
+Map.BUILDING_CASTLE1 = "castle1";
 
 Map.prototype.generate = function() {
 	var target = this;
@@ -248,6 +257,48 @@ Map.prototype.generate = function() {
 						production = 1;
 						food = 0;
 					}
+				} else if (resourceRnd > OIL_RESOURCE_CHANCE.from && resourceRnd <= OIL_RESOURCE_CHANCE.to) {
+					if (type == Map.SAND || type == Map.SEA) {						
+						resource = Map.RESOURCE_OIL;
+						production = 1;
+						food = 0;
+						faith = 0;
+					}
+				} else if (resourceRnd > URAN_RESOURCE_CHANCE.from && resourceRnd <= URAN_RESOURCE_CHANCE.to) {
+					if (type == Map.PLAIN || type == Map.SAND) {						
+						resource = Map.RESOURCE_URAN;
+						production = 1;
+						food = 0;
+						faith = 0;
+					}
+				} else if (resourceRnd > SAND_RESOURCE_CHANCE.from && resourceRnd <= SAND_RESOURCE_CHANCE.to) {
+					if (type == Map.SAND) {						
+						resource = Map.RESOURCE_SANDS;
+						production = 1;
+						food = 0;
+						faith = 0;
+					}
+				}
+			} else if (hasResource > 0.25 && hasResource <= 0.34) {
+				var resourceRnd = Math.random();
+				if (resourceRnd > WHEAT_RESOURCE_CHANCE.from && resourceRnd <= WHEAT_RESOURCE_CHANCE.to) {
+					if (type == Map.PLAIN) {						
+						resource = Map.RESOURCE_WHEAT;
+						production = 0;
+						food = 2;
+					}
+				} else if (resourceRnd > GRAPES_RESOURCE_CHANCE.from && resourceRnd <= GRAPES_RESOURCE_CHANCE.to) {
+					if (type == Map.PLAIN) {						
+						resource = Map.RESOURCE_GRAPES;
+						production = 0;
+						food = 2;
+					}
+				} else if (resourceRnd > CITRUS_RESOURCE_CHANCE.from && resourceRnd <= CITRUS_RESOURCE_CHANCE.to) {
+					if (type == Map.PLAIN) {						
+						resource = Map.RESOURCE_CITRUS;
+						production = 0;
+						food = 2;
+					}
 				}
 			}
 
@@ -372,25 +423,52 @@ Map.prototype.generate = function() {
 					case "01000010":
 						current.sprite = "seaNS";
 						break;
+					case "11111000":
+					case "11111100":
+					case "11111101":
+					case "11111001":
+						current.sprite = "sea_S";
+						break;
+					case "01101011":
+					case "11101011":
+					case "11101111":
+					case "01101111":
+						current.sprite = "sea_W";
+						break;
+					case "00011111":
+					case "00111111":
+					case "10111111":
+					case "10011111":
+						current.sprite = "sea_N";
+						break;
+					case "11010110":
+					case "11110110":
+					case "11110111":
+					case "11010111":
+						current.sprite = "sea_E";
+						break;
 				}
 			}
 		}
 	}
 
 	/* Определяем стартовую позицию игрока */
-	var start_x = chooseInRange(3, 29);
-	var start_y = chooseInRange(3, 29);
+	var start_x = chooseInRange(5, 25);
+	var start_y = chooseInRange(5, 25);
 	while(cells[start_y][start_x].type == Map.SEA) {
-		var start_x = chooseInRange(2, 30);
-		var start_y = chooseInRange(2, 30);
+		var start_x = chooseInRange(5, 25);
+		var start_y = chooseInRange(5, 25);
 	}
 	target.startPosition = {
 		x: start_x,
 		y: start_y
 	}
 
-	for (i = target.startPosition.x - 3; i < target.startPosition.x + 2; i++)
-		for (j = target.startPosition.y - 3; j < target.startPosition.y + 2; j++)
+	// cells[start_y][start_x].building = new Building(Building.CASTLE);
+	console.log(cells[start_y][start_x]);
+
+	for (i = target.startPosition.y - 2; i <= target.startPosition.y + 2; i++)
+		for (j = target.startPosition.x - 2; j <= target.startPosition.x + 2; j++)
 			cells[i][j].visible = true;
 
 }

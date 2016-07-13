@@ -1,0 +1,208 @@
+@import url(http://fonts.googleapis.com/css?family=PT+Sans:700,400);
+.pt {
+  font-family: 'PT Sans', 'Segoe UI', sans-serif;
+}
+.pt {
+  font-family: 'PT Sans', 'Segoe UI', sans-serif;
+}
+.timetable-view .timetable-view__label {
+  width: 100%;
+  padding: 16px;
+  box-sizing: border-box;
+}
+.timetable-view .timetable-view__label .timetable-view__label__title {
+  font-size: 2em;
+  font-family: HelveticaNeueThin, sans-serif;
+  font-weight: 100;
+  text-transform: lowercase;
+}
+.timetable-view .timetable-view__label .timetable-view__label__meta {
+  font-size: 1em;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+.timetable-view .timetable-view__content-day {
+  display: table;
+  width: 100%;
+  opacity: 1;
+  transition: all 0.15s linear;
+}
+.timetable-view .timetable-view__content-day .row {
+  display: flex;
+  color: #333333;
+}
+.timetable-view .timetable-view__content-day .row .time {
+  text-align: center;
+  width: 3em;
+  font-size: 1.5em;
+  font-family: HelveticaNeueThin;
+  font-weight: 100;
+  flex: 1;
+}
+.timetable-view .timetable-view__content-day .row .subject {
+  padding: 0.5em;
+  flex: 9;
+}
+.timetable-view .timetable-view__content-day .row .subject .title {
+  font-size: 2em;
+  font-weight: bold;
+  font-family: HelveticaNeueBold, sans-serif;
+}
+.timetable-view .timetable-view__content-day .row .subject .meta {
+  font-size: 0.9em;
+  font-family: HelveticaNeueMedium, sans-serif;
+}
+.timetable-view .timetable-view__content-day .row .subject .homework {
+  width: 100%;
+  background-color: #f5f5f5;
+  color: #333333;
+  padding: 0.5em 1em;
+  box-sizing: border-box;
+  margin-top: 0.5em;
+}
+.timetable-view .timetable-view__content-day .row .subject .homework .homework__title {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.timetable-view .timetable-view__content-day .row .subject.lection {
+  background-color: #dfef75;
+}
+.timetable-view .timetable-view__content-day .row .subject.lection .homework {
+  background-color: #daec5e;
+}
+.timetable-view .timetable-view__content-day .row .subject.practice {
+  background-color: #85c0ec;
+}
+.timetable-view .timetable-view__content-day .row .subject.practice .homework {
+  background-color: #6fb4e8;
+}
+.timetable-view .timetable-view__content-day .row .subject.lab {
+  background-color: #ed9595;
+}
+.timetable-view .timetable-view__content-day .row .subject.lab .homework {
+  background-color: #ea7f7f;
+}
+.timetable-view .timetable-view__content-day .row .subject.ended {
+  opacity: 0.5;
+}
+.timetable-view .timetable-view__content-week {
+  transform: scale(1);
+  opacity: 1;
+  transition: all 0.15s linear;
+}
+.timetable-view .timetable-view__content-week .row {
+  display: flex;
+}
+.timetable-view .timetable-view__content-week .row .date {
+  text-align: center;
+  flex: 1;
+}
+.timetable-view .timetable-view__content-week .row .date .date__day {
+  font-size: 3em;
+}
+.timetable-view .timetable-view__content-week .row .shedule {
+  flex: 5;
+}
+.timetable-view .timetable-view__content-week .row .shedule .lesson {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  border-left: 5px solid #666666;
+  padding: 0.5em 1em;
+}
+.timetable-view .timetable-view__content-week .row .shedule .lesson.lection {
+  border-color: #b5cc18;
+}
+.timetable-view .timetable-view__content-week .row .shedule .lesson.practice {
+  border-color: #2185d0;
+}
+.timetable-view .timetable-view__content-week .row .shedule .lesson.lab {
+  border-color: #db2828;
+}
+.timetable-view .timetable-view__content-month {
+  transform: scale(1);
+  opacity: 1;
+  transition: all 0.15s linear;
+}
+.timetable-view .timetable-view__content-month .row {
+  display: flex;
+  font-family: 'PT Sans', 'Segoe UI', sans-serif;
+}
+.timetable-view .timetable-view__content-month .row .column {
+  flex: 1;
+  max-width: 14.28%;
+  cursor: pointer;
+}
+.timetable-view .timetable-view__content-month .row .column:last-child {
+  max-width: 14.32%;
+}
+.timetable-view .timetable-view__content-month .row .column:hover,
+.timetable-view .timetable-view__content-month .row .column:active {
+  background-color: #dcdcdc;
+  transition: all 0.3s linear;
+}
+.timetable-view .timetable-view__content-month .row .column .day {
+  font-size: 2em;
+}
+.timetable-view .timetable-view__content-month .row .column.no-select {
+  background-color: transparent;
+  transition: all 0.3s linear;
+}
+.timetable-view .timetable-view__content-month .row .column .content .meta {
+  color: #666666;
+  font-size: 0.9em;
+}
+.timetable-view .timetable-view__content-month .row .column .content .event {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0em -1em;
+  width: calc(100% + 2em);
+  padding: 0.25em 0.5em;
+  box-sizing: border-box;
+  font-size: 0.8em;
+  margin-top: 1px;
+}
+.timetable-view .timetable-view__content-month .row .column .content .event .time {
+  font-weight: bold;
+  margin-right: 0.25em;
+}
+@media (max-width: 767px) {
+  .timetable-view .timetable-view__label .timetable-view__label__meta {
+    font-size: 0.7em;
+  }
+  .timetable-view .timetable-view__content-day .row .time {
+    font-size: 1.3em;
+  }
+  .timetable-view .timetable-view__content-day .row .subject .title {
+    font-size: 1.25em;
+  }
+  .timetable-view .timetable-view__content-month.vertical-layout--stripped .row {
+    background-color: #f5f5f5 !important;
+  }
+  .timetable-view .timetable-view__content-month .row {
+    display: block;
+  }
+  .timetable-view .timetable-view__content-month .row .column {
+    display: flex;
+    max-width: 100%;
+  }
+  .timetable-view .timetable-view__content-month .row .column:last-child {
+    max-width: 100%;
+  }
+  .timetable-view .timetable-view__content-month .row .column.last-month {
+    display: none;
+  }
+  .timetable-view .timetable-view__content-month .row .column .day {
+    flex: 1;
+    min-width: 25%;
+  }
+  .timetable-view .timetable-view__content-month .row .column.no-select {
+    background-color: transparent;
+    transition: all 0.3s linear;
+  }
+  .timetable-view .timetable-view__content-month .row .column .content {
+    max-width: 75%;
+    flex: 3;
+  }
+}

@@ -24,14 +24,22 @@ class SmileCollection(models.Model):
 		return self.title
 
 class Background(models.Model):
+	qualities = (
+		(1, 'Стандартный фон'),
+		(2, 'Редкий фон'),
+		(3, 'Коллекционный фон')
+	)
+
 	title = models.CharField('Название фона', max_length = 128)
-	icon = models.ImageField(upload_to='background/%Y/%m/%d/', verbose_name='Фон', default='img/2015/08/04/ufo.jpg')
-	price_low = models.IntegerField('Цена за барахло')
-	price_med = models.IntegerField('Цена за качественную вещь')
-	price_high = models.IntegerField('Цена за дорогую вещь')
+	background = models.ImageField(upload_to='background/%Y/%m/%d/', verbose_name='Фон', default='img/2015/08/04/ufo.jpg')
+	quality = models.IntegerField('Частота', choices = qualities, default = 1)
+	description = models.TextField('Описание фона', default = "Пусто")
 
 	def __str__(self):
 		return self.title
+
+class BackgroundAdmin(admin.ModelAdmin):
+	list_display = ('title', 'quality')
 
 class Item(models.Model):
 	title = models.CharField('Название фона', max_length = 128)

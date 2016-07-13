@@ -7,15 +7,18 @@
 	background: gray;
 }
 
-@font-face {
-    font-family: WeatherFont; 
-    src: url(../fonts/Weather&Time.ttf); 
+.avatar-animation {
+	transform: rotate(0deg) !important;
+	opacity: 1 !important;
+	margin-left: 0em !important;
 }
 
-.weather-icons {
-	font-family: WeatherFont;
+.avatar-start {
+	transform: rotate(-90deg);
+	opacity: 0.35;
+	margin-left: -10em;
+	.anim(0.5s);
 }
-
 
 .y-sidebar {
 	width: 450px;
@@ -193,4 +196,110 @@
 
 #back_menu {
 	display: none;
+}
+
+.notification-area {
+	display: none;
+	position: fixed;
+	right: 0;
+	top: 0;
+	width: 480px;
+	height: 100%;
+	overflow-y: auto;
+	overflow-x: hidden;
+	z-index: 5;
+
+	.notification-area__notification {
+		background-color: rgba(51, 51, 51, .5);
+		color: @white;
+		margin: 1em 0.5em;
+		cursor: pointer;
+		border-radius: 1em;
+		padding: 1em;
+		box-sizing: box-sizing;
+		box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
+		.pt();
+
+		.notification-area__notification__content {
+			.notification-area__notification__content__title {
+				font-weight: bold;
+			}
+
+			.notification-area__notification__content__message {
+				font-size: 0.9em;
+			}
+		}		
+
+		&.notification-area__notification--with-icon {
+			display: flex;
+			align-items: center;
+
+			img {
+				flex: 1;
+				max-width: 48px;
+				height: 48px;
+			}
+
+			.notification-area__notification__content {
+				flex: 1;
+				padding: 0.5em 1em;
+				box-sizing: border-box;
+			}
+		}
+	}
+}
+
+.new-level-screen {
+	display: flex;
+	position: fixed;
+	bottom: 0em;
+	left: 35.5%;
+	width: 25%;
+	background-color: @u-gray;
+	border-radius: 2em;
+	border: 1px solid darken(@u-gray, 5%);
+	z-index: 5;
+	opacity: 0;
+	transition: all 1s linear;
+
+	&.new-level-screen--show {
+		opacity: 1;
+		bottom: 2em;
+		transition: all 0.5s linear;
+	}
+
+	img {
+		flex: 1;
+		width: 3em;
+		max-width: 3em;
+		height: 3em;
+		margin: 0.25em;
+		border-radius: 50%;
+	}
+
+	.user {
+		flex: 1;
+		.pt();
+		padding: 0em 1em;
+
+		.meta {
+			font-size: 0.8em;
+			color: @m-gray;
+		}
+	}
+}
+
+.game-icon {
+	display: inline-flex;
+	align-items: center;
+
+	img {
+		max-width: 18px;
+		max-height: 18px;
+		padding: 0px 8px;
+	}
+
+	span {
+		font-weight: bold;
+	}
 }

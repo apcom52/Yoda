@@ -94,6 +94,7 @@ class UserProfile(models.Model):
 	
 	theme = models.CharField('Тема', choices = themes, default = 'light', max_length = 8)
 	accent = models.CharField('Акцентный цвет', choices = accents, default = 'blue', max_length = 12)
+	bg = models.ForeignKey(Background)
 	lang = models.CharField('Язык интерфейса', choices = languages, default = 'ru', max_length=2)
 	beta = models.BooleanField('Бета-функции', default = False)
 	hide_email = models.BooleanField('Скрывать адрес e-mail', default = False)

@@ -1,0 +1,14 @@
+.feed .feed__item .feed__item__header {
+  display: flex;
+}
+.feed .feed__item .feed__item__header .avatar {
+  border-radius: 50%;
+  width: 2em;
+  height: 2em;
+  margin: 1em 0.5em;
+  cursor: pointer;
+  flex: 1;
+}
+.feed .feed__item .feed__item__header .username .name {
+  cursor: pointer;
+}

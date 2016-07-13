@@ -36,6 +36,7 @@ urlpatterns = [
 	url('^event/$', views.EventAPI.as_view()),
 
 	url('^game/technologies/$', game_api.TechnologiesList.as_view()),
+	url('^game/generatemap/$', game_api.GenerateMap.as_view()),
 
 	#url('^', include(router.urls)),
 ]

@@ -15,19 +15,18 @@ Render.prototype.draw = function(map = undefined) {
 			item.destroy();
 		});
 	}	
-	map = target.map;
+	// map = map;
 	cells = map.cells;
 	game = target.game;
 	target.cells = game.add.group();
-	console.log(map.startPosition);
 
 	/* Ищем границы "видимого" мира */
 	var visibleBounds = {
 		y1: null,
 		x1: null
 	};
-	for (var i = 0; i < map.y_size; i++) {
-		for (var j = 0; j < map.x_size; j++)
+	for (var i = 0; i < 32; i++) {
+		for (var j = 0; j < 32; j++)
 			if (cells[i][j].visible) {
 				visibleBounds.y1 = i;
 				break;
@@ -35,8 +34,8 @@ Render.prototype.draw = function(map = undefined) {
 		if (visibleBounds.y1) break;
 	}
 
-	for (var j = 0; j < map.x_size; j++) {
-		for (var i = visibleBounds.y1; i < map.y_size; i++) {
+	for (var j = 0; j < 32; j++) {
+		for (var i = visibleBounds.y1; i < 32; i++) {
 			if (cells[i][j].visible) {
 				visibleBounds.x1 = j;
 				break;
@@ -46,8 +45,8 @@ Render.prototype.draw = function(map = undefined) {
 	}
 	/* Ищем ширину */
 	visibleBounds.x2 = visibleBounds.x1;
-	for (var i = visibleBounds.y1; i < map.y_size; i++) {
-		for (var j = visibleBounds.x1; j < map.x_size; j++) {
+	for (var i = visibleBounds.y1; i < 32; i++) {
+		for (var j = visibleBounds.x1; j < 32; j++) {
 			if (cells[i][j].visible) {
 				if (j > visibleBounds.x2) 
 					visibleBounds.x2 = j;				
@@ -55,9 +54,9 @@ Render.prototype.draw = function(map = undefined) {
 		}
 	}
 	visibleBounds.y2 = visibleBounds.y1;
-	for (var i = visibleBounds.y1; i < map.y_size; i++) {
+	for (var i = visibleBounds.y1; i < 32; i++) {
 		var hasCells = false;
-		for (var j = visibleBounds.x1; j < map.x_size; j++) {
+		for (var j = visibleBounds.x1; j < 32; j++) {
 			if (cells[i][j].visible) {
 				hasCells = true;
 				break;			
@@ -68,9 +67,12 @@ Render.prototype.draw = function(map = undefined) {
 		}
 	}
 
+	console.log(visibleBounds);
+
 	for (var i = visibleBounds.y1, m = -(visibleBounds.y2 - visibleBounds.y1) / 2 + 1; i <= visibleBounds.y2; i++, m++) {
 		for (var j = visibleBounds.x1, n = -(visibleBounds.x2 - visibleBounds.x1) / 2 + 1; j <= visibleBounds.x2; j++) {
-			var cell = map.cells[i][j];
+			var cell = cells[i][j];
+
 			if (cell.visible) {
 				hasVisibleCells = true;
 				var current = game.add.sprite(512 + 64 * n, 384 + 64 * m, cell.sprite);

@@ -13,9 +13,15 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 import socket
+import djcelery
+# from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# djcelery.setup_loader()
+CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
+CELERY_ALWAYS_EAGER = False
+BROKER_BACKEND = "djkombu.transport.DatabaseTransport"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
@@ -45,6 +51,7 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     #'debug_toolbar',
     'rest_framework',
+    # 'endless_pagination',
     'pytz',
     'bbcode',
     'pymorphy2',
@@ -62,6 +69,8 @@ INSTALLED_APPS = (
     'library', 
     'feedback',   
     'game',
+    'djcelery',
+    'djkombu',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -94,6 +103,10 @@ TEMPLATES = [
         },
     },
 ]
+
+# TEMPLATE_CONTEXT_PROCESSORS += (
+#     'django.core.context_processors.request',
+# )
 
 WSGI_APPLICATION = 'yoda.wsgi.application'
 

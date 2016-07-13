@@ -13,6 +13,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from game.models import *
+from game.classes import *
 
 class TechnologiesList(APIView):
 	def get(self, request, format = None):
@@ -38,3 +39,8 @@ class TechnologiesList(APIView):
 		return Response({
 			'available': available_response,
 			})
+
+class GenerateMap(APIView):
+	def get(self, request, format = None):
+		map = Map("RU")
+		return Response(map.generate())

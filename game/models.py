@@ -13,6 +13,34 @@ class Nation(models.Model):
 	def __str__(self):
 		return self.title
 
+class Game(models.Model):
+	class Meta():
+		verbose_name = 'Игра'
+		verbose_name_plural = 'Игры'
+	user = models.ForeignKey(User, verbose_name = u'Пользователь')
+	nation = models.ForeignKey(Nation, verbose_name = u'Нация')
+	is_completed = models.BooleanField('Игра завершилась', default = False)
+
+	def __str__(self):
+		return '%s (%s)' % (self.user.first_name + ' ' + self.user.last_name, self.nation)
+
+class GameAdmin(admin.ModelAdmin):
+	list_display = ('user', 'nation', 'is_completed')
+
+class Step(models.Model):
+	class Meta():
+		verbose_name = 'Ход'
+		verbose_name_plural = 'Ходы'
+	step = models.IntegerField('Номер хода')
+	game =  models.ForeignKey(Game, verbose_name = u'Номер игры')
+	date = models.DateTimeField('Дата и время хода')
+
+	def __str__(self):
+		return '#%s %s' % (self.step_id, self.game)
+
+class StepAdmin(admin.ModelAdmin):
+	list_display = ('step', 'game', 'date')
+
 class Map(models.Model):
 	class Meta():
 		verbose_name = 'Карта'
