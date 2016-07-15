@@ -1,3 +1,5 @@
+from .models import *
+
 class Empire:
 	PLAIN = "plain"
 	SAND = "sand"
@@ -343,3 +345,61 @@ class Map:
 		elif rnd > 0.5 and rnd <= 0.7: return Empire.SAND
 		elif rnd > 0.75 and rnd <= 0.93: return Empire.SEA
 		else: return Empire.MOUNTAIN
+
+class GameManager():
+	def __init__(self):
+		pass
+
+	def check(self):
+		from datetime import datetime, timezone
+		from django.utils import timezone
+		from timetable.utils import utc_to_local
+		now = timezone.now()
+
+		actives_games = Game.objects.all().filter(is_completed = False)
+		for game in actives_games:
+			last_step = Step.objects.filter(game = game).latest('id')
+			print(last_step)
+			step_time = last_step.date
+			time_delta = now - step_time
+			print(time_delta)
+
+			delta_hours = (time_delta.seconds) // 3600
+			print(delta_hours)
+			if (delta_hours >= 1):
+				for i in range(0, delta_hours):
+					print('шаг #', i)
+					self.step(game)
+
+	def step(self, game):
+		import datetime
+		last_step = Step.objects.filter(game = game).latest('id')
+		science_pt = 1
+		faith_pt = 1
+		step = Step()
+		step.game = game
+		step.date = datetime.datetime.today()
+		step.step = last_step.step + 1
+
+		step.science = science_pt
+		step.faith = faith_pt
+
+		game.faith += step.faith
+
+		# Изучаем технологии
+		current_tech = UserTeach.objects.all().filter(game = game, completed = False).latest('id')
+		print(current_tech)
+		if current_tech:
+			current_sp = current_tech.progress + science_pt
+			
+			if current_sp >= current_tech.technology.sp:
+				current_tech.progress = current_tech.technology.sp
+				current_sp -= current_tech.technology.sp
+				current_tech.completed = True
+			else:
+				current_tech.progress = current_sp
+				game.science = current_sp
+				step.science = science_pt
+			current_tech.save()
+			game.save()
+		step.save()

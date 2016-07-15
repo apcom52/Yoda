@@ -20,6 +20,14 @@ class Game(models.Model):
 	user = models.ForeignKey(User, verbose_name = u'Пользователь')
 	nation = models.ForeignKey(Nation, verbose_name = u'Нация')
 	is_completed = models.BooleanField('Игра завершилась', default = False)
+	science = models.FloatField('Очки науки', default = 0)
+	production = models.FloatField('Очки производства', default = 0)
+	food = models.FloatField('Очки еды', default = 0)
+	gold = models.FloatField('Очки золота', default = 0)
+	culture = models.FloatField('Очки культуры', default = 0)
+	faith = models.FloatField('Очки веры', default = 0)
+	tourism = models.FloatField('Очки туризма', default = 0)
+	happiness = models.FloatField('Очки настроения', default = 0)
 
 	def __str__(self):
 		return '%s (%s)' % (self.user.first_name + ' ' + self.user.last_name, self.nation)
@@ -34,9 +42,17 @@ class Step(models.Model):
 	step = models.IntegerField('Номер хода')
 	game =  models.ForeignKey(Game, verbose_name = u'Номер игры')
 	date = models.DateTimeField('Дата и время хода')
+	science = models.FloatField('Очки науки за ход', default = 0)
+	production = models.FloatField('Очки производства за ход', default = 0)
+	food = models.FloatField('Очки еды за ход', default = 0)
+	gold = models.FloatField('Очки золота за ход', default = 0)
+	culture = models.FloatField('Очки культуры за ход', default = 0)
+	faith = models.FloatField('Очки веры за ход', default = 0)
+	tourism = models.FloatField('Очки туризма за ход', default = 0)
+	happiness = models.FloatField('Очки настроения за ход', default = 0)
 
 	def __str__(self):
-		return '#%s %s' % (self.step_id, self.game)
+		return '#%s %s' % (self.step, self.game)
 
 class StepAdmin(admin.ModelAdmin):
 	list_display = ('step', 'game', 'date')
@@ -196,11 +212,15 @@ class UserTeach(models.Model):
 		verbose_name_plural = 'Исследования игроков'
 
 	login = models.ForeignKey(User, verbose_name = 'Пользователь')
+	game = models.ForeignKey(Game, verbose_name = 'Игра')
 	technology = models.ForeignKey(Technology, verbose_name = 'Технология')
 	progress = models.FloatField('Прогресс исследования', default = 0, blank = True, null = True)
 	date_start = models.DateTimeField('Дата начала изучения')
 	date_end = models.DateTimeField('Дата окончания изучения', blank = True, null = True)
 	completed = models.BooleanField('Технология изучена', default = False)
+
+	def __str__(self):
+		return '%s -> %s' % (self.login, self.technology)
 
 class UserTeachAdmin(admin.ModelAdmin):
 	list_display = ('login', 'technology', 'date_start', 'progress', 'completed')

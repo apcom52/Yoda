@@ -10,6 +10,8 @@ from achievements.models import Action, AchUnlocked, Feed
 from events.models import Event, UserVisitEvent
 from notes.models import Note
 from polls.models import Question
+from game.models import *
+from game.classes import *
 from inventory.models import UserInventoryItem, Item, Catapult
 from .utils import FeedManager, TimetableManager, DTControl, avatar, addAction, checkAchievements, setAch, dateInfo, getTimetable, UpdateStatus, setBonusPoints, bingo#, getNotifications
 from .models import Lesson, Teacher, Timetable, Homework, Control, NewPlace, TeacherTimetable, NotStudyTime, TransferredLesson, CanceledLesson
@@ -27,6 +29,10 @@ def index(request):
 
 	if request.user.userprofile.beta:
 		fm = FeedManager()
+
+		# Обновление игровых состояний
+		gm = GameManager()
+		gm.check()
 
 		context = {
 			'title': 'Yoda',
