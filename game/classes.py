@@ -374,7 +374,7 @@ class GameManager():
 	def step(self, game):
 		import datetime
 		last_step = Step.objects.filter(game = game).latest('id')
-		science_pt = 1
+		science_pt = 3
 		faith_pt = 1
 		step = Step()
 		step.game = game
@@ -393,9 +393,22 @@ class GameManager():
 			current_sp = current_tech.progress + science_pt
 			
 			if current_sp >= current_tech.technology.sp:
+				from timetable.utils import sendNotification
+
 				current_tech.progress = current_tech.technology.sp
 				current_sp -= current_tech.technology.sp
 				current_tech.completed = True
+
+				game.user.userprofile.exp += 1
+				game.user.save()
+
+				sendNotification({
+					"user": game.user,
+					"title": "Технология изучена",
+					"type": 1,
+					"text": "Вы изучили технологию \"" + current_tech.technology.name + "\""
+				})
+
 			else:
 				current_tech.progress = current_sp
 				game.science = current_sp

@@ -10,6 +10,7 @@
 	<script type="text/javascript" src="/media/static/js/game/render.js"></script>
 	<script type="text/javascript" src="/media/static/js/game/game.js"></script>
 	<link href="/media/static/css/font-awesome.css" rel="stylesheet">
+	<link href="/media/static/css/more_css/game.css" rel="stylesheet">
 
 	<style>
 		body {
@@ -56,65 +57,143 @@
 </div>
 
 <div class="modal modal--size-xl" id="scienceModal">
+	<div class="modal__header">
+		<div class="modal__header__title">Технологии</div>
+	</div>
 	<div class="modal__content padding-0">
 		<div class="grid">
-			<div class="col-4">
-				<div class="margin-1 size-fix">
-					<h3>Доступные исследования:</h3>
-					<p>На данный момент у вас <b class="blue-fg">1 <i class="fa fa-flask"></i></b> в ход<br>
-					Вы исследовали <b>0% технологий</b> для научной победы</p>
-				</div>
-				<div class="list-navigation">
-					<div class="list-navigation__item">
-						<div class="list-navigation__item__icon"><i class="flaticon-star"></i></div>
-						<div class="list-navigation__item__content">
-							<div class="list-navigation__item__content__title">Письменность</div>
-							<div class="list-navigation__item__content__meta"><div class="game-icon"><span>50</span><img src="/media/game/icons/science.png" alt=""></div></div>
+			<div class="col-4 size-fix">
+				<p class="margin-horizontal-1">На данный момент вы производите <span class="game-icon"><span>2</span><img src="/media/game/icons/science.png" alt=""></span> в ход</p>
+				<div class="technology-list">
+					<div class="technology-list__title">В процессе изучения:</div>
+					<div class="technology-list__item">
+						<img class="technology-list__item__icon" src="http://dankir.users.photofile.ru/photo/dankir/4048635/xlarge/96876179.jpg" alt="">
+						<div class="technology-list__item__info">
+							<div class="technology__list__item__title">Письменность</div>
+							<div class="technology__list__item__meta"><span class="game-icon"><span>50</span><img src="/media/game/icons/science.png" alt=""></span></div>
 						</div>
-						<div class="list-navigation__item__right-icon"><i class="flaticon-right"></i></div>
 					</div>
-					<div class="list-navigation__item">
-						<div class="list-navigation__item__icon"><i class="flaticon-star"></i></div>
-						<div class="list-navigation__item__content">
-							<div class="list-navigation__item__content__title">Земледелие</div>
-							<div class="list-navigation__item__content__meta"><div class="game-icon"><span>50</span><img src="/media/game/icons/science.png" alt=""></div></div>
+
+					<div class="technology-list__title">Доступные технологии:</div>
+					<div class="technology-list__item">
+						<img class="technology-list__item__icon" src="http://acropolis.org.ru/img/site/image/calennum3478/anons/squ/krug.jpg" alt="">
+						<div class="technology-list__item__info">
+							<div class="technology__list__item__title">Гончарное дело</div>
+							<div class="technology__list__item__meta"><span class="game-icon"><span>50</span><img src="/media/game/icons/science.png" alt=""></span></div>
 						</div>
-						<div class="list-navigation__item__right-icon"><i class="flaticon-right"></i></div>
 					</div>
-					<div class="list-navigation__item">
-						<div class="list-navigation__item__icon"><i class="flaticon-star"></i></div>
-						<div class="list-navigation__item__content">
-							<div class="list-navigation__item__content__title">Торговля</div>
-							<div class="list-navigation__item__content__meta"><div class="game-icon"><span>50</span><img src="/media/game/icons/science.png" alt=""></div></div>
+					<div class="technology-list__item">
+						<img class="technology-list__item__icon" src="https://im2-tub-ru.yandex.net/i?id=99537591cd7e268cf8879b2a6a2eef9b&n=33&h=215&w=237" alt="">
+						<div class="technology-list__item__info">
+							<div class="technology__list__item__title">Язычество</div>
+							<div class="technology__list__item__meta"><span class="game-icon"><span>50</span><img src="/media/game/icons/science.png" alt=""></span></div>
 						</div>
-						<div class="list-navigation__item__right-icon"><i class="flaticon-right"></i></div>
 					</div>
-					<div class="list-navigation__item">
-						<div class="list-navigation__item__icon"><i class="flaticon-star"></i></div>
-						<div class="list-navigation__item__content">
-							<div class="list-navigation__item__content__title">Язычество</div>
-							<div class="list-navigation__item__content__meta"><div class="game-icon"><span>50</span><img src="/media/game/icons/science.png" alt=""></div></div>
+					<div class="technology-list__item">
+						<img class="technology-list__item__icon" src="http://www.technoshop.ru/media/pic_middle/0/1765.jpg" alt="">
+						<div class="technology-list__item__info">
+							<div class="technology__list__item__title">Земледелие</div>
+							<div class="technology__list__item__meta"><span class="game-icon"><span>50</span><img src="/media/game/icons/science.png" alt=""></span></div>
 						</div>
-						<div class="list-navigation__item__right-icon"><i class="flaticon-right"></i></div>
 					</div>
-					<div class="list-navigation__item">
-						<div class="list-navigation__item__icon"><i class="flaticon-star"></i></div>
-						<div class="list-navigation__item__content">
-							<div class="list-navigation__item__content__title">Гончарное дело</div>
-							<div class="list-navigation__item__content__meta"><div class="game-icon"><span>50</span><img src="/media/game/icons/science.png" alt=""></div></div>
+					<div class="technology-list__item">
+						<img class="technology-list__item__icon" src="http://cityelit-spb.ru/userfiles/editor/large/2105_2812261745.jpg" alt="">
+						<div class="technology-list__item__info">
+							<div class="technology__list__item__title">Торговля</div>
+							<div class="technology__list__item__meta"><span class="game-icon"><span>50</span><img src="/media/game/icons/science.png" alt=""></span></div>
 						</div>
-						<div class="list-navigation__item__right-icon"><i class="flaticon-right"></i></div>
+					</div>
+
+					<div class="technology-list__item">
+						<img class="technology-list__item__icon" src="https://im2-tub-ru.yandex.net/i?id=99537591cd7e268cf8879b2a6a2eef9b&n=33&h=215&w=237" alt="">
+						<div class="technology-list__item__info">
+							<div class="technology__list__item__title">Язычество</div>
+							<div class="technology__list__item__meta"><span class="game-icon"><span>50</span><img src="/media/game/icons/science.png" alt=""></span></div>
+						</div>
+					</div>
+					<div class="technology-list__item">
+						<img class="technology-list__item__icon" src="http://www.technoshop.ru/media/pic_middle/0/1765.jpg" alt="">
+						<div class="technology-list__item__info">
+							<div class="technology__list__item__title">Земледелие</div>
+							<div class="technology__list__item__meta"><span class="game-icon"><span>50</span><img src="/media/game/icons/science.png" alt=""></span></div>
+						</div>
+					</div>
+					<div class="technology-list__item">
+						<img class="technology-list__item__icon" src="http://cityelit-spb.ru/userfiles/editor/large/2105_2812261745.jpg" alt="">
+						<div class="technology-list__item__info">
+							<div class="technology__list__item__title">Торговля</div>
+							<div class="technology__list__item__meta"><span class="game-icon"><span>50</span><img src="/media/game/icons/science.png" alt=""></span></div>
+						</div>
+					</div>
+					<div class="technology-list__item">
+						<img class="technology-list__item__icon" src="https://im2-tub-ru.yandex.net/i?id=99537591cd7e268cf8879b2a6a2eef9b&n=33&h=215&w=237" alt="">
+						<div class="technology-list__item__info">
+							<div class="technology__list__item__title">Язычество</div>
+							<div class="technology__list__item__meta"><span class="game-icon"><span>50</span><img src="/media/game/icons/science.png" alt=""></span></div>
+						</div>
+					</div>
+					<div class="technology-list__item">
+						<img class="technology-list__item__icon" src="http://www.technoshop.ru/media/pic_middle/0/1765.jpg" alt="">
+						<div class="technology-list__item__info">
+							<div class="technology__list__item__title">Земледелие</div>
+							<div class="technology__list__item__meta"><span class="game-icon"><span>50</span><img src="/media/game/icons/science.png" alt=""></span></div>
+						</div>
+					</div>
+					<div class="technology-list__item">
+						<img class="technology-list__item__icon" src="http://cityelit-spb.ru/userfiles/editor/large/2105_2812261745.jpg" alt="">
+						<div class="technology-list__item__info">
+							<div class="technology__list__item__title">Торговля</div>
+							<div class="technology__list__item__meta"><span class="game-icon"><span>50</span><img src="/media/game/icons/science.png" alt=""></span></div>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div class="col-8 padding-horizontal-1 size-fix">
-				<h3>Информация об исследовании:</h3>
-				<p>Изучение технологии "Письменность" откроет для вас:</p>
-				<div class="vertical-layout vertical-layout--stripped">
-					<div class="row padding-1"><b>Склад</b><br>Позволяет хранить ресурсы</div>
-					<div class="row padding-1"><b>Библиотека</b><br>Увеличивает науку</div>
+			<div class="col-8 size-fix">
+				<div class="technology-info">
+					<div class="technology-info__top">
+						<img src="http://acropolis.org.ru/img/site/image/calennum3478/anons/squ/krug.jpg" alt="" class="icon">
+						<div class="description">
+							<div class="title">Гончарное дело</div>
+							<div class="desc">Изначально было ремеслом, служившим для изготовления сосудов для приготовления, приёма пищи или для хранения жидких и сыпучих материалов. В настоящее время — обработка посредством формовки на гончарном круге, нанесением глазури и с последующим обжигом глины с целью превращения её в предметы домашнего обихода, строительные материалы, различные декоративные изделия, сувениры, украшения.</div>
+						</div>
+						<div class="buttons">
+							<button class="button--fit">ИЗУЧИТЬ</button>
+							<div class="time">около 50 часов</div>
+						</div>
+					</div>
+					<div class="block">
+						Стоимость технологии: <span class="game-icon"><span>50</span><img src="/media/game/icons/science.png" alt=""></span>
+					</div>
+					<div class="block">
+						<div class="title">Направление исследований</div>
+						<div class="text">Технологии данной ветки направлены на увеличение <span class="game-icon"><img src="/media/game/icons/production.png" alt=""></span></div>
+					</div>
+					<div class="block">
+						<div class="title">Новые здания</div>
+						<div class="text">После изучения данной технологии вы получите возможность построить следующие здания:</div>
+						<div class="technology-list">
+							<div class="technology-list__item">
+								<img class="technology-list__item__icon l-yellow-bg" src="/media/game/forge.png" alt="">
+								<div class="technology-list__item__info">
+									<div class="technology__list__item__title">Кузница</div>
+									<div class="technology__list__item__meta"><span class="game-icon"><span>+2</span><img src="/media/game/icons/production.png" alt=""></span></div>
+								</div>
+							</div>
+							<div class="technology-list__item">
+								<img class="technology-list__item__icon" src="http://d1.files.namba.kg/files/2875941" alt="">
+								<div class="technology-list__item__info">
+									<div class="technology__list__item__title">Чичен-Ица</div>
+									<div class="technology__list__item__meta"><span class="game-icon"><span>+3</span><img src="/media/game/icons/culture.png" alt=""></span><span class="game-icon"><span>+1</span><img src="/media/game/icons/gold.png" alt=""></span></div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="block">
+						<div class="title">Следующее исследование</div>
+						<div class="text">Добыча руды</div>
+					</div>
 				</div>
-				<button class="button--color-blue button--size-large">Изучить технологию (около 50 часов)</button>
 			</div>
 		</div>
 	</div>

@@ -9,9 +9,9 @@
 {% endblock %}
 {% block content %}
 <div class="grid" id="page-content">
-	<div class="col-12 padding-5 size-fix padding-t-1" style="background-image: url({{ request.user.userprofile.bg.background.url }}); background-position: center; background-repeat: no-repeat; background-size: cover; background-attachment: fixed;">
+	<div class="col-12 padding-5 size-fix padding-t-1 padding-lm-0" style="background-image: url({{ request.user.userprofile.bg.background.url }}); background-position: center; background-repeat: no-repeat; background-size: cover; background-attachment: fixed;">
 		<div class="grid">
-			<div class="col-8 col-t-5">
+			<div class="col-8 col-t-5 col-lm-6">
 				<!-- Добавить запись -->
 				<div class="card card--no-smooth">
 					<form id="sendPostForm">
@@ -134,7 +134,7 @@
 
 				<!-- /// -->
 			</div>
-			<div class="col-4 col-t-3">
+			<div class="col-4 col-t-3 col-lm-6">
 				<div class="card card--no-smooth card--image">
 					<div class="card__content">
 						<div class="horizontal-layout horizontal-layout--centered">

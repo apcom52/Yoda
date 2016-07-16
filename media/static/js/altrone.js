@@ -248,7 +248,7 @@ Modal.prototype.show = function() {
 			current.hide();		
 	});
 	var height = this.el.innerHeight();
-	this.el.find('.modal__content').css('height', height - 46 - 39);
+	// this.el.find('.modal__content').css('height', height - 46 - 39);
 
 	var element = this.el;
 	var target = this;

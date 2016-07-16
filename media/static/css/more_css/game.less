@@ -1,0 +1,135 @@
+@import "vars.less";
+@import 'https://fonts.googleapis.com/css?family=El+Messiri:400,700&subset=cyrillic';
+@import 'https://fonts.googleapis.com/css?family=Ubuntu&subset=cyrillic';
+
+@modal_bg: rgba(42, 59, 105, .75);
+@yellow_font: #f1ff52;
+
+.gamefont {
+	font-family: 'El Messiri', sans-serif;
+}
+
+.ubuntu {
+	font-family: 'Ubuntu', sans-serif;
+}
+
+.modal {
+	background-color: @modal_bg;
+	color: white;
+	border-radius: 0.5em;
+	border: 1px solid rgba(139, 0, 255, .25);
+	.gamefont();
+
+	.modal__header {
+		background-color: transparent;
+		text-align: center;
+		color: @yellow_font;
+
+		.modal__header__title {
+			text-align: center;
+		}
+	}
+
+	.modal__content {
+		margin: 1.25em 0.5em;
+		background-color: @modal_bg;
+		border-radius: 0.5em;
+		.ubuntu();
+	}
+}
+
+.technology-list {
+	display: block;
+	.ubuntu();
+
+	.technology-list__title {
+		margin: 0.5em;
+		font-size: 1.25em;
+		// font-weight: bold;
+		.ubuntu();
+	}
+
+	.technology-list__item {
+		display: flex;
+		align-items: center;
+
+		.technology-list__item__icon {
+			flex: 1;
+			max-width: 2em;
+			max-height: 2em;
+			border-radius: 50%;
+			border: 1px solid @yellow;
+			margin: 0.5em;
+		}
+
+		.technology-list__item__info {
+			flex: 1;
+			padding: 0.5em;
+			
+			.technology-list__item__title {
+				color: @yellow_font;
+			}
+		}
+	}	
+}
+
+.technology-info {
+	width: 100%;
+	padding: 0.5em;
+	box-sizing: border-box;
+
+	.technology-info__top {
+		display: flex;
+		align-items: center;
+
+		.icon {
+			flex: 1;
+			max-width: 128px;
+			max-height: 128px;
+			border-radius: 50%;
+			margin: 1em;
+			box-sizing: border-box;
+		}
+
+		.description {
+			flex: 4;
+
+			.title {
+				font-size: 1.5em;
+				.gamefont();
+			}
+
+			.desc {
+				color: @l-gray;
+				font-size: 0.9em;
+				.ubuntu();
+			}
+		}
+
+		.buttons {
+			flex: 1;
+			text-align: center;
+
+			.time {
+				font-size: 0.85em;
+				color: @u-gray;
+				.ubuntu();
+			}
+		}
+	}
+
+	.block {
+		margin: 1em 0em;
+		.ubuntu();
+
+		.title {
+			color: @yellow;
+			margin: 0em 0.25em;
+			font-size: 1.1em;
+		}
+
+		.text {
+			color: @u-gray;
+		}
+	}
+}
