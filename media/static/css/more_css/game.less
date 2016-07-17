@@ -57,6 +57,7 @@
 			flex: 1;
 			max-width: 2em;
 			max-height: 2em;
+			height: 2em;
 			border-radius: 50%;
 			border: 1px solid @yellow;
 			margin: 0.5em;
@@ -86,6 +87,7 @@
 			flex: 1;
 			max-width: 128px;
 			max-height: 128px;
+			height: 128px;
 			border-radius: 50%;
 			margin: 1em;
 			box-sizing: border-box;
@@ -130,6 +132,62 @@
 
 		.text {
 			color: @u-gray;
+		}
+	}
+}
+
+
+
+.dogmats {
+	.pyramid {
+		text-align: center;
+
+		.round {
+			content: "";
+			width: 1.5em;
+			height: 1.5em;
+			margin: 0.5em;
+			padding: 1em;
+			border-radius: 50%;
+			display: inline-block;
+			cursor: pointer;
+			background-size: 75% 75%;
+			background-position: center;
+			background-repeat: no-repeat;
+
+			&.locked {
+				background-color: @brown;
+				opacity: 0.8;
+				background-image: url(/media/img/ic/lock.png);
+			}
+
+			&.active {
+				background-color: @orange;
+				background-image: url(/media/img/ic/unlock.png);
+			}
+
+			&.unlocked {
+				background-color: @yellow;
+				background-image: url(/media/img/ic/ok.png);
+			}
+		}
+	}
+
+	.dogmats-list {
+		overflow: hidden;
+		.dogmat {
+			display: inline-block;
+			width: 50%;
+			float: left;
+			color: @white;
+			padding: 1em;
+			box-sizing: border-box;
+			cursor: pointer;
+			.ubuntu();
+
+			&:active {
+				background-color: @violet;
+			}
 		}
 	}
 }

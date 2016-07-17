@@ -133,11 +133,16 @@ function render() {
 $(function() {
 	var scienceModal = new Modal($('#scienceModal'));
 	var buildingModal = new Modal($('#buildingModal'));
+	var dogmatsModal = new Modal($('#dogmats-modal'));
 	$('#scienceBtn').click(function() {
 		scienceModal.show();
 	});
 	$('#buildingBtn').click(function() {
 		buildingModal.show();
+	});
+
+	$('#dogmatsBtn').click(function() {
+		dogmatsModal.show();
 	});
 
 	$('#help_button').click(function() {

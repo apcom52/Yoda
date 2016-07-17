@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from .models import *
 
 class Empire:
@@ -387,8 +388,11 @@ class GameManager():
 		game.faith += step.faith
 
 		# Изучаем технологии
-		current_tech = UserTeach.objects.all().filter(game = game, completed = False).latest('id')
-		print(current_tech)
+		try:
+			current_tech = UserTeach.objects.all().filter(game = game, completed = False).latest('id')
+		except ObjectDoesNotExist:
+			current_tech = None
+
 		if current_tech:
 			current_sp = current_tech.progress + science_pt
 			
@@ -415,4 +419,6 @@ class GameManager():
 				step.science = science_pt
 			current_tech.save()
 			game.save()
+		
+
 		step.save()

@@ -51,6 +51,7 @@
   flex: 1;
   max-width: 2em;
   max-height: 2em;
+  height: 2em;
   border-radius: 50%;
   border: 1px solid #fbbd08;
   margin: 0.5em;
@@ -75,6 +76,7 @@
   flex: 1;
   max-width: 128px;
   max-height: 128px;
+  height: 128px;
   border-radius: 50%;
   margin: 1em;
   box-sizing: border-box;
@@ -111,4 +113,49 @@
 }
 .technology-info .block .text {
   color: #f5f5f5;
+}
+.dogmats .pyramid {
+  text-align: center;
+}
+.dogmats .pyramid .round {
+  content: "";
+  width: 1.5em;
+  height: 1.5em;
+  margin: 0.5em;
+  padding: 1em;
+  border-radius: 50%;
+  display: inline-block;
+  cursor: pointer;
+  background-size: 75% 75%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.dogmats .pyramid .round.locked {
+  background-color: #a5673f;
+  opacity: 0.8;
+  background-image: url(/media/img/ic/lock.png);
+}
+.dogmats .pyramid .round.active {
+  background-color: #f2711c;
+  background-image: url(/media/img/ic/unlock.png);
+}
+.dogmats .pyramid .round.unlocked {
+  background-color: #fbbd08;
+  background-image: url(/media/img/ic/ok.png);
+}
+.dogmats .dogmats-list {
+  overflow: hidden;
+}
+.dogmats .dogmats-list .dogmat {
+  display: inline-block;
+  width: 50%;
+  float: left;
+  color: #ffffff;
+  padding: 1em;
+  box-sizing: border-box;
+  cursor: pointer;
+  font-family: 'Ubuntu', sans-serif;
+}
+.dogmats .dogmats-list .dogmat:active {
+  background-color: #6435c9;
 }
