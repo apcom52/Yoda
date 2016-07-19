@@ -37,10 +37,14 @@ def index(request):
 		game_info = {}
 
 		#Текущее исследование
-		current_tech = UserTeach.objects.filter(login = request.user, completed = False).latest('id')
-		game_info["technology"] = current_tech
-		game_info["technology_progress"] = math.ceil(current_tech.progress * 100 / current_tech.technology.sp)
-
+		try:
+			current_tech = UserTeach.objects.filter(login = request.user, completed = False).latest('id')
+			game_info["technology"] = current_tech
+			game_info["technology_progress"] = math.ceil(current_tech.progress * 100 / current_tech.technology.sp)
+			game_info["latest_technology"] = False
+		except ObjectDoesNotExist:
+			latest_tech = UserTeach.objects.filter(login = request.user).latest('id')
+			game_info["latest_technology"] = latest_tech
 		context = {
 			'title': 'Yoda',
 			'feed': fm.get(),

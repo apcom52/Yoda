@@ -12,35 +12,60 @@ from rest_framework.reverse import reverse
 from rest_framework.response import Response
 from rest_framework.views import APIView
 import datetime
+import math
 
 from game.models import *
 from game.classes import *
+from game.serializers import *
 
 class TechnologiesList(APIView):
 	def get(self, request, format = None):
-		available_techs = []
-		completed_branches_list = UserTeach.objects.filter(login = request.user, completed = True)
-		completed_branches = [t.technology for t in completed_branches_list]
-		for branch in Technology.branches:
-			branch_id = branch[0]
-			current_tech = None
-			for t in Technology.objects.all().filter(branch = branch_id):
-				if not t in completed_branches:
-					current_tech = t
-					break
-			if current_tech:
-				available_techs.append(current_tech)
+		data = request.GET
+		method = data.get("m", False)
 
-		available_response = []
-		for tech in available_techs:
-			available_response.append({
-				'name': tech.name,
-				'sp': tech.sp,
-				'icon': tech.icon.url,
+		if method == 'available_list':			
+			available_techs = []
+			completed_branches_list = UserTeach.objects.filter(login = request.user, completed = True)
+			completed_branches = [t.technology for t in completed_branches_list]
+			for branch in Technology.branches:
+				branch_id = branch[0]
+				current_tech = None
+				for t in Technology.objects.all().filter(branch = branch_id):
+					if not t in completed_branches:
+						current_tech = t
+						break
+				if current_tech:
+					available_techs.append(current_tech)		
+
+			serializer = TechnologySerializer(available_techs, many = True)
+
+			#Текущее исследование
+			current = False
+			try:
+				current_tech = UserTeach.objects.filter(login = request.user, completed = False).latest('id')
+				current = TechnologySerializer(current_tech, many = False)
+				current = current.data
+			except ObjectDoesNotExist:
+				pass
+
+			return Response({
+				'available': serializer.data,
+				'current': current,
 			})
-		return Response({
-			'available': available_response,
-			})
+		elif method == 'start':
+			id = data.get("id", False)
+			if id:
+				technology = Technology.objects.get(pk = int(id))
+				game = Game.objects.filter(user = request.user, is_completed = False).latest('id')
+				userteach = UserTeach()
+				userteach.login = request.user
+				userteach.game = game
+				userteach.technology = technology
+				userteach.date_start = datetime.datetime.now()
+				userteach.save()
+				return Response("ok");
+		return Response("failed")
+
 
 class BuildingsList(APIView):
 	def get(self, request, format = None):

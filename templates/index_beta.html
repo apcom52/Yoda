@@ -180,8 +180,16 @@
 								</div>
 							</div>
 						</div>
-						<div class="progress margin-bottom-0 progress--color-blue progress--size-thin"><div class="progress__active" style="width:{{game_info.technology_progress}}%"></div></div>
-						<div class="blue-fg" style="font-size: 0.9em;"><b>{{game_info.technology.technology.name}}</b>. Исследовано {{game_info.technology_progress}}% (еще 12 часов)</div>
+						{% if not game_info.latest_technology %}
+							<div class="progress margin-bottom-0 progress--color-blue progress--size-thin"><div class="progress__active" style="width:{{game_info.technology_progress}}%"></div></div>
+							{% endif %}
+							<div class="blue-fg" style="font-size: 0.9em;"><b>
+							{% if game_info.latest_technology %}
+								{{game_info.latest_technology.technology.name}}</b>. Завершено
+							{% else %}
+								{{game_info.technology.technology.name}}</b>. Исследовано {{game_info.technology_progress}}% (еще 12 часов)
+						{% endif %}
+						</div>
 						<div class="progress margin-bottom-0 progress--color-orange progress--size-thin"><div class="progress__active" style="width:83%"></div></div>
 						<div class="orange-fg" style="font-size: 0.9em;"><b>Амбар</b>. Завершено 83% (еще 2 часа)</div>
 						<div class="card__footer margin-top-1">

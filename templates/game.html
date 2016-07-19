@@ -80,50 +80,9 @@
 				</div>
 			</div>
 			<div class="col-8 size-fix">
-				<div class="technology-info">
-					<div class="technology-info__top">
-						<img src="http://acropolis.org.ru/img/site/image/calennum3478/anons/squ/krug.jpg" alt="" class="icon">
-						<div class="description">
-							<div class="title">Гончарное дело</div>
-							<div class="desc">Изначально было ремеслом, служившим для изготовления сосудов для приготовления, приёма пищи или для хранения жидких и сыпучих материалов. В настоящее время — обработка посредством формовки на гончарном круге, нанесением глазури и с последующим обжигом глины с целью превращения её в предметы домашнего обихода, строительные материалы, различные декоративные изделия, сувениры, украшения.</div>
-						</div>
-						<div class="buttons">
-							<button class="button--fit">ИЗУЧИТЬ</button>
-							<div class="time">около 50 часов</div>
-						</div>
-					</div>
-					<div class="block">
-						Стоимость технологии: <span class="game-icon"><span>50</span><img src="/media/game/icons/science.png" alt=""></span>
-					</div>
-					<div class="block">
-						<div class="title">Направление исследований</div>
-						<div class="text">Технологии данной ветки направлены на увеличение <span class="game-icon"><img src="/media/game/icons/production.png" alt=""></span></div>
-					</div>
-					<div class="block">
-						<div class="title">Новые здания</div>
-						<div class="text">После изучения данной технологии вы получите возможность построить следующие здания:</div>
-						<div class="technology-list">
-							<div class="technology-list__item">
-								<img class="technology-list__item__icon l-yellow-bg" src="/media/game/forge.png" alt="">
-								<div class="technology-list__item__info">
-									<div class="technology__list__item__title">Кузница</div>
-									<div class="technology__list__item__meta"><span class="game-icon"><span>+2</span><img src="/media/game/icons/production.png" alt=""></span></div>
-								</div>
-							</div>
-							<div class="technology-list__item">
-								<img class="technology-list__item__icon" src="http://d1.files.namba.kg/files/2875941" alt="">
-								<div class="technology-list__item__info">
-									<div class="technology__list__item__title">Чичен-Ица</div>
-									<div class="technology__list__item__meta"><span class="game-icon"><span>+3</span><img src="/media/game/icons/culture.png" alt=""></span><span class="game-icon"><span>+1</span><img src="/media/game/icons/gold.png" alt=""></span></div>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="block">
-						<div class="title">Следующее исследование</div>
-						<div class="text">Добыча руды</div>
-					</div>
+				<div class="technology-info" id="scienceInfo">					
+					<h1 class="ubuntu">Выберите исследование</h1>
+					<p class="ubuntu">Исследуйте новые технологии, чтобы открыть новые здания и стать лидером в своей отрасли. Также новые технологии позволяют открыть улучшения некоторых клеток и зданий.</p>
 				</div>
 			</div>
 		</div>
@@ -267,7 +226,7 @@
 {% verbatim %}
 <script id="ModalListItemTemplate" type="text/html">
 	{{#each available}}
-	<div class="technology-list__item">
+	<div class="technology-list__item" data-type="science" data-id="{{@index}}">
 		<img class="technology-list__item__icon" src="{{icon}}" alt="">
 		<div class="technology-list__item__info">
 			<div class="technology__list__item__title">{{name}}</div>
@@ -275,6 +234,60 @@
 		</div>
 	</div>
 	{{/each}}
+</script>
+
+<script id="ModalTechnologyInfo" type="text/html">
+	<div class="technology-info__top">
+		<img src="{{icon}}" alt="" class="icon">
+		<div class="description">
+			<div class="title">{{name}}</div>
+			<div class="desc">{{description}}</div>
+		</div>
+		<div class="buttons">
+			<button class="button--fit" id="startTeach">ИЗУЧИТЬ</button>
+			<div class="time">около {{time}} часов</div>
+		</div>
+	</div>
+	<div class="block">
+		Стоимость технологии: <span class="game-icon"><span>{{sp}}</span><img src="/media/game/icons/science.png" alt=""></span>
+	</div>
+	<div class="block">
+		<div class="title">Направление исследований</div>
+		{{#ifCond branch '==' 1}}
+			<div class="text">Технологии данной ветки направлены на развитие <span class="game-icon"><img src="/media/game/icons/science.png" alt=""></span> и <span class="game-icon"><img src="/media/game/icons/culture.png" alt=""></span></div>
+		{{/ifCond}}
+		{{#ifCond branch '==' 2}}
+			<div class="text">Технологии данной ветки направлены на увеличение <span class="game-icon"><img src="/media/game/icons/production.png" alt=""></span></div>
+		{{/ifCond}}
+		{{#ifCond branch '==' 3}}
+			<div class="text">Технологии данной ветки направлены на укрепление <span class="game-icon"><img src="/media/game/icons/faith.png" alt=""></span></div>
+		{{/ifCond}}
+		{{#ifCond branch '==' 4}}
+			<div class="text">Технологии данной ветки направлены на добычу <span class="game-icon"><img src="/media/game/icons/food.png" alt=""></span></div>
+		{{/ifCond}}
+		{{#ifCond branch '==' 5}}
+			<div class="text">Технологии данной ветки направлены на получение <span class="game-icon"><img src="/media/game/icons/gold.png" alt=""></span></div>
+		{{/ifCond}}
+	</div>
+	<div class="block">
+		<div class="title">Новые здания</div>
+		<div class="text">После изучения данной технологии вы получите возможность построить следующие здания:</div>
+		<div class="technology-list">
+			{{#each buildings}}
+			<div class="technology-list__item">
+				<img class="technology-list__item__icon l-yellow-bg" src="{{icon}}" alt="">
+				<div class="technology-list__item__info">
+					<div class="technology__list__item__title">{{name}}</div>					
+					<div class="technology__list__item__meta">
+						{{#each bonus}}
+						<span class="game-icon"><span>+{{value}}</span><img src="/media/game/icons/{{type}}.png" alt=""></span>
+						{{/each}}
+					</div>					
+				</div>
+			</div>
+			{{/each}}
+		</div>
+	</div>
 </script>
 {% endverbatim %}
 

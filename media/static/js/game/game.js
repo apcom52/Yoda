@@ -134,15 +134,21 @@ $(function() {
 
 	var loading_screen = "<div class='loading-layout loading-layout--transparent loading-layout--invert'></div>";
 
+	var availableScience = {};
+	var currentTech;
 	$('#scienceBtn').click(function() {
 		scienceModal.show();
 		var availableTechnologies = $('#availableTechnologies');
 		availableTechnologies.html(loading_screen);
 
-		$.get('/api/game/technologies/', {},
+		$.get('/api/game/technologies/', {
+				m: 'available_list',
+			},
 			function(response) {
 				console.log('success');
 				console.log(response);
+
+				availableScience = response;
 
 				var source = $('#ModalListItemTemplate').html();
 				var template = Handlebars.compile(source);
@@ -150,6 +156,33 @@ $(function() {
 				availableTechnologies.html(html);
 			}
 		);
+
+		$('body').on('click', '.technology-list__item[data-type="science"]', function(e) {
+			var target = $(this);
+			var id = parseInt(target.data('id'));
+			currentTech = availableScience.available[id];
+
+			var source = $('#ModalTechnologyInfo').html();
+			var template = Handlebars.compile(source);
+			var html = template(currentTech);
+			$('#scienceInfo').html(html);
+		});
+
+		$('body').on('click', '#startTeach', function(e) {
+			if (currentTech) {
+				$.get('/api/game/technologies/', {
+					m: 'start',
+					id: currentTech.id,
+				},
+				function(response) {
+					if (response == "ok") {
+						showToast("Изучение технологии стартовало!", 5);
+					} else {
+						showToast("Что-то пошло не так. Попробуйте обновить страницу", 5);
+					}
+				});
+			}
+		});
 
 		// $.get('/api/game/technologies/', {}, 
 		// 	function (response) {

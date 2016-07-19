@@ -155,6 +155,7 @@ class Technology(models.Model):
 
 	name = models.CharField('Название технологии', max_length = 128)
 	sp = models.IntegerField('Количество очков науки', default = 50)
+	description = models.TextField('Описание', blank = True, null = True)
 	icon = models.ImageField('Иконка технологии', upload_to='game/technologies/', blank = True)
 	branch = models.IntegerField('Ветвь исследования', choices = branches, blank = True, null = True)
 	next_technology = models.ForeignKey("self", blank = True, null = True)
