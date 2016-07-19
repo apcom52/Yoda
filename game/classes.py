@@ -401,6 +401,7 @@ class GameManager():
 
 				current_tech.progress = current_tech.technology.sp
 				current_sp -= current_tech.technology.sp
+				game.science = current_sp
 				current_tech.completed = True
 
 				game.user.userprofile.exp += 1

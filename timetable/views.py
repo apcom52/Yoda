@@ -17,7 +17,7 @@ from .utils import FeedManager, TimetableManager, DTControl, avatar, addAction, 
 from .models import Lesson, Teacher, Timetable, Homework, Control, NewPlace, TeacherTimetable, NotStudyTime, TransferredLesson, CanceledLesson
 from .forms import *
 from .weather import *
-import datetime
+import datetime, math
 
 
 # Create your views here.
@@ -34,9 +34,17 @@ def index(request):
 		gm = GameManager()
 		gm.check()
 
+		game_info = {}
+
+		#Текущее исследование
+		current_tech = UserTeach.objects.filter(login = request.user, completed = False).latest('id')
+		game_info["technology"] = current_tech
+		game_info["technology_progress"] = math.ceil(current_tech.progress * 100 / current_tech.technology.sp)
+
 		context = {
 			'title': 'Yoda',
 			'feed': fm.get(),
+			'game_info': game_info,
 			'timetable': tm.byDay(datetime.datetime.today()),
 		}
 

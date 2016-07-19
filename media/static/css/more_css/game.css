@@ -147,8 +147,8 @@
   overflow: hidden;
 }
 .dogmats .dogmats-list .dogmat {
-  display: inline-block;
-  width: 50%;
+  display: block;
+  width: 100%;
   float: left;
   color: #ffffff;
   padding: 1em;

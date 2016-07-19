@@ -75,76 +75,7 @@
 					</div>
 
 					<div class="technology-list__title">Доступные технологии:</div>
-					<div class="technology-list__item">
-						<img class="technology-list__item__icon" src="http://acropolis.org.ru/img/site/image/calennum3478/anons/squ/krug.jpg" alt="">
-						<div class="technology-list__item__info">
-							<div class="technology__list__item__title">Гончарное дело</div>
-							<div class="technology__list__item__meta"><span class="game-icon"><span>50</span><img src="/media/game/icons/science.png" alt=""></span></div>
-						</div>
-					</div>
-					<div class="technology-list__item">
-						<img class="technology-list__item__icon" src="https://im2-tub-ru.yandex.net/i?id=99537591cd7e268cf8879b2a6a2eef9b&n=33&h=215&w=237" alt="">
-						<div class="technology-list__item__info">
-							<div class="technology__list__item__title">Язычество</div>
-							<div class="technology__list__item__meta"><span class="game-icon"><span>50</span><img src="/media/game/icons/science.png" alt=""></span></div>
-						</div>
-					</div>
-					<div class="technology-list__item">
-						<img class="technology-list__item__icon" src="http://www.technoshop.ru/media/pic_middle/0/1765.jpg" alt="">
-						<div class="technology-list__item__info">
-							<div class="technology__list__item__title">Земледелие</div>
-							<div class="technology__list__item__meta"><span class="game-icon"><span>50</span><img src="/media/game/icons/science.png" alt=""></span></div>
-						</div>
-					</div>
-					<div class="technology-list__item">
-						<img class="technology-list__item__icon" src="http://cityelit-spb.ru/userfiles/editor/large/2105_2812261745.jpg" alt="">
-						<div class="technology-list__item__info">
-							<div class="technology__list__item__title">Торговля</div>
-							<div class="technology__list__item__meta"><span class="game-icon"><span>50</span><img src="/media/game/icons/science.png" alt=""></span></div>
-						</div>
-					</div>
-
-					<div class="technology-list__item">
-						<img class="technology-list__item__icon" src="https://im2-tub-ru.yandex.net/i?id=99537591cd7e268cf8879b2a6a2eef9b&n=33&h=215&w=237" alt="">
-						<div class="technology-list__item__info">
-							<div class="technology__list__item__title">Язычество</div>
-							<div class="technology__list__item__meta"><span class="game-icon"><span>50</span><img src="/media/game/icons/science.png" alt=""></span></div>
-						</div>
-					</div>
-					<div class="technology-list__item">
-						<img class="technology-list__item__icon" src="http://www.technoshop.ru/media/pic_middle/0/1765.jpg" alt="">
-						<div class="technology-list__item__info">
-							<div class="technology__list__item__title">Земледелие</div>
-							<div class="technology__list__item__meta"><span class="game-icon"><span>50</span><img src="/media/game/icons/science.png" alt=""></span></div>
-						</div>
-					</div>
-					<div class="technology-list__item">
-						<img class="technology-list__item__icon" src="http://cityelit-spb.ru/userfiles/editor/large/2105_2812261745.jpg" alt="">
-						<div class="technology-list__item__info">
-							<div class="technology__list__item__title">Торговля</div>
-							<div class="technology__list__item__meta"><span class="game-icon"><span>50</span><img src="/media/game/icons/science.png" alt=""></span></div>
-						</div>
-					</div>
-					<div class="technology-list__item">
-						<img class="technology-list__item__icon" src="https://im2-tub-ru.yandex.net/i?id=99537591cd7e268cf8879b2a6a2eef9b&n=33&h=215&w=237" alt="">
-						<div class="technology-list__item__info">
-							<div class="technology__list__item__title">Язычество</div>
-							<div class="technology__list__item__meta"><span class="game-icon"><span>50</span><img src="/media/game/icons/science.png" alt=""></span></div>
-						</div>
-					</div>
-					<div class="technology-list__item">
-						<img class="technology-list__item__icon" src="http://www.technoshop.ru/media/pic_middle/0/1765.jpg" alt="">
-						<div class="technology-list__item__info">
-							<div class="technology__list__item__title">Земледелие</div>
-							<div class="technology__list__item__meta"><span class="game-icon"><span>50</span><img src="/media/game/icons/science.png" alt=""></span></div>
-						</div>
-					</div>
-					<div class="technology-list__item">
-						<img class="technology-list__item__icon" src="http://cityelit-spb.ru/userfiles/editor/large/2105_2812261745.jpg" alt="">
-						<div class="technology-list__item__info">
-							<div class="technology__list__item__title">Торговля</div>
-							<div class="technology__list__item__meta"><span class="game-icon"><span>50</span><img src="/media/game/icons/science.png" alt=""></span></div>
-						</div>
+					<div id="availableTechnologies">
 					</div>
 				</div>
 			</div>
@@ -285,38 +216,66 @@
 	</div>
 </div>
 
-<div class="modal" id="dogmats-modal">
+<div class="modal modal--size-xl" id="dogmats-modal">
 	<div class="modal__header">
 		<div class="modal__header__title">Догматы</div>
 	</div>
 	<div class="modal__content">
 		<div class="dogmats">
-			<div class="pyramid">
-				<div class="round unlocked"></div>
-				<div class="round active"></div>
-				<div class="round locked"></div>
-				<div class="round locked"></div>
-				<div class="round locked"></div><br>
-				<div class="round locked"></div>
-				<div class="round locked"></div>
-				<div class="round locked"></div>
-				<div class="round locked"></div><br>
-				<div class="round locked"></div>
-				<div class="round locked"></div>
-				<div class="round locked"></div>
-			</div>
+			<div class="grid">
+				<div class="col-6">
+					<div class="pyramid">
+						<div class="round unlocked"></div>
+						<div class="round active"></div>
+						<div class="round locked"></div>
+						<div class="round locked"></div>
+						<div class="round locked"></div><br>
+						<div class="round locked"></div>
+						<div class="round locked"></div>
+						<div class="round locked"></div>
+						<div class="round locked"></div><br>
+						<div class="round locked"></div>
+						<div class="round locked"></div>
+						<div class="round locked"></div>
+					</div>
 
-			<div class="dogmats-list">
-				<div class="dogmat">Дает <span class="game-icon"><span>1</span><img src="/media/game/icons/gold.png" alt=""></span> за каждую культурную и туристическую постройку</div>
-				<div class="dogmat">Дает +10% к вместимости складов</div>
-				<div class="dogmat">Дает <span class="game-icon"><span>2</span><img src="/media/game/icons/food.png" alt=""></span> в амбаре и водяной мельнице</div>
-				<div class="dogmat">Дает <span class="game-icon"><span>1</span><img src="/media/game/icons/production.png" alt=""></span> на клетках с серебром и золотом</div>
-				<div class="dogmat">Дает <span class="game-icon"><span>1</span><img src="/media/game/icons/tourism.png" alt=""></span> за каждую постройку веры</div>
-				<div class="dogmat">Многоэтажные дома и небоскребы вмещают на 3 человека больше</div>
-				<div class="dogmat">Туристическое агенство и собор дают <span class="game-icon"><span>1</span><img src="/media/game/icons/culture.png" alt=""></span></div>
-				<div class="dogmat">Лесопилки дают <span class="game-icon"><span>1</span><img src="/media/game/icons/production.png" alt=""></span></div>
+					<div class="align-center">
+						<button>ВЫБРАТЬ</button><br>
+						Стоимость догмата: <span class="game-icon"><span>300</span><img src="/media/game/icons/faith.png" alt=""></span>
+
+						<p class="ubuntu" style="font-size: 0.85em;">Для достижения религиозной победы нужно принять все 12 догматов и построить хотя бы одно чудо света</p>
+					</div>
+				</div>
+				<div class="col-6 padding-horizontal-1 size-fix">
+					<div class="gamefont yellow-fg" style="font-size: 1.2em">Выберите один из представленных догматов 1-го уровня:</div>
+					<div class="dogmats-list">
+						<div class="dogmat">Дает <span class="game-icon"><span>1</span><img src="/media/game/icons/gold.png" alt=""></span> за каждую культурную и туристическую постройку</div>
+						<div class="dogmat">Дает +10% к вместимости складов</div>
+						<div class="dogmat">Дает <span class="game-icon"><span>2</span><img src="/media/game/icons/food.png" alt=""></span> в амбаре и водяной мельнице</div>
+						<div class="dogmat">Дает <span class="game-icon"><span>1</span><img src="/media/game/icons/production.png" alt=""></span> на клетках с серебром и золотом</div>
+						<div class="dogmat">Дает <span class="game-icon"><span>1</span><img src="/media/game/icons/tourism.png" alt=""></span> за каждую постройку веры</div>
+						<div class="dogmat">Многоэтажные дома и небоскребы вмещают на 3 человека больше</div>
+						<div class="dogmat">Туристическое агенство и собор дают <span class="game-icon"><span>1</span><img src="/media/game/icons/culture.png" alt=""></span></div>
+						<div class="dogmat">Лесопилки дают <span class="game-icon"><span>1</span><img src="/media/game/icons/production.png" alt=""></span></div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
 </div>
+
+{% verbatim %}
+<script id="ModalListItemTemplate" type="text/html">
+	{{#each available}}
+	<div class="technology-list__item">
+		<img class="technology-list__item__icon" src="{{icon}}" alt="">
+		<div class="technology-list__item__info">
+			<div class="technology__list__item__title">{{name}}</div>
+			<div class="technology__list__item__meta"><span class="game-icon"><span>{{sp}}</span><img src="/media/game/icons/science.png" alt=""></span></div>
+		</div>
+	</div>
+	{{/each}}
+</script>
+{% endverbatim %}
+
 {% endblock %}

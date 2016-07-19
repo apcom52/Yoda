@@ -236,6 +236,8 @@ class UserBuild(models.Model):
 	date_start = models.DateTimeField('Дата начала постройки')
 	date_end = models.DateTimeField('Дата окончания постройки', blank = True, null = True)
 	completed = models.BooleanField('Технология изучена', default = False)
+	x = models.IntegerField('Координата Х', default = 1)
+	y = models.IntegerField('Координата Х', default = 1)
 
 class UserBuildAdmin(admin.ModelAdmin):
 	list_display = ('login', 'building', 'date_start', 'progress', 'completed')
