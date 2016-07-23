@@ -13,27 +13,6 @@
 .ubuntu {
   font-family: 'Ubuntu', sans-serif;
 }
-.modal {
-  background-color: rgba(42, 59, 105, 0.75);
-  color: white;
-  border-radius: 0.5em;
-  border: 1px solid rgba(139, 0, 255, 0.25);
-  font-family: 'El Messiri', sans-serif;
-}
-.modal .modal__header {
-  background-color: transparent;
-  text-align: center;
-  color: #f1ff52;
-}
-.modal .modal__header .modal__header__title {
-  text-align: center;
-}
-.modal .modal__content {
-  margin: 1.25em 0.5em;
-  background-color: rgba(42, 59, 105, 0.75);
-  border-radius: 0.5em;
-  font-family: 'Ubuntu', sans-serif;
-}
 .technology-list {
   display: block;
   font-family: 'Ubuntu', sans-serif;
@@ -158,4 +137,85 @@
 }
 .dogmats .dogmats-list .dogmat:active {
   background-color: #6435c9;
+}
+.game-buttons {
+  position: absolute;
+  width: 244px;
+  text-align: center;
+  left: calc(50% - 122px);
+  bottom: 50px;
+}
+.game-buttons .game-buttons__button {
+  content: "";
+  display: block;
+  width: 65px;
+  height: 65px;
+  background-size: 142px 66px;
+  cursor: pointer;
+  float: left;
+  margin: 0px 8px !important;
+  transition: none !important;
+  background-color: transparent;
+  border: none;
+  z-index: 2;
+}
+.game-buttons .game-buttons__button:hover {
+  background-position: -77px 0px;
+  opacity: .8;
+}
+.game-buttons .game-buttons__button.science {
+  background-image: url('/media/game/icons/science_btn.png');
+}
+.game-buttons .game-buttons__button.production {
+  background-image: url('/media/game/icons/production_btn.png');
+}
+.game-buttons .game-buttons__button.faith {
+  background-image: url('/media/game/icons/faith_btn.png');
+}
+.game-buttons .game-buttons__hr {
+  background-image: url('/media/game/icons/wood_texture.png');
+  height: 6px;
+  width: 225px;
+  margin-left: 9px;
+  position: fixed;
+  bottom: 79px;
+}
+.buildings_window {
+  background-color: transparent;
+  width: 800px !important;
+  min-width: 800px;
+  max-width: 800px;
+  height: 584px !important;
+  min-height: 584px !important;
+  max-height: 584px;
+  left: calc(50% - 400px) !important;
+  margin-left: 0px !important;
+  background-image: url('/media/game/ui/window_panels.png');
+  background-repeat: no-repeat;
+  background-size: 800px 571px;
+  content: "";
+  top: 32px !important;
+}
+.buildings_window .title {
+  margin-left: 200px;
+  margin-top: 5px;
+  width: 400px;
+  height: 28px;
+  text-align: center;
+  font-size: 20px;
+  color: #fce49a;
+  font-family: 'El Messiri', sans-serif;
+}
+.buildings_window .build_button {
+  width: 130px;
+  height: 26px;
+  position: relative;
+  left: 333px;
+  top: 524px;
+  background-image: url('/media/game/ui/build_btn.png');
+  content: "";
+  cursor: pointer;
+}
+.buildings_window .build_button:hover {
+  background-position: 133px 0px;
 }

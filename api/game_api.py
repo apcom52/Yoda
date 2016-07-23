@@ -43,7 +43,7 @@ class TechnologiesList(APIView):
 			current = False
 			try:
 				current_tech = UserTeach.objects.filter(login = request.user, completed = False).latest('id')
-				current = TechnologySerializer(current_tech, many = False)
+				current = TechnologySerializer(current_tech.technology, many = False)
 				current = current.data
 			except ObjectDoesNotExist:
 				pass

@@ -26,7 +26,7 @@ class BuildingSerializer(serializers.ModelSerializer):
 			})
 		for bonus in BuildingBonusModificator.objects.filter(building = obj):
 			bonuses.append({
-				"value": bonus.value + "%",
+				"value": str(bonus.value) + "%",
 				"type": self.getBonusName(bonus.type)
 			})
 		return bonuses

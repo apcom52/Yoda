@@ -128,6 +128,9 @@
 // }
 
 $(function() {
+	var ec = new ExperienceScreen({level: 2, current: 13});
+	ec.add(5);
+
 	var scienceModal = new Modal($('#scienceModal'));
 	var buildingModal = new Modal($('#buildingModal'));
 	var dogmatsModal = new Modal($('#dogmats-modal'));
@@ -168,21 +171,7 @@ $(function() {
 			$('#scienceInfo').html(html);
 		});
 
-		$('body').on('click', '#startTeach', function(e) {
-			if (currentTech) {
-				$.get('/api/game/technologies/', {
-					m: 'start',
-					id: currentTech.id,
-				},
-				function(response) {
-					if (response == "ok") {
-						showToast("Изучение технологии стартовало!", 5);
-					} else {
-						showToast("Что-то пошло не так. Попробуйте обновить страницу", 5);
-					}
-				});
-			}
-		});
+
 
 		// $.get('/api/game/technologies/', {}, 
 		// 	function (response) {
@@ -201,6 +190,22 @@ $(function() {
 	$('#buildingBtn').click(function() {
 		buildingModal.show();
 	});
+
+	$('body').on('click', '#startTeach', function(e) {
+			if (currentTech) {
+				$.get('/api/game/technologies/', {
+					m: 'start',
+					id: currentTech.id,
+				},
+				function(response) {
+					if (response == "ok") {
+						showToast("Изучение технологии стартовало!", 5);
+					} else {
+						showToast("Что-то пошло не так. Попробуйте обновить страницу", 5);
+					}
+				});
+			}
+		});
 
 	$('#dogmatsBtn').click(function() {
 		dogmatsModal.show();
