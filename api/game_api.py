@@ -13,6 +13,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 import datetime
 import math
+import json
 
 from game.models import *
 from game.classes import *
@@ -80,10 +81,9 @@ class BuildingsList(APIView):
 			for branch in completed_branches_list:
 				for build in branch.technology.buildings.all():
 					# if not build in builded:
-					buildings.append(
-						self.getBuildingInfo(build)
-					)
-			return Response(buildings)
+					buildings.append(build)					
+			serializer = BuildingSerializer(buildings, many = True)
+			return Response(serializer.data)
 		elif method == 'build':
 			building_id = data.get('id', False)
 			if building_id:
@@ -152,7 +152,41 @@ class BuildingsList(APIView):
 			'available': available_response,
 			})
 
-class GenerateMap(APIView):
+class MapAPI(APIView):
 	def get(self, request, format = None):
-		map = Map("RU")
-		return Response(map.generate())
+		from game.classes import Map
+
+		data = request.GET
+		method = data.get("m", False)
+
+		if method == "generate":			
+			gamemap = Map("RU")		
+			game = Game.objects.get(user = request.user, is_completed = False)
+			game.gmap = str(gamemap.generate())
+			game.save()
+			return Response(game.gmap)
+		elif method == "get":
+			from io import StringIO
+			# try:
+			print('gen')
+			game = Game.objects.get(user = request.user, is_completed = False)
+			return Response(eval(game.gmap))
+		elif method == "save":
+			new_map = data.get("map", False)
+			if new_map:
+				game = Game.objects.get(user = request.user, is_completed = False)
+			else:
+				nation = data.get("nation", False)
+				if nation:				
+					country = Nation.objects.get(pk = int(nation))	
+					print(country)
+					gamemap = Map("RU")
+					game = Game()
+					game.nation = country
+					mapobj = Map(country)
+					gamemap = mapobj.generate()
+					game.gmap = json.dumps(gamemap)
+					game.save()
+				return Response(gamemap.generate())
+		else:
+			return Response("failed")

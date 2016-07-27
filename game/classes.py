@@ -1,7 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from .models import *
 
-class Empire:
+class Empire():
 	PLAIN = "plain"
 	SAND = "sand"
 	SEA = "sea"
@@ -87,7 +87,7 @@ class Empire:
 	}
 
 
-class Map:
+class Map():
 	cells = [[0 for x in range(32)] for y in range(32)]
 	width = 32
 	height = 32
@@ -307,24 +307,24 @@ class Map:
 
 				
 				cells[i][j] = {
-					"type": type,
-					"sprite": sprite,
-					"resource": resource,
-					"building": "",
-					"visible": False,
-					"values": {
-						"food": food,
-						"production": production,
-						"culture": culture,
-						"faith": faith,
-						"science": science,
-						"tourism": tourism,
-						"happiness": happiness,
-						"gold": gold,
+					'type': type,
+					'sprite': sprite,
+					'resource': resource,
+					'building': '',
+					'visible': False,
+					'values': {
+						'food': food,
+						'production': production,
+						'culture': culture,
+						'faith': faith,
+						'science': science,
+						'tourism': tourism,
+						'happiness': happiness,
+						'gold': gold,
 					},
-					"position": {
-						"x": j,
-						"y": i,
+					'position': {
+						'x': j,
+						'y': i,
 					}
 				}
 

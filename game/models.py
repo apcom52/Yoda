@@ -20,6 +20,7 @@ class Game(models.Model):
 	user = models.ForeignKey(User, verbose_name = u'Пользователь')
 	nation = models.ForeignKey(Nation, verbose_name = u'Нация')
 	is_completed = models.BooleanField('Игра завершилась', default = False)
+	gmap = models.TextField('Карта игры', default = "[]")
 	science = models.FloatField('Очки науки', default = 0)
 	production = models.FloatField('Очки производства', default = 0)
 	food = models.FloatField('Очки еды', default = 0)

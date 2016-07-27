@@ -50,18 +50,10 @@
 </div>
 
 <div class="game-buttons">
-	<div class="game-buttons__button science"></div>
-	<div class="game-buttons__button production"></div>
-	<div class="game-buttons__button faith"></div>
+	<div class="game-buttons__button science" data-tooltip="Исследования" data-tooltip-invert="true" id="scienceBtn"></div>
+	<div class="game-buttons__button production" data-tooltip="Строительство" data-tooltip-invert="true" id="buildingBtn"></div>
+	<div class="game-buttons__button faith" data-tooltip="Догматы" data-tooltip-invert="true" id="dogmatsBtn"></div>
 </div> 
-
-<div style="position: absolute; right: 0;" class="padding-right-3">
-	<button class="button--color-blue button--size-large button--rounded button--icon shadow-2" id="scienceBtn"><i class="fa fa-flask"></i> Письменность</button>
-	<button class="button--color-orange button--size-large button--rounded button--only-icon shadow-2" id="buildingBtn"><i class="fa fa-wrench"></i></button>
-	<button class="button--color-purple button--size-large button--rounded button--only-icon shadow-2"><i class="fa fa-user"></i> 2</button>
-	<button class="button--color-olive button--size-large button--rounded button--only-icon shadow-2" id="dogmatsBtn"><i class="fa fa-book"></i></button>
-	<button class="button--size-large button--circle button--only-icon shadow-2" id="help_button"><i class="fa fa-question-circle"></i></button>
-</div>
 
 <div class="modal modal--size-xl" id="scienceModal">
 	<div class="modal__header">
@@ -98,131 +90,14 @@
 
 <div class="modal modal--size-xl buildings_window" id="buildingModal">
 	<div class="title">Строительство</div>
-	<div class="build_button"></div>
-	<!-- <div class="title">Строительство</div>
-	<div class="new-content">
-		<div class="list">
-			<div class="icon"><img src="/media/game/castle2.png" alt=""><div class="upgrade"></div></div>
-			<div class="icon"><img src="/media/game/forge.png" alt=""></div>
-			<div class="icon"><img src="/media/game/arena.png" alt=""></div>
-			<div class="icon"><img src="/media/game/library.png" alt=""></div>
-			<div class="icon"><img src="/media/game/chapel.png" alt=""></div>
-			<div class="icon"><img src="/media/game/market.png" alt=""></div>
-		</div>
-	</div> -->
-	<!-- <div class="content">
-		<div class="list">
-			<div class="build_box">
-				Кузница
-				<div class="cover"><img src="/media/game/forge.png" alt=""></div>
-				<span class="game-icon"><span>45</span><img src="/media/game/icons/production.png" alt=""></span>
-			</div>
-			<div class="build_box">
-				Арена
-				<div class="cover"><img src="/media/game/arena.png" alt=""></div>
-				<span class="game-icon"><span>45</span><img src="/media/game/icons/production.png" alt=""></span>
-			</div>
-			<div class="build_box">
-				Библиотека
-				<div class="cover"><img src="/media/game/library.png" alt=""></div>
-				<span class="game-icon"><span>45</span><img src="/media/game/icons/production.png" alt=""></span>
-			</div>
-			<div class="build_box">
-				Часовня
-				<div class="cover"><img src="/media/game/chapel.png" alt=""></div>
-				<span class="game-icon"><span>45</span><img src="/media/game/icons/production.png" alt=""></span>
-			</div>
-		</div>
-		<div class="info">
-			<div class="info_title">
-				<h1>Кузница</h1>
-				<button class="button--color-brown pin-right">Построить</button>
-			</div>
-		</div>
-	</div> -->
-	<!-- <div class="modal__header">
-		<div class="modal__header__title">Строительство</div>
+	<div class="buildings-list" id="availableBuildingsList">		
 	</div>
-	<div class="modal__content padding-0">
-		<div class="grid">
-			<div class="col-4 size-fix">
-				<p class="margin-horizontal-1">На данный момент вы производите <span class="game-icon"><span>2</span><img src="/media/game/icons/production.png" alt=""></span> в ход</p>
-				<div class="technology-list">
-					<div class="technology-list__title">В процессе строительства:</div>
-					<div class="technology-list__item">
-						<img class="technology-list__item__icon l-yellow-bg" src="/media/game/forge.png" alt="">
-						<div class="technology-list__item__info">
-							<div class="technology__list__item__title">Кузница</div>
-							<div class="technology__list__item__meta"><span class="game-icon"><span>35</span><img src="/media/game/icons/production.png" alt=""></span></div>
-						</div>
-					</div>
 
-					<div class="technology-list__title">Доступные здания:</div>
-					<div class="technology-list__item">
-						<img class="technology-list__item__icon l-pink-bg" src="/media/game/storehouse.png" alt="">
-						<div class="technology-list__item__info">
-							<div class="technology__list__item__title">Склад</div>
-							<div class="technology__list__item__meta"><span class="game-icon"><span>10</span><img src="/media/game/icons/production.png" alt=""></span></div>
-						</div>
-					</div>
-					<div class="technology-list__item">
-						<img class="technology-list__item__icon u-red-bg" src="/media/game/chapel.png" alt="">
-						<div class="technology-list__item__info">
-							<div class="technology__list__item__title">Часовня</div>
-							<div class="technology__list__item__meta"><span class="game-icon"><span>35</span><img src="/media/game/icons/production.png" alt=""></span></div>
-						</div>
-					</div>
-					<div class="technology-list__item">
-						<img class="technology-list__item__icon u-brown-bg" src="/media/game/castle2.png" alt="">
-						<div class="technology-list__item__info">
-							<div class="technology__list__item__title">Ратуша (2 уровень)</div>
-							<div class="technology__list__item__meta"><span class="game-icon"><span>100</span><img src="/media/game/icons/production.png" alt=""></span></div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-8 size-fix">
-				<div class="technology-info">
-					<div class="technology-info__top">
-						<img src="/media/game/chapel.png" alt="" class="icon u-red-bg">
-						<div class="description">
-							<div class="title">Часовня</div>
-							<div class="desc">Небольшая христианская постройка культового назначения с иконами, не имеющая особого помещения, где располагается алтарь. В часовнях читаются молитвы и акафисты, совершаются молебны, верующие ставят свечи перед почитаемыми иконами и т. п. </div>
-						</div>
-						<div class="buttons">
-							<button class="button--fit">ПОСТРОИТЬ</button>
-							<div class="time">около 18 часов</div>
-						</div>
-					</div>
-					<div class="block">
-						Стоимость постройки: <span class="game-icon"><span>35</span><img src="/media/game/icons/production.png" alt=""></span>
-					</div>
-					<div class="block">
-						<div class="title">Тип постройки</div>
-						<div class="text">Религиозный</div>
-					</div>
+	<div class="info" id="BuildingInfo">
+		
+	</div>
 
-					<div class="block">
-						<div class="title">Бонусы</div>
-						<div class="text"><span class="game-icon"><span>1</span><img src="/media/game/icons/faith.png" alt=""></span></div>						
-					</div>
-
-					<div class="block">
-						<div class="title">Обслуживание</div>
-						<div class="text"><span class="game-icon"><span>1</span><img src="/media/game/icons/gold.png" alt=""></span> в ход</div>						
-					</div>
-
-					<div class="block">
-						<div class="title">Дополнительно</div>
-						<div class="text">
-							Постройка здания необходима для достижения научной победы <br>
-							Можно построить лишь один раз
-						</div>						
-					</div>
-				</div>
-			</div>
-		</div>
-	</div> -->
+	<div class="build_button"></div>
 </div>
 
 <div class="modal modal--size-xl" id="dogmats-modal">
@@ -338,6 +213,60 @@
 			{{/each}}
 		</div>
 	</div>
+</script>
+
+<script type="text/html" id="BuildingsListTemplate">
+	{{#each this}}
+	<div class="icon" data-id="{{@index}}">
+		<img src="{{icon}}" alt="">
+		{{#if wonder}}
+		<div class="action wonder"></div>
+		{{/if}}
+	</div>
+	{{/each}}
+</script>
+
+<script type="text/html" id="BuildingInfoTemplate">
+	<div class="info__header">
+		<div class="info__header__text">
+			<div class="info__title">{{name}}</div>
+			<div class="info__meta">Кузница - стратегически важное здание на первых этапах игры. Кузница позволит вам поднять производство в вашем государстве. </div>
+		</div>
+		<div class="info__header__icon"><img src="{{icon}}" alt=""></div>
+	</div>
+
+	
+	{{#if wonder}}
+	<span class="game-icon white-fg"><img src="/media/game/icons/wonder.png" alt=""><span>Чудо света</span></span>
+	{{/if}}
+
+	<div class="info__block">
+		<div class="info__block__title">Стоимость</div>
+		<div class="info__block__p">
+			<span class="game-icon"><span>{{pp}}</span><img src="/media/game/icons/production.png" alt=""></span>
+		</div>
+	</div>
+
+	<div class="info__block">
+		<div class="info__block__title">Бонусы</div>
+		<div class="info__block__p">
+			{{#each bonus}}
+				<span class="game-icon"><span>+{{value}}</span><img src="/media/game/icons/{{type}}.png" alt=""></span>
+			{{/each}}
+		</div>
+	</div>
+
+	<div class="info__block">
+		<div class="info__block__title">Обслуживание</div>
+		<div class="info__block__p"><span class="game-icon"><span>1</span><img src="/media/game/icons/gold.png" alt=""></span> в ход</div>
+	</div>
+
+	{{#if wonder}}
+	<div class="info__block">
+		<div class="info__block__title">Чудо света</div>
+		<div class="info__block__p">Чудеса света дают существенные бонусы. Постройка хотя бы одного чуда света необходима для любого вида победы. Чудо света можно построить только тогда, когда вы изучите нужную технологию и в вашем инвентаре имеется карточка соответствующего чуда света.</div>
+	</div>
+	{{/if}}
 </script>
 {% endverbatim %}
 

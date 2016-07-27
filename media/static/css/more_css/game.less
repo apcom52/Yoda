@@ -193,41 +193,41 @@
 }
 
 .game-buttons {
-	position: absolute;
+	position: fixed;
 	width: 244px;	
 	text-align: center;
-	left: ~'calc(50% - 122px)';
-	bottom: 50px;
+	left: 2em;
+	bottom: 1em;
 
 	.game-buttons__button {
 		content: "";
 		display: block;
-		width: 65px;
-		height: 65px;
-		background-size: 142px 66px;
+		width: 48px;
+		height: 48px;
+		background-size: 100%;
 		cursor: pointer;
 		float: left;
-		margin: 0px 8px !important;
+		margin: 0px 4px !important;
 		transition: none !important;
 		background-color: transparent;
 		border: none;
+		opacity: 0.8;
 		z-index: 2;
 
 		&:hover {
-			background-position: -77px 0px;
-			opacity: .8;
+			opacity: 1;
 		}
 		
 		&.science {
-			background-image: url('/media/game/icons/science_btn.png');
+			background-image: url('/media/game/ui/science_btn.png');
 		}
 
 		&.production {
-			background-image: url('/media/game/icons/production_btn.png');
+			background-image: url('/media/game/ui/production_btn.png');
 		}
 
 		&.faith {
-			background-image: url('/media/game/icons/faith_btn.png');
+			background-image: url('/media/game/ui/faith_btn.png');
 		}
 	}
 
@@ -269,12 +269,158 @@
 		.gamefont();
 	}
 
+	.buildings-list {
+		display: inline-block;
+		position: relative;
+		left: 23px;
+		top: 25px;
+		width: 350px;
+		height: 480px;
+		overflow-y: auto;
+		// background-color: rgba(0, 0, 0, .3);
+		box-sizing: border-box;
+
+		.icon {
+			display: inline-block;
+			position: relative;
+			width: 80px;
+			height: 80px;
+			margin: 14px 15px;
+			cursor: pointer;
+			.anim(0.3s);
+
+			img {
+				width: 100%;
+				height: 100%;
+
+				
+			}	
+
+			&:hover, &:active {
+				img {
+					-webkit-filter: brightness(110%);
+					.anim(0.15s);					
+				}
+			}		
+
+			.action {				
+				content: "";
+				display: block;
+				position: absolute;
+				width: 22px;
+				height: 22px;
+				bottom: -6px;
+				left: 29px;
+				background-size: 100%;
+
+				&.upgrade {
+					background-image: url('/media/game/icons/upgrade.png');
+				}
+
+				&.wonder {
+					background-image: url('/media/game/icons/wonder.png');
+				}
+
+				&.completed {
+					background-image: url('/media/game/icons/ok.png');
+				}				
+			}
+
+			.icon__progress {
+				position: absolute;
+				height: 8px;
+				border: 1px solid darken(@yellow, 10%);
+				border-radius: 5px;
+				width: 80%;
+				left: 10%;
+				bottom: 6px;
+				background-color: darken(@blue, 10%);
+
+				.icon__progress__active {
+					background-color: @blue;
+					height: 8px;
+					border-radius: 5px;
+				}
+			}
+		}
+	}
+
+	.info {
+		display: inline-block;
+		position: relative;
+		left: 64px;
+		top: 25px;
+		width: 350px;
+		max-width: 350px;
+		height: 480px;
+		overflow-y: auto;
+		// background-color: rgba(0, 0, 0, .3);
+		box-sizing: border-box;
+
+		.info__header {
+			display: -webkit-flex;
+			display: -moz-flex;
+			display: -ms-flex;
+			display: -o-flex;
+			display: flex;
+			align-items: center;
+
+			.info__header__text {
+				flex: 2;
+				display: inline-block;
+				padding: 4px 12px;
+				width: 200px;
+				box-sizing: border-box;
+
+				.info__title {
+					color: @l-yellow;
+					font-size: 1.15em;
+					.gamefont();
+				}
+
+				.info__meta {
+					color: @l-gray;
+					font-size: 0.8em;
+					.ubuntu();
+				}
+			}
+
+			.info__header__icon {
+				flex: 1;
+				display: inline-block;
+				width: 100px;
+				height: 100px;
+				text-align: center;
+				padding: 4px 12px;
+				box-sizing: border-box;
+
+				img {
+					width: 80px;
+					height: 80px;
+				}
+			}
+		}	
+
+		.info__block {
+			margin: 12px;
+			.ubuntu();
+
+			.info__block__title {
+				color: @l-yellow;
+			}
+
+			.info__block__p {
+				color: @u-gray;
+			}
+		}	
+	}
+
 	.build_button {
 		width: 130px;
 		height: 26px;
 		position: relative;
 		left: 333px;
-		top: 524px;
+		top: 40px;
 		background-image: url('/media/game/ui/build_btn.png');
 		content: "";
 		cursor: pointer;
