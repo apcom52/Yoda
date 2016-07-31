@@ -166,11 +166,15 @@ class MapAPI(APIView):
 			game.save()
 			return Response(game.gmap)
 		elif method == "get":
-			from io import StringIO
-			# try:
-			print('gen')
 			game = Game.objects.get(user = request.user, is_completed = False)
-			return Response(eval(game.gmap))
+			gmap = eval(game.gmap)
+
+			#Получаем список всех зданий
+			buildings = UserBuild.objects.filter(login = request.user, completed = True)
+			for b in buildings:
+				serializer = BuildingSerializer(b.building, many = False)
+				(gmap[b.y][b.x])["building"] = serializer.data
+			return Response(gmap)
 		elif method == "save":
 			new_map = data.get("map", False)
 			if new_map:

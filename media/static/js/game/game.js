@@ -72,6 +72,7 @@ function preload() {
 	// game.load.tilemap('landscape', '/media/game/landscape_tilemap.png');
 
 	game.load.image('castle1', '/media/game/castle1.png');
+	game.load.image('market', '/media/game/market.png');
 }
 
 //var map = new Map('RUS');
@@ -248,6 +249,13 @@ $(function() {
 				}
 			});
 		}
+	});
+
+	$('body').on('click', '#build_button', function(e) {
+		if (buildingModal.visible && currentBuilding) {
+			buildingModal.hide();
+			render.setActiveBuilding(currentBuilding);
+		}		
 	});
 
 	$('#dogmatsBtn').click(function() {

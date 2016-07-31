@@ -39,7 +39,7 @@ class BuildingSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Building
 		fields = (
-			'name', 'pp', 'icon', 'wonder', 'bonus'
+			'id', 'name', 'pp', 'icon', 'wonder', 'bonus', 'sprite'
 		)
 
 class TechnologySerializer(serializers.ModelSerializer):

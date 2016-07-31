@@ -83,6 +83,7 @@ class Building(models.Model):
 	pp = models.IntegerField('Количество очков производства', default = 50)
 	icon = models.ImageField('Иконка здания', upload_to='game/buildings/', blank = True)
 	nations = models.ForeignKey(Nation, blank = True, null = True)
+	sprite = models.CharField('Имя спрайта', max_length = 32, blank = True)
 	wonder = models.BooleanField('Чудо света', default = False)
 
 	def __str__(self):
@@ -237,9 +238,9 @@ class UserBuild(models.Model):
 	progress = models.FloatField('Прогресс постройки', default = 0, blank = True, null = True)
 	date_start = models.DateTimeField('Дата начала постройки')
 	date_end = models.DateTimeField('Дата окончания постройки', blank = True, null = True)
-	completed = models.BooleanField('Технология изучена', default = False)
+	completed = models.BooleanField('Здание построено', default = False)
 	x = models.IntegerField('Координата Х', default = 1)
-	y = models.IntegerField('Координата Х', default = 1)
+	y = models.IntegerField('Координата Y', default = 1)
 
 class UserBuildAdmin(admin.ModelAdmin):
 	list_display = ('login', 'building', 'date_start', 'progress', 'completed')

@@ -86,7 +86,7 @@ Render.prototype.draw = function(map = undefined) {
 				/* Если есть ресурсы, то добавляем спрайт ресурсов */
 				if (cell.building) {
 					console.log('find building!');				
-					var building_sprite = game.add.sprite(512 + 64 * n + 32, 384 + 64 * m + 32, cell.building.params.sprite);
+					var building_sprite = game.add.sprite(512 + 64 * n + 32, 384 + 64 * m + 32, cell.building.sprite);
 					building_sprite.anchor.setTo(0.5, 0.5);
 					target.cells.add(building_sprite);
 				} else if (cell.resource != "") {
@@ -182,6 +182,10 @@ Render.prototype.draw = function(map = undefined) {
 	}
 }
 
+Render.prototype.setActiveBuilding = function(building) {
+	this.activeBuilding = building;
+}
+
 function over(item) {
 	item.alpha = 0.9;
 	console.log(item.cell.position);
@@ -192,11 +196,23 @@ function out(item) {
 }
 
 function cellClick(item) {
-	if (buildCastle) {
+	if (this.activeBuilding) {
 		console.log('build activate');
-		var castleBuilding = new Building(Building.CASTLE);
-		castleBuilding.build(item);
-		this.draw();
-		buildCastle = false;
+		$.get('/api/game/buildings/', 
+			{
+				m: 'build',
+				x: item.cell.position.x,
+				y: item.cell.position.y,
+				id: this.activeBuilding.id,
+			},
+			function(response) {
+				console.log(response);				
+			},
+			function(response) {
+				console.log('error');
+				console.log(response);
+			}
+		)
+		this.activeBuilding = null;
 	}
 }
