@@ -1,6 +1,6 @@
 // Build 100 - 09.04.16
 
-var game = new Phaser.Game(1024, 768, Phaser.WEBGL, 'game', {
+var game = new Phaser.Game(1024, 768, Phaser.CANVAS, 'game', {
 	init: init,
 	preload: preload,
 	create: create,
@@ -73,11 +73,29 @@ function preload() {
 
 	game.load.image('castle1', '/media/game/castle1.png');
 	game.load.image('market', '/media/game/market.png');
+	game.load.image('chapel', '/media/game/chapel.png');
+	game.load.image('forge', '/media/game/forge.png');
+	game.load.image('arena', '/media/game/arena.png');
+	game.load.image('circus', '/media/game/circus.png');
+	game.load.image('library', '/media/game/library.png');
+	game.load.image('progress', '/media/game/build.png');
 }
 
 //var map = new Map('RUS');
 var render = new Render(game);
-//map.generate();
+//map.generate();\
+
+function refreshMap(renderObj) {
+	$.get('/api/game/map?m=get', {},
+		function(response) {
+			renderObj.hasBuildingInProgress = false;
+			console.log(response);
+			var m = {}
+			m.cells = response;
+			renderObj.draw(m);
+		}
+	);
+}
 
 function create() {
 	// console.log(map.cells);
@@ -91,14 +109,7 @@ function create() {
 	// loading_tooltip.fontSize = 14;
 	// loading_tooltip.fill = "#ffd700";
 	// loading_tooltip.setShadow(2, 2, 'rgba(0,0,0,0.5)', 2);
-	$.get('/api/game/map?m=get', {},
-		function(response) {
-			console.log(response);
-			var m = {}
-			m.cells = response;
-			render.draw(m);
-		}
-	);
+	refreshMap(render);
 	// render.draw(map);
 
 	game.kineticScrolling.configure({
@@ -190,6 +201,10 @@ $(function() {
 	var currentBuilding = null;
 	$('#buildingBtn').click(function() {
 		buildingModal.show();
+
+		if (render.hasBuildingInProgress) {
+			$('#build_button').hide();
+		}
 
 		var availableBuildingsDOM = $('#availableBuildingsList');
 		availableBuildingsDOM.html(loading_screen);

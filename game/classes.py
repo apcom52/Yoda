@@ -86,6 +86,25 @@ class Empire():
 		"to": 1
 	}
 
+	RUSSIA = 1
+	USA = 2
+	CHINA = 3
+	JAPAN = 4
+	ITALY = 5
+	FRANCE = 6
+	UK = 7
+	THAILAND = 8
+	INDIA = 9
+	BRAZIL = 10
+	GERMANY = 11
+	SWEDEN = 12
+	SPAIN = 13
+	ISRAEL = 14
+	AUSTRALIA = 15
+
+	#Спецспособности стран
+	CHINA_POWER = 1.1
+
 
 class Map():
 	cells = [[0 for x in range(32)] for y in range(32)]
@@ -372,11 +391,58 @@ class GameManager():
 					print('шаг #', i)
 					self.step(game)
 
+	def get_stats(self, game):
+		production_pt = 0
+		faith_pt = 0
+		gold_pt = 0
+
+		buildings_q = UserBuild.objects.filter(game = game, completed = True)
+		buildings = [b.building for b in buildings_q]
+
+		#Считаем очки производства
+		prod_bonuses = BuildingBonus.objects.filter(type = 2, building__in = buildings)
+		for p in prod_bonuses:
+			production_pt += p.value
+		prod_mods = BuildingBonusModificator.objects.filter(type = 2, building__in = buildings)
+		for p in prod_mods:
+			production_pt *= 1 + p.value / 100
+		if game.nation.id == Empire.CHINA:
+			print('IS CHINA!')
+			production_pt *= Empire.CHINA_POWER
+
+		#Считаем очки веры
+		faith_bonuses = BuildingBonus.objects.filter(type = 4, building__in = buildings)
+		for f in faith_bonuses:
+			faith_pt += f.value
+		faith_mods = BuildingBonusModificator.objects.filter(type = 4, building__in = buildings)
+		for f in faith_mods:
+			faith_pt *= 1 + f.value / 100
+
+		#Считаем очки золота
+		gold_bonuses = BuildingBonus.objects.filter(type = 8, building__in = buildings)
+		for g in gold_bonuses:
+			gold_pt += g.value
+		gold_mods = BuildingBonusModificator.objects.filter(type = 8, building__in = buildings)
+		for g in gold_mods:
+			gold_pt *= 1 + g.value / 100
+
+		return {
+			'production': production_pt,
+			'faith': faith_pt,
+			'gold': gold_pt,
+		}
+
 	def step(self, game):
 		import datetime
 		last_step = Step.objects.filter(game = game).latest('id')
 		science_pt = 3
 		faith_pt = 1
+		
+		stats = self.get_stats(game)
+		production_pt = stats['production']
+		faith_pt = stats['faith']
+		gold_pt = stats['gold']
+
 		step = Step()
 		step.game = game
 		step.date = datetime.datetime.today()
@@ -384,6 +450,7 @@ class GameManager():
 
 		step.science = science_pt
 		step.faith = faith_pt
+		step.production = production_pt
 
 		game.faith += step.faith
 
@@ -422,4 +489,42 @@ class GameManager():
 			game.save()
 		
 
+		#Строительство
+		try:
+			current_build = UserBuild.objects.all().filter(game = game, completed = False).latest('id')
+		except ObjectDoesNotExist:
+			current_build = None
+
+		if current_build:
+			current_prod = current_build.progress + production_pt
+			
+			if current_prod >= current_build.building.pp:
+				from timetable.utils import sendNotification
+
+				current_build.progress = current_build.building.pp
+				current_prod -= current_build.building.pp
+				game.production = current_prod
+				current_build.completed = True
+
+				game.user.userprofile.exp += 1
+				game.user.save()
+
+				sendNotification({
+					"user": game.user,
+					"title": "Здание построено",
+					"type": 1,
+					"text": "Завершено строительство здания \"" + current_build.building.name + "\""
+				})
+
+			else:
+				current_build.progress = current_prod
+				game.production = current_prod
+				step.production = production_pt
+			current_build.save()
+			game.save()
+
+		game.gold += gold_pt
+		game.save()
+
+		step.gold = gold_pt
 		step.save()

@@ -164,7 +164,7 @@
 								<div class="col-6 align-center bold">
 									+2<br>
 									+4<br>
-									+3
+									{{game_info.game.faith|floatformat}} (+{{game_info.stats.faith|floatformat}})
 								</div>
 							</div>
 							<div class="col-5 offset-2">
@@ -174,26 +174,37 @@
 									<img src="/media/game/icons/science.png" style="width: 1em; height: 1em;">
 								</div>
 								<div class="col-6 align-center bold">
-									+2<br>
-									455 (+4)<br>
+									+{{game_info.stats.production|floatformat}}<br>
+									{{game_info.game.gold|floatformat}} (+{{game_info.stats.gold|floatformat}})<br>
 									+3
 								</div>
 							</div>
 						</div>
 						{% if not game_info.latest_technology %}
 							<div class="progress margin-bottom-0 progress--color-blue progress--size-thin"><div class="progress__active" style="width:{{game_info.technology_progress}}%"></div></div>
-							{% endif %}
+
 							<div class="blue-fg" style="font-size: 0.9em;"><b>
-							{% if game_info.latest_technology %}
-								{{game_info.latest_technology.technology.name}}</b>. Завершено
-							{% else %}
-								{{game_info.technology.technology.name}}</b>. Исследовано {{game_info.technology_progress}}% (еще 12 часов)
+								{% if game_info.latest_technology %}
+									{{game_info.latest_technology.technology.name}}</b>. Завершено
+								{% else %}
+									{{game_info.technology.technology.name}}</b>. Исследовано {{game_info.technology_progress}}% (еще 12 часов)
+								{% endif %}
+							</div>							
 						{% endif %}
-						</div>
-						<div class="progress margin-bottom-0 progress--color-orange progress--size-thin"><div class="progress__active" style="width:83%"></div></div>
-						<div class="orange-fg" style="font-size: 0.9em;"><b>Амбар</b>. Завершено 83% (еще 2 часа)</div>
+
+						
+						<div class="progress margin-bottom-0 progress--color-orange progress--size-thin"><div class="progress__active" style="width:{{game_info.building_progress}}%"></div></div>
+
+						<div class="orange-fg" style="font-size: 0.9em;"><b>
+							{% if game_info.latest_building %}
+								{{game_info.latest_building.building.name}}</b>. Строительство окончено
+							{% else %}
+								{{game_info.building.building.name}}</b>. Завершено {{game_info.building_progress}}% (еще 12 часов)
+							{% endif %}
+						</div>			
+
 						<div class="card__footer margin-top-1">
-							<div class="button button--color-{{request.user.userprofile.accent}} button--fit button--transparent align-center">ВОЙТИ В ИГРУ</div>
+							<a href="/game/"><div class="button button--color-{{request.user.userprofile.accent}} button--fit button--transparent align-center">ВОЙТИ В ИГРУ</div></a>
 						</div>
 					</div>					
 				</div>

@@ -3,6 +3,7 @@ var buildCastle = false;
 Render = function(game, map = null) {
 	this.game = game;
 	this.map = map;
+	this.hasBuildingInProgress = true;
 }
 
 Render.prototype.draw = function(map = undefined) {
@@ -89,6 +90,23 @@ Render.prototype.draw = function(map = undefined) {
 					var building_sprite = game.add.sprite(512 + 64 * n + 32, 384 + 64 * m + 32, cell.building.sprite);
 					building_sprite.anchor.setTo(0.5, 0.5);
 					target.cells.add(building_sprite);
+
+					// Если строительство не завершено, то показываем прогресс-бар
+					if (cell.building.progress >= 0 && cell.building.progress < 1) {
+						target.hasBuildingInProgress = true;
+						console.log('find progress building');
+						var gfx = target.game.add.graphics(512 + 64 * n + 5, 384 + 64*m + 4);
+						gfx.beginFill(0xFF0000);
+						gfx.lineStyle(1, 0x000000);
+						gfx.drawRect(0, 0, 54, 4);
+						gfx.beginFill(0x00FF00);
+						gfx.drawRect(0, 0, 54 * cell.building.progress, 4);
+						// var progress_bg = new Phaser.Rectangle(512 + 64 * n + 5, 384 + 64 * m + 52, 54, 8);
+						// var progress_fg = new Phaser.Rectangle(512 + 64 * n + 32, 384 + 64 * m + 52, 54 * cell.building.progress, 8);
+						// console.log(target.game);
+						// target.game.debug.renderRectangle(progress_bg,'#ff0000');
+						// target.game.debug.renderRectangle(progress_fg,'#00ff00');
+					}
 				} else if (cell.resource != "") {
 					switch(cell.resource) {
 						case Map.RESOURCE_STONE:
@@ -196,7 +214,8 @@ function out(item) {
 }
 
 function cellClick(item) {
-	if (this.activeBuilding) {
+	var target = this;
+	if (target.activeBuilding) {
 		console.log('build activate');
 		$.get('/api/game/buildings/', 
 			{
@@ -206,6 +225,10 @@ function cellClick(item) {
 				id: this.activeBuilding.id,
 			},
 			function(response) {
+				item.cell.building = target.activeBuilding;
+				item.cell.building.sprite = "progress";
+				target.draw();
+				console.log('Построено');
 				console.log(response);				
 			},
 			function(response) {

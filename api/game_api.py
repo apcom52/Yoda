@@ -86,12 +86,14 @@ class BuildingsList(APIView):
 			return Response(serializer.data)
 		elif method == 'build':
 			building_id = data.get('id', False)
+			game = Game.objects.all().filter(user = request.user, is_completed = False).latest('id')
 			if building_id:
 				building = Building.objects.get(pk = int(building_id))
 				x = data.get('x', False)
 				y = data.get('y', False)
 				userbuild = UserBuild()
 				userbuild.login = request.user
+				userbuild.game = game
 				userbuild.building = building
 				userbuild.date_start = datetime.datetime.now()
 				userbuild.x = x
@@ -170,10 +172,16 @@ class MapAPI(APIView):
 			gmap = eval(game.gmap)
 
 			#Получаем список всех зданий
-			buildings = UserBuild.objects.filter(login = request.user, completed = True)
+			buildings = UserBuild.objects.filter(login = request.user, game = game)
 			for b in buildings:
+				progress = 1
+				if b.completed == False:
+					full_price = b.building.pp
+					current_price = b.progress
+					progress = 1.0 * current_price / full_price
 				serializer = BuildingSerializer(b.building, many = False)
 				(gmap[b.y][b.x])["building"] = serializer.data
+				(gmap[b.y][b.x])["building"]["progress"] = progress
 			return Response(gmap)
 		elif method == "save":
 			new_map = data.get("map", False)

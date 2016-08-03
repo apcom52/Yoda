@@ -234,6 +234,7 @@ class UserBuild(models.Model):
 		verbose_name_plural = 'Постройки игроков'
 
 	login = models.ForeignKey(User, verbose_name = 'Пользователь')
+	game = models.ForeignKey(Game, verbose_name = 'Игра')
 	building = models.ForeignKey(Building, verbose_name = 'Постройка')
 	progress = models.FloatField('Прогресс постройки', default = 0, blank = True, null = True)
 	date_start = models.DateTimeField('Дата начала постройки')

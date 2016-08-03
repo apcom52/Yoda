@@ -36,6 +36,10 @@ def index(request):
 
 		game_info = {}
 
+		game = Game.objects.filter(user = request.user, is_completed = False).latest('id')
+		game_info['stats'] = gm.get_stats(game)
+		game_info['game'] = game
+
 		#Текущее исследование
 		try:
 			current_tech = UserTeach.objects.filter(login = request.user, completed = False).latest('id')
@@ -45,6 +49,16 @@ def index(request):
 		except ObjectDoesNotExist:
 			latest_tech = UserTeach.objects.filter(login = request.user).latest('id')
 			game_info["latest_technology"] = latest_tech
+
+		try:
+			current_build = UserBuild.objects.filter(login = request.user, completed = False).latest('id')
+			game_info["building"] = current_build
+			game_info["building_progress"] = math.ceil(current_build.progress * 100 / current_build.building.pp)
+			game_info["latest_building"] = False
+		except:
+			latest_building = UserBuild.objects.filter(login = request.user).latest('id')
+			game_info["latest_building"] = latest_building
+
 		context = {
 			'title': 'Yoda',
 			'feed': fm.get(),
