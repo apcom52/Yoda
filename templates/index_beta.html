@@ -151,8 +151,8 @@
 				<div class="card card--no-smooth card--image">
 					<div class="card__content">
 						<div class="horizontal-layout horizontal-layout--centered">
-							<img src="/media/game/flags/russia.png" class="img--circle margin-1 shadow-2" style="width: 32px;">
-							<div class="column padding-1"><b>Россия</b></div>
+							<img src="{{game_info.game.nation.icon.url}}" class="img--circle margin-1 shadow-2" style="width: 32px;">
+							<div class="column padding-1"><b>{{game_info.game.nation.title}}</b></div>
 						</div>
 						<div class="grid">
 							<div class="col-5">
@@ -176,7 +176,7 @@
 								<div class="col-6 align-center bold">
 									+{{game_info.stats.production|floatformat}}<br>
 									{{game_info.game.gold|floatformat}} (+{{game_info.stats.gold|floatformat}})<br>
-									+3
+									+{{game_info.stats.science|floatformat}}
 								</div>
 							</div>
 						</div>

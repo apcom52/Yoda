@@ -1,5 +1,6 @@
 from django.core.exceptions import ObjectDoesNotExist
 from .models import *
+import random
 
 class Empire():
 	PLAIN = "plain"
@@ -103,7 +104,27 @@ class Empire():
 	AUSTRALIA = 15
 
 	#Спецспособности стран
+	
+	# Россия:
+	# +25% к добыче всех ресурсов
+	RUSSIA_POWER = 1.25
+
+	# США:
+	# +10% к науке
+	# +1 к науке за ратушу, стоящую рядом с горой
+	USA_POWER = 1.1
+	USA_CASTLE_SC_BONUS = 1
+
+	# Китай:
+	# +10% к производству
+	# Шанс в 50% после строительства здания получить 1-2 очка веры, производства или науки
 	CHINA_POWER = 1.1
+	CHINA_BONUS_CHANCE = 0.5
+
+	# Франция
+	# Шанс в 40%, что возместит 50% стоимости здания золотом
+	FRANCE_POWER_CHANCE = 0.4
+	FRANCE_POWER_BONUS = 0.5
 
 
 class Map():
@@ -114,6 +135,9 @@ class Map():
 	def __init__(self, nation):
 		if nation:
 			self.nation = nation
+
+	def get(self, game):
+		self.cells = eval(game.gmap)
 
 	def generate(self):
 		import random
@@ -366,6 +390,36 @@ class Map():
 		elif rnd > 0.75 and rnd <= 0.93: return Empire.SEA
 		else: return Empire.MOUNTAIN
 
+	def getNeighbour(self, x, y):
+		cells = self.cells
+		nbs = []
+		coords = []
+
+		if x == 0 and y == 0:
+			coords = [[0, 1], [1, 0], [1, 1]]
+		elif x == 31 and y == 31:
+			coords = [[30, 30], [30, 31], [31, 30]]
+		elif x == 31 and y == 0:
+			coords = [[0, 30], [1, 30], [1, 31]]
+		elif x == 0 and y == 31:
+			coords = [[30, 0], [30, 1], [31, 1]]
+		else:
+			if x == 0:
+				coords = [[y-1, x], [y-1, x+1], [y, x+1], [y+1, x], [y+1, x+1]]
+			elif x == 31:
+				coords = [[y-1, x-1], [y-1, x], [y, x-1], [y+1, x-1], [y+1, x]]
+			elif y == 0:
+				coords = [[y, x-1], [y, x+1], [y+1, x-1], [y+1, x], [y+1, x+1]]
+			elif y == 31:
+				coords = [[y-1, x-1], [y-1, x], [y-1, x+1], [y, x-1], [y, x+1]]
+			else:
+				coords = [[y-1, x-1], [y-1, x], [y-1, x+1], [y, x-1], [y, x+1], [y+1, x-1], [y+1, x], [y+1, x+1]]
+
+		for c in coords:
+			if cells[c[0]][c[1]]['type'] in (Empire.MOUNTAIN, Empire.SEA):
+				nbs.append(cells[c[0]][c[1]]['type'])
+		return nbs
+
 class GameManager():
 	def __init__(self):
 		pass
@@ -392,26 +446,47 @@ class GameManager():
 					self.step(game)
 
 	def get_stats(self, game):
+		science_pt = 0
 		production_pt = 0
 		faith_pt = 0
 		gold_pt = 0
+
+		castle = UserBuild.objects.get(game = game, building__name = "Ратуша")
+		mapManager = Map(game.nation)
+		gmap = mapManager.get(game)
+		castle_near = mapManager.getNeighbour(castle.x, castle.y)
 
 		buildings_q = UserBuild.objects.filter(game = game, completed = True)
 		buildings = [b.building for b in buildings_q]
 
 		#Считаем очки производства
 		prod_bonuses = BuildingBonus.objects.filter(type = 2, building__in = buildings)
+
+		production_pt += 1 * (game.castle_level - 1) #Уровень ратуши
 		for p in prod_bonuses:
 			production_pt += p.value
+		if game.nation.id == Empire.SPAIN:
+			production_pt += game.castle_level
+
+		# Если ратуша стоит рядом с горой
+		if Empire.MOUNTAIN in castle_near:
+			production_pt += 1
+			if game.nation.id == Empire.SPAIN:
+				production_pt += 1
+
 		prod_mods = BuildingBonusModificator.objects.filter(type = 2, building__in = buildings)
 		for p in prod_mods:
 			production_pt *= 1 + p.value / 100
 		if game.nation.id == Empire.CHINA:
-			print('IS CHINA!')
 			production_pt *= Empire.CHINA_POWER
 
 		#Считаем очки веры
 		faith_bonuses = BuildingBonus.objects.filter(type = 4, building__in = buildings)
+
+		faith_pt += 1 * (game.castle_level - 1) #Уровень ратуши
+		if game.nation.id == Empire.SPAIN:
+			faith_pt += game.castle_level
+
 		for f in faith_bonuses:
 			faith_pt += f.value
 		faith_mods = BuildingBonusModificator.objects.filter(type = 4, building__in = buildings)
@@ -420,16 +495,40 @@ class GameManager():
 
 		#Считаем очки золота
 		gold_bonuses = BuildingBonus.objects.filter(type = 8, building__in = buildings)
+
+		gold_pt += 5 * (game.castle_level - 1) #+5 золота за каждый уровень ратуши
+		if game.nation.id == Empire.SPAIN:
+			gold_pt += 5 * game.castle_level
+
 		for g in gold_bonuses:
 			gold_pt += g.value
 		gold_mods = BuildingBonusModificator.objects.filter(type = 8, building__in = buildings)
 		for g in gold_mods:
 			gold_pt *= 1 + g.value / 100
 
+		#Считаем очки науки
+		science_bonuses = BuildingBonus.objects.filter(type = 5, building__in = buildings)
+
+		science_pt += 1 * (game.castle_level - 1) #Уровень ратуши
+		if game.nation.id == Empire.SPAIN:
+			science_pt += game.castle_level
+
+		for s in science_bonuses:
+			science_pt += s.value
+		if game.nation.id == Empire.USA:
+			if Empire.MOUNTAIN in castle_near:
+				science_pt += 1
+		science_mods = BuildingBonusModificator.objects.filter(type = 5, building__in = buildings)
+		for s in science_mods:
+			science_pt *= 1 + s.value / 100
+		if game.nation.id == Empire.USA:
+			science_pt *= Empire.USA_POWER
+
 		return {
 			'production': production_pt,
 			'faith': faith_pt,
 			'gold': gold_pt,
+			'science': science_pt,
 		}
 
 	def step(self, game):
@@ -442,6 +541,7 @@ class GameManager():
 		production_pt = stats['production']
 		faith_pt = stats['faith']
 		gold_pt = stats['gold']
+		science_pt = stats['science']
 
 		step = Step()
 		step.game = game
@@ -506,6 +606,29 @@ class GameManager():
 				game.production = current_prod
 				current_build.completed = True
 
+				#Если игрок - Китай, то получает 1-2 ед веры, производства или науки
+				if game.nation.id == Empire.CHINA:
+					rnd = random.random()
+					if rnd < Empire.CHINA_BONUS_CHANCE:
+						value = random.choice([1, 2])
+						param = random.choice(('prod', 'science', 'faith'))
+						if param == 'prod':
+							game.production += value
+							step.production += value
+						elif param == 'science':
+							game.science += value
+							step.science += value
+						elif param == 'faith':
+							game.faith += value
+							step.faith += value
+
+				if game.nation.id == Empire.FRANCE:
+					rnd = random.random()
+					if rnd <= Empire.FRANCE_POWER_CHANCE:
+						bonus_gold = current_build.pp * Empire.FRANCE_POWER_BONUS
+						game.gold += bonus_gold
+						step.gold += bonus_gold
+
 				game.user.userprofile.exp += 1
 				game.user.save()
 
@@ -526,5 +649,5 @@ class GameManager():
 		game.gold += gold_pt
 		game.save()
 
-		step.gold = gold_pt
+		step.gold += gold_pt
 		step.save()

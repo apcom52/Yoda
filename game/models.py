@@ -8,6 +8,7 @@ class Nation(models.Model):
 		verbose_name = 'Нация'
 		verbose_name_plural = 'Нации'
 	title = models.CharField('Название нации', max_length = 32)
+	icon = models.ImageField('Иконка здания', upload_to='game/flags/', blank = True)
 	bonus = models.TextField('Бонус')
 
 	def __str__(self):
@@ -29,6 +30,7 @@ class Game(models.Model):
 	faith = models.FloatField('Очки веры', default = 0)
 	tourism = models.FloatField('Очки туризма', default = 0)
 	happiness = models.FloatField('Очки настроения', default = 0)
+	castle_level = models.IntegerField('Уровень ратуши', default = 1)
 
 	def __str__(self):
 		return '%s (%s)' % (self.user.first_name + ' ' + self.user.last_name, self.nation)
