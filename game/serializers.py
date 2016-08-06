@@ -1,5 +1,3 @@
-import datetime
-import pytz
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist 
 from django.utils import dateformat
@@ -9,13 +7,24 @@ from .models import *
 from user.serializers import UserSerializer
 from timetable.utils import utc_to_local
 
+import datetime
+import pytz
+
 class BuildingSerializer(serializers.ModelSerializer):
-	bonus = serializers.SerializerMethodField();
+	bonus = serializers.SerializerMethodField()
+	exclusive = serializers.SerializerMethodField()
 
 	def get_icon(self, obj):
 		if obj.icon:
 			return obj.icon.url
 		return ''
+
+	def get_exclusive(self, obj):
+		try: 
+			if obj.nations:
+				return True
+		except ObjectDoesNotExist:
+			return False
 
 	def get_bonus(self, obj):
 		bonuses = []
@@ -39,7 +48,7 @@ class BuildingSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Building
 		fields = (
-			'id', 'name', 'pp', 'icon', 'wonder', 'bonus', 'sprite'
+			'id', 'name', 'pp', 'icon', 'wonder', 'bonus', 'sprite', 'exclusive'
 		)
 
 class TechnologySerializer(serializers.ModelSerializer):

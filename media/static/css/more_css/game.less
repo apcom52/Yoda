@@ -323,7 +323,11 @@
 
 				&.completed {
 					background-image: url('/media/game/icons/ok.png');
-				}				
+				}	
+
+				&.exclusive {
+					background-image: url('/media/game/icons/exclusive.png');
+				}			
 			}
 
 			.icon__progress {
@@ -342,6 +346,159 @@
 					border-radius: 5px;
 				}
 			}
+		}
+	}
+
+	.info {
+		display: inline-block;
+		position: relative;
+		left: 64px;
+		top: 25px;
+		width: 350px;
+		max-width: 350px;
+		height: 480px;
+		overflow-y: auto;
+		// background-color: rgba(0, 0, 0, .3);
+		box-sizing: border-box;
+
+		.info__header {
+			display: -webkit-flex;
+			display: -moz-flex;
+			display: -ms-flex;
+			display: -o-flex;
+			display: flex;
+			align-items: center;
+
+			.info__header__text {
+				flex: 2;
+				display: inline-block;
+				padding: 4px 12px;
+				width: 200px;
+				box-sizing: border-box;
+
+				.info__title {
+					color: @l-yellow;
+					font-size: 1.15em;
+					.gamefont();
+				}
+
+				.info__meta {
+					color: @l-gray;
+					font-size: 0.8em;
+					.ubuntu();
+				}
+			}
+
+			.info__header__icon {
+				flex: 1;
+				display: inline-block;
+				width: 100px;
+				height: 100px;
+				text-align: center;
+				padding: 4px 12px;
+				box-sizing: border-box;
+
+				img {
+					width: 80px;
+					height: 80px;
+				}
+			}
+		}	
+
+		.info__block {
+			margin: 12px;
+			.ubuntu();
+
+			.info__block__title {
+				color: @l-yellow;
+			}
+
+			.info__block__p {
+				color: @u-gray;
+			}
+		}	
+	}
+
+	.build_button {
+		width: 130px;
+		height: 26px;
+		position: relative;
+		left: 333px;
+		top: 40px;
+		background-image: url('/media/game/ui/build_btn.png');
+		content: "";
+		cursor: pointer;
+
+		&:hover {
+			background-position: 133px 0px;
+		}
+	}
+}
+
+.science_window {
+	background-color: transparent;
+	width: 800px !important;
+	min-width: 800px;
+	max-width: 800px;
+	height: 584px !important;
+	min-height: 584px !important;
+	max-height: 584px;
+	left: ~"calc(50% - 400px)" !important;
+	margin-left: 0px !important;
+	margin-left: 0px !important;
+	background-image: url('/media/game/ui/science_window.png');
+	background-repeat: no-repeat;
+	background-size: 800px 571px;
+	content: "";
+	top: 32px !important;
+
+	.title {
+		margin-left: 200px;
+		margin-top: 5px;
+		width: 400px;
+		height: 28px;
+		text-align: center;
+		font-size: 20px;
+		color: @u-yellow;
+		.gamefont();
+	}
+
+	.science-list {
+		display: inline-block;
+		position: relative;
+		left: 24px;
+		top: 27px;
+		width: 759px;
+		height: 100px;
+		overflow-y: auto;
+		background-color: rgba(0, 0, 0, .3);
+		box-sizing: border-box;
+
+		.icon {
+			display: inline-block;
+			position: relative;
+			width: 80px;
+			height: 80px;
+			margin: 10px;
+			background-image: url('/media/game/ui/circle.png');
+			background-size: 100%;
+			vertical-align: middle;
+			cursor: pointer;
+			.anim(0.3s);
+
+			img {
+				width: 73px;
+				height: 73px;				
+				margin: 3px;
+				border-radius: 50%;
+			}	
+
+			&:hover, &:active {
+				img {
+					-webkit-filter: brightness(110%);
+					.anim(0.15s);					
+				}
+			}	
 		}
 	}
 

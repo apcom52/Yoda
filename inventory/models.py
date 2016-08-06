@@ -4,6 +4,40 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 
 # Create your models here.
+class Card(models.Model):
+	qualities = (
+		(0, 'Обычная карта'),
+		(1, 'Коллекционная карта'),
+		(2, 'Уникальная карта'),
+		(3, 'Золотая карта'),		
+		(4, 'Памятная карта'),		
+	)
+
+	title = models.CharField('Название карточки', max_length = 32)
+	icon = models.ImageField(upload_to='cards/', verbose_name='Обложка карточки')
+	description = models.TextField('Описание карточки', blank = True)
+	quality = models.IntegerField('Качество карточки', choices = qualities, default = 0)
+
+	def __str__(self):
+		name = self.title
+		if self.quality == 3:
+			name += " ★"
+		return name
+
+class CardAdmin(admin.ModelAdmin):
+	list_display = ('title', 'quality', 'description')
+
+class Booster(models.Model):
+	title = models.CharField('Название бустера', max_length = 32)
+	icon = models.ImageField(upload_to='boosters/', verbose_name='Название бустера', blank = True)
+	cards = models.ManyToManyField(Card, verbose_name = 'Карточки')
+
+	def __str__(self):
+		return self.title
+
+class BoosterAdmin(admin.ModelAdmin):
+	filter_horizontal = ('cards', )
+		
 class Smile(models.Model):
 	title = models.CharField('Название смайлика', max_length = 64)
 	symbol = models.CharField('Обозначение смайлика', max_length = 32)

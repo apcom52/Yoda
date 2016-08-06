@@ -55,7 +55,22 @@
 	<div class="game-buttons__button faith" data-tooltip="Догматы" data-tooltip-invert="true" id="dogmatsBtn"></div>
 </div> 
 
-<div class="modal modal--size-xl" id="scienceModal">
+<div class="modal modal--size-xl science_window" id="scienceModal">
+	<div class="title">Технологии</div>
+	<div class="science-list">		
+		<div class="icon"><img src="/media/game/technologies/banking.jpg" alt=""></div>
+		<div class="icon"><img src="/media/game/technologies/economy.png" alt=""></div>
+		<div class="icon"><img src="/media/game/technologies/farm.jpg" alt=""></div>
+	</div>
+
+	<div class="info">
+		
+	</div>
+
+	<!-- <div class="build_button" id="build_button"></div> -->
+</div>
+
+<!-- <div class="modal modal--size-xl" id="scienceModal">
 	<div class="modal__header">
 		<div class="modal__header__title">Технологии</div>
 	</div>
@@ -86,7 +101,7 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div> -->
 
 <div class="modal modal--size-xl buildings_window" id="buildingModal">
 	<div class="title">Строительство</div>
@@ -221,6 +236,9 @@
 		<img src="{{icon}}" alt="">
 		{{#if wonder}}
 		<div class="action wonder"></div>
+		{{/if}}
+		{{#if exclusive}}
+		<div class="action exclusive"></div>
 		{{/if}}
 	</div>
 	{{/each}}

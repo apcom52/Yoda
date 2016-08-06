@@ -89,7 +89,10 @@ class Building(models.Model):
 	wonder = models.BooleanField('Чудо света', default = False)
 
 	def __str__(self):
-		return self.name
+		name = self.name
+		if self.wonder:
+			name += " {*}"
+		return name
 
 class BuildingBonus(models.Model):
 	bonus_types = (

@@ -138,6 +138,7 @@ class Map():
 
 	def get(self, game):
 		self.cells = eval(game.gmap)
+		return self.cells
 
 	def generate(self):
 		import random
@@ -450,11 +451,46 @@ class GameManager():
 		production_pt = 0
 		faith_pt = 0
 		gold_pt = 0
+		food_pt = 0
 
 		castle = UserBuild.objects.get(game = game, building__name = "Ратуша")
 		mapManager = Map(game.nation)
 		gmap = mapManager.get(game)
 		castle_near = mapManager.getNeighbour(castle.x, castle.y)
+		castle_cell = gmap[castle.y][castle.x]
+
+		castle_production = 1 * game.castle_level
+		castle_food = 2 + 1 * game.castle_level
+		castle_science = 1 * game.castle_level
+		castle_culture = 1 * game.castle_level
+		castle_gold = 5 * game.castle_level
+		castle_faith = 1 * game.castle_level
+
+		if Empire.SEA in castle_near:
+			castle_food += 1
+		if Empire.MOUNTAIN in castle_near:
+			castle_production += 1
+		if castle_cell['type'] == Empire.PLAIN:
+			castle_food += 1
+		if castle_cell['type'] == Empire.SAND:
+			castle_faith += 1
+		if castle_cell['resource'] != '':
+			castle_production += 1
+			castle_food += 1
+
+		if game.nation.id == Empire.SPAIN:
+			castle_production *= 2
+			castle_food *= 2
+			castle_science *= 2
+			castle_culture *= 2
+			castle_gold *= 2
+			castle_faith *= 2
+
+		production_pt += castle_production
+		science_pt += castle_science
+		faith_pt += castle_faith
+		gold_pt += castle_gold
+		food_pt += castle_food
 
 		buildings_q = UserBuild.objects.filter(game = game, completed = True)
 		buildings = [b.building for b in buildings_q]
@@ -462,17 +498,8 @@ class GameManager():
 		#Считаем очки производства
 		prod_bonuses = BuildingBonus.objects.filter(type = 2, building__in = buildings)
 
-		production_pt += 1 * (game.castle_level - 1) #Уровень ратуши
 		for p in prod_bonuses:
 			production_pt += p.value
-		if game.nation.id == Empire.SPAIN:
-			production_pt += game.castle_level
-
-		# Если ратуша стоит рядом с горой
-		if Empire.MOUNTAIN in castle_near:
-			production_pt += 1
-			if game.nation.id == Empire.SPAIN:
-				production_pt += 1
 
 		prod_mods = BuildingBonusModificator.objects.filter(type = 2, building__in = buildings)
 		for p in prod_mods:
@@ -483,10 +510,6 @@ class GameManager():
 		#Считаем очки веры
 		faith_bonuses = BuildingBonus.objects.filter(type = 4, building__in = buildings)
 
-		faith_pt += 1 * (game.castle_level - 1) #Уровень ратуши
-		if game.nation.id == Empire.SPAIN:
-			faith_pt += game.castle_level
-
 		for f in faith_bonuses:
 			faith_pt += f.value
 		faith_mods = BuildingBonusModificator.objects.filter(type = 4, building__in = buildings)
@@ -495,10 +518,6 @@ class GameManager():
 
 		#Считаем очки золота
 		gold_bonuses = BuildingBonus.objects.filter(type = 8, building__in = buildings)
-
-		gold_pt += 5 * (game.castle_level - 1) #+5 золота за каждый уровень ратуши
-		if game.nation.id == Empire.SPAIN:
-			gold_pt += 5 * game.castle_level
 
 		for g in gold_bonuses:
 			gold_pt += g.value
@@ -529,6 +548,7 @@ class GameManager():
 			'faith': faith_pt,
 			'gold': gold_pt,
 			'science': science_pt,
+			'food': food_pt,
 		}
 
 	def step(self, game):

@@ -2,6 +2,8 @@ from django.contrib import admin
 from .models import *
 
 # Register your models here.
+admin.site.register(Card, CardAdmin)
+admin.site.register(Booster, BoosterAdmin)
 admin.site.register(Smile)
 admin.site.register(SmileCollection)
 admin.site.register(Background)

@@ -253,6 +253,9 @@
 .buildings_window .buildings-list .icon .action.completed {
   background-image: url('/media/game/icons/ok.png');
 }
+.buildings_window .buildings-list .icon .action.exclusive {
+  background-image: url('/media/game/icons/exclusive.png');
+}
 .buildings_window .buildings-list .icon .icon__progress {
   position: absolute;
   height: 8px;
@@ -338,5 +341,137 @@
   cursor: pointer;
 }
 .buildings_window .build_button:hover {
+  background-position: 133px 0px;
+}
+.science_window {
+  background-color: transparent;
+  width: 800px !important;
+  min-width: 800px;
+  max-width: 800px;
+  height: 584px !important;
+  min-height: 584px !important;
+  max-height: 584px;
+  left: calc(50% - 400px) !important;
+  margin-left: 0px !important;
+  background-image: url('/media/game/ui/science_window.png');
+  background-repeat: no-repeat;
+  background-size: 800px 571px;
+  content: "";
+  top: 32px !important;
+}
+.science_window .title {
+  margin-left: 200px;
+  margin-top: 5px;
+  width: 400px;
+  height: 28px;
+  text-align: center;
+  font-size: 20px;
+  color: #fce49a;
+  font-family: 'El Messiri', sans-serif;
+}
+.science_window .science-list {
+  display: inline-block;
+  position: relative;
+  left: 24px;
+  top: 27px;
+  width: 759px;
+  height: 100px;
+  overflow-y: auto;
+  background-color: rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+}
+.science_window .science-list .icon {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin: 10px;
+  background-image: url('/media/game/ui/circle.png');
+  background-size: 100%;
+  vertical-align: middle;
+  cursor: pointer;
+  transition: all 0.3s linear;
+}
+.science_window .science-list .icon img {
+  width: 73px;
+  height: 73px;
+  margin: 3px;
+  border-radius: 50%;
+}
+.science_window .science-list .icon:hover img,
+.science_window .science-list .icon:active img {
+  -webkit-filter: brightness(110%);
+  transition: all 0.15s linear;
+}
+.science_window .info {
+  display: inline-block;
+  position: relative;
+  left: 64px;
+  top: 25px;
+  width: 350px;
+  max-width: 350px;
+  height: 480px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+.science_window .info .info__header {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  align-items: center;
+}
+.science_window .info .info__header .info__header__text {
+  flex: 2;
+  display: inline-block;
+  padding: 4px 12px;
+  width: 200px;
+  box-sizing: border-box;
+}
+.science_window .info .info__header .info__header__text .info__title {
+  color: #fadd73;
+  font-size: 1.15em;
+  font-family: 'El Messiri', sans-serif;
+}
+.science_window .info .info__header .info__header__text .info__meta {
+  color: #999999;
+  font-size: 0.8em;
+  font-family: 'Ubuntu', sans-serif;
+}
+.science_window .info .info__header .info__header__icon {
+  flex: 1;
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  text-align: center;
+  padding: 4px 12px;
+  box-sizing: border-box;
+}
+.science_window .info .info__header .info__header__icon img {
+  width: 80px;
+  height: 80px;
+}
+.science_window .info .info__block {
+  margin: 12px;
+  font-family: 'Ubuntu', sans-serif;
+}
+.science_window .info .info__block .info__block__title {
+  color: #fadd73;
+}
+.science_window .info .info__block .info__block__p {
+  color: #f5f5f5;
+}
+.science_window .build_button {
+  width: 130px;
+  height: 26px;
+  position: relative;
+  left: 333px;
+  top: 40px;
+  background-image: url('/media/game/ui/build_btn.png');
+  content: "";
+  cursor: pointer;
+}
+.science_window .build_button:hover {
   background-position: 133px 0px;
 }

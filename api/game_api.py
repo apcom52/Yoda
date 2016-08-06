@@ -72,16 +72,27 @@ class BuildingsList(APIView):
 	def get(self, request, format = None):
 		data = request.GET
 		method = data.get("m", False)
+		game = Game.objects.all().filter(user = request.user, is_completed = False).latest('id')
+		nation = game.nation
+		print(nation)
 
 		if method == 'available_list':
 			buildings = []
-			completed_branches_list = UserTeach.objects.filter(login = request.user, completed = True)
-			builded = UserBuild.objects.filter(login = request.user, completed = True)
+			completed_branches_list = UserTeach.objects.filter(game = game, completed = True)
+			builded = UserBuild.objects.filter(game = game, completed = True)
+			completed_buildings = [b.building for b in builded]
 			teached_buildings = []
 			for branch in completed_branches_list:
+				print(branch.technology.buildings.all())
 				for build in branch.technology.buildings.all():
-					# if not build in builded:
-					buildings.append(build)					
+					if not build in completed_buildings:
+						#Если здание является общим или эксклюзивным для данной страны, то добавляем его в список
+						if build.nations_id:
+							if build.nations_id == nation.id:
+								buildings.append(build)
+						else:
+							buildings.append(build)	
+
 			serializer = BuildingSerializer(buildings, many = True)
 			return Response(serializer.data)
 		elif method == 'build':
@@ -127,32 +138,6 @@ class BuildingsList(APIView):
 	def getBonusName(self, type):
 		types = ["food", "production", "culture", "faith", "science", "happiness", "tourism", "gold"]
 		return types[type - 1]
-
-
-
-
-		available_techs = []
-		completed_branches_list = UserTeach.objects.filter(login = request.user, completed = True)
-		completed_branches = [t.technology for t in completed_branches_list]
-		for branch in Technology.branches:
-			branch_id = branch[0]
-			current_tech = None
-			for t in Technology.objects.all().filter(branch = branch_id):
-				if not t in completed_branches:
-					current_tech = t
-					break
-			if current_tech:
-				available_techs.append(current_tech)
-
-		available_response = []
-		for tech in available_techs:
-			available_response.append({
-				'name': tech.name,
-				'sp': tech.sp,
-			})
-		return Response({
-			'available': available_response,
-			})
 
 class MapAPI(APIView):
 	def get(self, request, format = None):
