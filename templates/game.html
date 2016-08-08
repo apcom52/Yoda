@@ -57,51 +57,17 @@
 
 <div class="modal modal--size-xl science_window" id="scienceModal">
 	<div class="title">Технологии</div>
-	<div class="science-list">		
-		<div class="icon"><img src="/media/game/technologies/banking.jpg" alt=""></div>
-		<div class="icon"><img src="/media/game/technologies/economy.png" alt=""></div>
-		<div class="icon"><img src="/media/game/technologies/farm.jpg" alt=""></div>
+	<div class="science-list" id="availableTechnologies">		
 	</div>
 
-	<div class="info">
+	<div class="info" id="scienceInfo">
 		
 	</div>
+	
+	<div class="window_splash white-fg" id="scienceSplash" data-type="science_current"></div>
 
-	<!-- <div class="build_button" id="build_button"></div> -->
+	<div class="teach_button" id="startTeach"></div>
 </div>
-
-<!-- <div class="modal modal--size-xl" id="scienceModal">
-	<div class="modal__header">
-		<div class="modal__header__title">Технологии</div>
-	</div>
-	<div class="modal__content padding-0">
-		<div class="grid">
-			<div class="col-4 size-fix">
-				<p class="margin-horizontal-1">На данный момент вы производите <span class="game-icon"><span>2</span><img src="/media/game/icons/science.png" alt=""></span> в ход</p>
-				<div class="technology-list">
-					<div class="technology-list__title">В процессе изучения:</div>
-					<div class="technology-list__item">
-						<img class="technology-list__item__icon" src="http://dankir.users.photofile.ru/photo/dankir/4048635/xlarge/96876179.jpg" alt="">
-						<div class="technology-list__item__info">
-							<div class="technology__list__item__title">Письменность</div>
-							<div class="technology__list__item__meta"><span class="game-icon"><span>50</span><img src="/media/game/icons/science.png" alt=""></span></div>
-						</div>
-					</div>
-
-					<div class="technology-list__title">Доступные технологии:</div>
-					<div id="availableTechnologies">
-					</div>
-				</div>
-			</div>
-			<div class="col-8 size-fix">
-				<div class="technology-info" id="scienceInfo">					
-					<h1 class="ubuntu">Выберите исследование</h1>
-					<p class="ubuntu">Исследуйте новые технологии, чтобы открыть новые здания и стать лидером в своей отрасли. Также новые технологии позволяют открыть улучшения некоторых клеток и зданий.</p>
-				</div>
-			</div>
-		</div>
-	</div>
-</div> -->
 
 <div class="modal modal--size-xl buildings_window" id="buildingModal">
 	<div class="title">Строительство</div>
@@ -114,6 +80,73 @@
 
 	<div class="build_button" id="build_button"></div>
 </div>
+
+
+<div class="modal modal--size-xl dogmats_window" id="dogmatsModal">
+	<div class="title">Догматы</div>
+	<div class="dogmats-headers">
+		<div class="column">Первый уровень</div>
+		<div class="column">Второй уровень</div>
+		<div class="column">Третий уровень</div>
+	</div>
+	<div class="dogmats-list" id="availableDogmatsList">	
+		<div class="column">
+				<div class="dogmat first" data-dogmat-level="1">
+					Вы получаете <span class="game-icon"><span>+1</span><img src="/media/game/icons/gold.png" alt=""></span> за каждую культурную и туристическую постройку
+				</div>
+				<div class="dogmat first locked" data-dogmat-level="1">
+					<p>Нажмите, чтобы активировать</p>
+					<p><span class="game-icon"><span>300</span><img src="/media/game/icons/faith.png" alt=""></span></p>
+				</div>
+				<div class="dogmat first locked" data-dogmat-level="1">
+					<p>Нажмите, чтобы активировать</p>
+					<p><span class="game-icon"><span>300</span><img src="/media/game/icons/faith.png" alt=""></span></p>
+				</div>
+				<div class="dogmat first locked" data-dogmat-level="1">
+					<p>Нажмите, чтобы активировать</p>
+					<p><span class="game-icon"><span>300</span><img src="/media/game/icons/faith.png" alt=""></span></p>
+				</div>
+				<div class="dogmat first locked" data-dogmat-level="1">
+					<p>Нажмите, чтобы активировать</p>
+					<p><span class="game-icon"><span>300</span><img src="/media/game/icons/faith.png" alt=""></span></p>
+				</div>
+			</div>
+			<div class="column">
+				<div class="dogmat second locked" data-dogmat-level="2">
+					<p>Нажмите, чтобы активировать</p>
+					<p><span class="game-icon"><span>700</span><img src="/media/game/icons/faith.png" alt=""></span></p>
+				</div>
+				<div class="dogmat second locked" data-dogmat-level="2">
+					<p>Нажмите, чтобы активировать</p>
+					<p><span class="game-icon"><span>700</span><img src="/media/game/icons/faith.png" alt=""></span></p>
+				</div>
+				<div class="dogmat second locked" data-dogmat-level="2">
+					<p>Нажмите, чтобы активировать</p>
+					<p><span class="game-icon"><span>700</span><img src="/media/game/icons/faith.png" alt=""></span></p>
+				</div>
+				<div class="dogmat second locked" data-dogmat-level="2">
+					<p>Нажмите, чтобы активировать</p>
+					<p><span class="game-icon"><span>700</span><img src="/media/game/icons/faith.png" alt=""></span></p>
+				</div>
+			</div>
+			<div class="column">
+				<div class="dogmat third locked" data-dogmat-level="3">
+					<p>Нажмите, чтобы активировать</p>
+					<p><span class="game-icon"><span>1500</span><img src="/media/game/icons/faith.png" alt=""></span></p>
+				</div>
+				<div class="dogmat third locked" data-dogmat-level="3">
+					<p>Нажмите, чтобы активировать</p>
+					<p><span class="game-icon"><span>1500</span><img src="/media/game/icons/faith.png" alt=""></span></p>
+				</div>
+				<div class="dogmat third locked" data-dogmat-level="3">
+					<p>Нажмите, чтобы активировать</p>
+					<p><span class="game-icon"><span>1500</span><img src="/media/game/icons/faith.png" alt=""></span></p>
+				</div>
+			</div>	
+	</div>
+</div>
+
+
 
 <div class="modal modal--size-xl" id="dogmats-modal">
 	<div class="modal__header">
@@ -166,66 +199,83 @@
 {% verbatim %}
 <script id="ModalListItemTemplate" type="text/html">
 	{{#each available}}
-	<div class="technology-list__item" data-type="science" data-id="{{@index}}">
-		<img class="technology-list__item__icon" src="{{icon}}" alt="">
-		<div class="technology-list__item__info">
-			<div class="technology__list__item__title">{{name}}</div>
-			<div class="technology__list__item__meta"><span class="game-icon"><span>{{sp}}</span><img src="/media/game/icons/science.png" alt=""></span></div>
-		</div>
-	</div>
+	<div class="icon" data-tooltip="{{name}}" data-type="science" data-id="{{@index}}"><img src="{{icon}}" alt=""></div>
 	{{/each}}
 </script>
 
-<script id="ModalTechnologyInfo" type="text/html">
-	<div class="technology-info__top">
-		<img src="{{icon}}" alt="" class="icon">
-		<div class="description">
-			<div class="title">{{name}}</div>
-			<div class="desc">{{description}}</div>
-		</div>
-		<div class="buttons">
-			<button class="button--fit" id="startTeach">ИЗУЧИТЬ</button>
-			<div class="time">около {{time}} часов</div>
-		</div>
-	</div>
-	<div class="block">
-		Стоимость технологии: <span class="game-icon"><span>{{sp}}</span><img src="/media/game/icons/science.png" alt=""></span>
-	</div>
-	<div class="block">
-		<div class="title">Направление исследований</div>
-		{{#ifCond branch '==' 1}}
-			<div class="text">Технологии данной ветки направлены на развитие <span class="game-icon"><img src="/media/game/icons/science.png" alt=""></span> и <span class="game-icon"><img src="/media/game/icons/culture.png" alt=""></span></div>
-		{{/ifCond}}
-		{{#ifCond branch '==' 2}}
-			<div class="text">Технологии данной ветки направлены на увеличение <span class="game-icon"><img src="/media/game/icons/production.png" alt=""></span></div>
-		{{/ifCond}}
-		{{#ifCond branch '==' 3}}
-			<div class="text">Технологии данной ветки направлены на укрепление <span class="game-icon"><img src="/media/game/icons/faith.png" alt=""></span></div>
-		{{/ifCond}}
-		{{#ifCond branch '==' 4}}
-			<div class="text">Технологии данной ветки направлены на добычу <span class="game-icon"><img src="/media/game/icons/food.png" alt=""></span></div>
-		{{/ifCond}}
-		{{#ifCond branch '==' 5}}
-			<div class="text">Технологии данной ветки направлены на получение <span class="game-icon"><img src="/media/game/icons/gold.png" alt=""></span></div>
-		{{/ifCond}}
-	</div>
-	<div class="block">
-		<div class="title">Новые здания</div>
-		<div class="text">После изучения данной технологии вы получите возможность построить следующие здания:</div>
-		<div class="technology-list">
-			{{#each buildings}}
-			<div class="technology-list__item">
-				<img class="technology-list__item__icon l-yellow-bg" src="{{icon}}" alt="">
-				<div class="technology-list__item__info">
-					<div class="technology__list__item__title">{{name}}</div>					
-					<div class="technology__list__item__meta">
-						{{#each bonus}}
-						<span class="game-icon"><span>+{{value}}</span><img src="/media/game/icons/{{type}}.png" alt=""></span>
-						{{/each}}
-					</div>					
-				</div>
+<script id="windowSplashTemplate" type="text/html">
+	<div class="technology-list">
+		<div class="technology-list__item">
+			<img class="technology-list__item__icon img--circle" src="{{icon}}" alt="">
+			<div class="technology-list__item__info">
+				<div class="technology__list__item__title gamefont">{{name}}</div>					
+				<div class="technology__list__item__meta">
+					<div class="progress progress--color-blue margin-0 progress--size-thin">
+						<div class="progress__active" style="width: {{progress}}%;"></div>
+					</div>
+				</div>					
 			</div>
-			{{/each}}
+		</div>
+	</div>
+</script>
+
+<script id="ModalTechnologyInfo" type="text/html">
+	<div class="info__header">
+		<div class="info__header__icon">
+			<div class="icon"><img src="{{icon}}" alt=""></div>
+		</div>
+		<div class="info__header__text">
+			<div class="info__title">{{name}}</div>
+			<div class="info__meta">{{description}}</div>
+		</div>
+	</div>
+
+	<div class="info__block">
+		<div class="info__block__title">Стоимость</div>
+		<div class="info__block__p">
+			<span class="game-icon"><span>{{sp}}</span><img src="/media/game/icons/science.png" alt=""></span>
+		</div>
+	</div>
+
+	<div class="info__block">
+		<div class="info__block__title">Ветвь развития</div>
+		<div class="info__block__p">
+			{{#ifCond branch '==' 1}}
+				<div class="text">Технологии данной ветки направлены на развитие <span class="game-icon"><img src="/media/game/icons/science.png" alt=""></span> и <span class="game-icon"><img src="/media/game/icons/culture.png" alt=""></span></div>
+			{{/ifCond}}
+			{{#ifCond branch '==' 2}}
+				<div class="text">Технологии данной ветки направлены на увеличение <span class="game-icon"><img src="/media/game/icons/production.png" alt=""></span></div>
+			{{/ifCond}}
+			{{#ifCond branch '==' 3}}
+				<div class="text">Технологии данной ветки направлены на укрепление <span class="game-icon"><img src="/media/game/icons/faith.png" alt=""></span></div>
+			{{/ifCond}}
+			{{#ifCond branch '==' 4}}
+				<div class="text">Технологии данной ветки направлены на добычу <span class="game-icon"><img src="/media/game/icons/food.png" alt=""></span></div>
+			{{/ifCond}}
+			{{#ifCond branch '==' 5}}
+				<div class="text">Технологии данной ветки направлены на получение <span class="game-icon"><img src="/media/game/icons/gold.png" alt=""></span></div>
+			{{/ifCond}}
+		</div>
+	</div>
+
+	<div class="info__block">
+		<div class="info__block__title">Доступные постройки и улучшения</div>
+		<div class="info__block__p">
+			<div class="technology-list">
+				{{#each buildings}}
+				<div class="technology-list__item">
+					<img class="technology-list__item__icon" src="{{icon}}" alt="">
+					<div class="technology-list__item__info">
+						<div class="technology__list__item__title">{{name}}</div>					
+						<div class="technology__list__item__meta">
+							{{#each bonus}}
+							<span class="game-icon"><span>+{{value}}</span><img src="/media/game/icons/{{type}}.png" alt=""></span>
+							{{/each}}
+						</div>					
+					</div>
+				</div>
+				{{/each}}
+			</div>
 		</div>
 	</div>
 </script>
@@ -285,6 +335,16 @@
 		<div class="info__block__p">Чудеса света дают существенные бонусы. Постройка хотя бы одного чуда света необходима для любого вида победы. Чудо света можно построить только тогда, когда вы изучите нужную технологию и в вашем инвентаре имеется карточка соответствующего чуда света.</div>
 	</div>
 	{{/if}}
+</script>
+
+<script id="dogmatsChooseWindow" type="text/html">
+	<div class="choose-dogmats">
+		<div class="dogmats_list">
+			{{#each this}}
+				<div class="dogmat level-{{level}}">{{content}}</div>
+			{{/each}}
+		</div>
+	</div>	
 </script>
 {% endverbatim %}
 

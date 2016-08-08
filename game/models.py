@@ -250,3 +250,16 @@ class UserBuild(models.Model):
 
 class UserBuildAdmin(admin.ModelAdmin):
 	list_display = ('login', 'building', 'date_start', 'progress', 'completed')
+
+class UserDogmat(models.Model):
+	class Meta():
+		verbose_name = 'Постройка игрока'
+		verbose_name_plural = 'Постройки игроков'
+
+	login = models.ForeignKey(User, verbose_name = 'Пользователь')
+	game = models.ForeignKey(Game, verbose_name = 'Игра')
+	dogmat = models.ForeignKey(Dogma, verbose_name = 'Постройка')
+	date = models.DateTimeField('Дата начала постройки', auto_now = True)
+
+class UserDogmatAdmin(admin.ModelAdmin):
+	list_display = ('login', 'dogmat', 'date')

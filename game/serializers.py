@@ -52,7 +52,7 @@ class BuildingSerializer(serializers.ModelSerializer):
 		)
 
 class TechnologySerializer(serializers.ModelSerializer):
-	buildings = serializers.SerializerMethodField();
+	buildings = serializers.SerializerMethodField();	
 
 	def get_buildings(self, obj):
 		buildings = []
@@ -77,4 +77,11 @@ class TechnologySerializer(serializers.ModelSerializer):
 		model = Technology
 		fields = (
 			'id', 'name', 'sp', 'description', 'icon', 'branch', 'buildings'
+		)
+
+class DogmatSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Dogma
+		fields = (
+			'id', 'level', 'content'
 		)

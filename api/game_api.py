@@ -14,6 +14,7 @@ from rest_framework.views import APIView
 import datetime
 import math
 import json
+import random
 
 from game.models import *
 from game.classes import *
@@ -23,10 +24,11 @@ class TechnologiesList(APIView):
 	def get(self, request, format = None):
 		data = request.GET
 		method = data.get("m", False)
+		game = Game.objects.all().filter(user = request.user, is_completed = False).latest('id')
 
 		if method == 'available_list':			
 			available_techs = []
-			completed_branches_list = UserTeach.objects.filter(login = request.user, completed = True)
+			completed_branches_list = UserTeach.objects.filter(game = game, completed = True)
 			completed_branches = [t.technology for t in completed_branches_list]
 			for branch in Technology.branches:
 				branch_id = branch[0]
@@ -43,9 +45,10 @@ class TechnologiesList(APIView):
 			#Текущее исследование
 			current = False
 			try:
-				current_tech = UserTeach.objects.filter(login = request.user, completed = False).latest('id')
+				current_tech = UserTeach.objects.filter(game = game, completed = False).latest('id')
 				current = TechnologySerializer(current_tech.technology, many = False)
 				current = current.data
+				current["progress"] = 100 * game.science / current_tech.technology.sp
 			except ObjectDoesNotExist:
 				pass
 
@@ -138,6 +141,20 @@ class BuildingsList(APIView):
 	def getBonusName(self, type):
 		types = ["food", "production", "culture", "faith", "science", "happiness", "tourism", "gold"]
 		return types[type - 1]
+
+class DogmatAPI(APIView):
+	def get(self, request, format = None):
+		data = request.GET
+		method = data.get("m", False)
+		game = Game.objects.all().filter(user = request.user, is_completed = False).latest('id')
+		my_dogmats = UserDogmat.objects.all().filter(game = game)
+		if method == "list":
+			level = int(data.get("level", 0))
+			limit = 5 - level
+			dogmats_list = Dogma.objects.all().filter(level = level).order_by('?')[:limit]
+			serializer = DogmatSerializer(dogmats_list, many = True)
+			return Response(serializer.data)
+		return Response('failed')
 
 class MapAPI(APIView):
 	def get(self, request, format = None):

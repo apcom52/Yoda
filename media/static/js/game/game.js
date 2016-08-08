@@ -142,16 +142,21 @@ $(function() {
 
 	var scienceModal = new Modal($('#scienceModal'));
 	var buildingModal = new Modal($('#buildingModal'));
-	var dogmatsModal = new Modal($('#dogmats-modal'));
+	var dogmatsModal = new Modal($('#dogmatsModal'));
 
 	var loading_screen = "<div class='loading-layout loading-layout--transparent loading-layout--invert'></div>";
 
 	var availableScience = {};
 	var currentTech;
 	$('#scienceBtn').click(function() {
+		$('#startTeach').hide();
+		$('[data-type="science_current"]').hide();
 		scienceModal.show();
 		var availableTechnologies = $('#availableTechnologies');
+		var scienceSplash = $('#scienceSplash');
 		availableTechnologies.html(loading_screen);
+
+		$('#scienceInfo').html('');
 
 		$.get('/api/game/technologies/', {
 				m: 'available_list',
@@ -160,19 +165,35 @@ $(function() {
 				console.log('success');
 				console.log(response);
 
-				availableScience = response;
+				availableScience = response; 
 
 				var source = $('#ModalListItemTemplate').html();
 				var template = Handlebars.compile(source);
 				var html = template(response);
 				availableTechnologies.html(html);
+
+				var splash_source = $('#windowSplashTemplate').html();
+				var splash_template = Handlebars.compile(splash_source);
+				var splash_html = splash_template(response.current);
+				scienceSplash.html(splash_html);
+
+				if (response.current) {
+					$('[data-type="science_current"]').show();
+				}
 			}
 		);
 
-		$('body').on('click', '.technology-list__item[data-type="science"]', function(e) {
+		$('body').on('click', '[data-type="science"], [data-type="science_current"]', function(e) {
 			var target = $(this);
 			var id = parseInt(target.data('id'));
-			currentTech = availableScience.available[id];
+			if ($(this).data('type') == 'science_current') {
+				currentTech = availableScience.current;				
+			} else {
+				currentTech = availableScience.available[id];
+				if (!$('[data-type="science_current"]').is(':visible')) {
+					$('#startTeach').show();					
+				}
+			}
 
 			var source = $('#ModalTechnologyInfo').html();
 			var template = Handlebars.compile(source);
@@ -275,6 +296,24 @@ $(function() {
 
 	$('#dogmatsBtn').click(function() {
 		dogmatsModal.show();
+	});
+
+	$('body').on('click', '.dogmats_window .dogmat', function() {
+		// console.log('click!');
+		$.get('/api/game/dogmats/', {
+			m: 'list',
+			level: $(this).data('dogmatLevel'), 
+		},
+		function(response) {
+			var source = $('#dogmatsChooseWindow').html();
+			var template = Handlebars.compile(source);
+			var html = template(response);
+			$('body').append(html);
+		});
+	});
+
+	$('body').on('click', '.choose-dogmats .dogmat', function() {
+		$('body .choose-dogmats').remove();
 	});
 
 	$('#help_button').click(function() {
