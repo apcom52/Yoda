@@ -697,6 +697,7 @@
   cursor: pointer;
   box-shadow: none;
   background-image: url('/media/game/ui/pattern.png');
+  text-shadow: 1px 1px 2px #000000;
   transition: all 0.5s linear;
   font-family: 'Ubuntu', sans-serif;
 }

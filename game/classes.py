@@ -140,6 +140,105 @@ class Map():
 		self.cells = eval(game.gmap)
 		return self.cells
 
+	def new_territories(self, game):
+		cells = self.get(game)
+		bounds = self.get_bounds(game)
+		
+		# Если дырок нет, или их мало, то увеличивает радиус поиска
+		if self.terr_holes(bounds, cells) == 0 and self.terr_holes(bounds, cells) < 4:
+			if bounds['x1'] != 0: bounds['x1'] -= 1
+			if bounds['y1'] != 0: bounds['y1'] -= 1
+			if bounds['x2'] != 32: bounds['x2'] += 1
+			if bounds['y2'] != 32: bounds['y2'] += 1
+		
+		cells = self.open_holes(bounds, cells, 5)
+		return cells
+
+	def open_holes(self, bounds, cells, count):
+		for hole in range(0, count):
+			i = bounds['y1']
+			j = bounds['x1']
+			while cells[i][j]['visible']:
+				i = random.choice(range(bounds['y1'], bounds['y2']))
+				j = random.choice(range(bounds['x1'], bounds['x2']))
+			cells[i][j]['visible'] = True
+			print(i, j)
+		return cells
+
+
+	def terr_holes(self, bounds, cells):
+		x = bounds['x1']
+		y = bounds['y1']
+		width = bounds['x2'] - bounds['x1']
+		height = bounds['y2'] - bounds['y1']
+		holes = 0
+		for i in range(y, y + height):
+			for j in range(x, x + width):
+				if cells[i][j]['visible'] == False:
+					holes += 1
+		return holes
+
+	def get_bounds(self, game):
+		cells = eval(game.gmap)
+
+		visible_bounds = {
+			'x1': 32,
+			'y1': 32,
+			'x2': 0,
+			'y2': 0,
+		}
+
+		for i in range(0, 32):
+			for j in range(0, 32):
+				if cells[i][j]['visible']:
+					if j < visible_bounds['x1']:
+						visible_bounds['x1'] = j
+					if i < visible_bounds['y1']:
+						visible_bounds['y1'] = i
+					if j > visible_bounds['x2']:
+						visible_bounds['x2'] = j
+					if i > visible_bounds['y2']:
+						visible_bounds['y2'] = i
+
+		return visible_bounds
+
+		# for i in range(0, 32):
+		# 	for j in range(0, 32):
+		# 		if cells[i][j]['visible']:
+		# 			visible_bounds['y1'] = i
+		# 			break
+		# 	if visible_bounds['y1']:
+		# 		break
+
+		# for j in range(0, 32):
+		# 	for i in range(visible_bounds['y1'], 32):
+		# 		if cells[i][j]['visible']:
+		# 			visible_bounds['x1'] = j
+		# 			break
+		# 	if visible_bounds['x1']:
+		# 		break		
+
+		# # Ищем ширину
+		# visible_bounds['x2'] = visible_bounds['x1']
+		# for i in range(visible_bounds['y1'], 32):
+		# 	for j in range(visible_bounds['x1'], 32):
+		# 		if cells[i][j]['visible']:
+		# 			if j > visible_bounds['x2']:
+		# 				visible_bounds['y1'] = i
+
+		# visible_bounds['y2'] = visible_bounds['y1']
+		# for i in range(visible_bounds['y1'], 32):
+		# 	hasCells = False
+		# 	for j in range(visible_bounds['x1'], 32):
+		# 		if cells[i][j]['visible']:
+		# 			hasCells = True
+		# 			break
+		# 	if hasCells and i > visible_bounds['y2']:
+		# 		visible_bounds['y2'] = i
+
+		return visible_bounds
+
+
 	def generate(self):
 		import random
 		cells = self.cells

@@ -20,12 +20,16 @@ from timetable.serializers import *
 from feedback.serializers import *
 from achievements.serializers import *
 from events.serializers import *
+from inventory.serializers import *
 
 from library.models import *
 from notes.models import Note
 from timetable.models import Timetable
 from feedback.models import *
+from inventory.models import *
 from achievements.models import Notification, Feed
+
+import random
 
 # Create your views here.
 class LibraryFilesAPI(APIView):	
@@ -366,3 +370,55 @@ class FeedAPI(APIView):
 		feed.value = value
 		feed.save()
 		return Response('type=' + type + '\nvalue=' + value);
+
+class BoosterAPI(APIView):
+	def get(self, request, format = None):
+		data = request.GET
+		m = data.get('m', False)
+
+		if m == 'open':
+			booster_id = int(data.get('booster', 0))
+			user = request.user
+			level = user.userprofile.level
+
+			if booster_id:
+				card = None
+				boost = Booster.objects.get(pk = booster_id)
+				quality_card_rnd = random.random()
+				standart_cards = []
+				gold_cards = []
+				for c in boost.cards.all():
+					if c.quality == 0:
+						standart_cards.append(c)
+					elif c.quality == 3:
+						gold_cards.append(c)
+
+				card_quality_rnd = random.random()
+				if card_quality_rnd <= 0.95:
+					card = random.choice(standart_cards)
+				else:
+					card = random.choice(gold_cards)
+
+				card_serializer = CardSerializer(card, many = False)
+
+				gold_rnd = random.random()
+				gold = 0
+				if gold_rnd <= 0.2:
+					gold = random.choice(range(5 * level, 10 * level + 5))
+
+				dust_rnd = random.random()
+				dust = 0
+				if dust_rnd <= 0.15:					
+					dust = random.choice(range(1 * level, 5 * level))
+
+				user.userprofile.exp += 1
+				user.userprofile.gold += gold
+				user.userprofile.dust += dust
+				user.save()
+
+				return Response({
+					'card': card_serializer.data,
+					'gold': gold,
+					'dust': dust,
+				})
+		return Response('failed')

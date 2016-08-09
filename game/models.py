@@ -31,6 +31,7 @@ class Game(models.Model):
 	tourism = models.FloatField('Очки туризма', default = 0)
 	happiness = models.FloatField('Очки настроения', default = 0)
 	castle_level = models.IntegerField('Уровень ратуши', default = 1)
+	culture_level = models.IntegerField('Уровень культуры', default = 0)
 
 	def __str__(self):
 		return '%s (%s)' % (self.user.first_name + ' ' + self.user.last_name, self.nation)

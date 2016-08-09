@@ -204,6 +204,7 @@
 
 						<div class="card__footer margin-top-1">
 							<a href="/game/"><div class="button button--color-{{request.user.userprofile.accent}} button--fit button--transparent align-center">ВОЙТИ В ИГРУ</div></a>
+							<button class="button--fit" id="openChest">Открыть сундук</button>
 						</div>
 					</div>					
 				</div>
@@ -240,5 +241,40 @@
 	<button class="button--size-small button--color-{{request.user.userprofile.accent}}">Отправить</button>
 </div>
 </script> -->
+
+{% verbatim %}
+<script id="chestWindow" type="text/html">
+	<div class="open-chest">
+		<div class="title">Вы открыли сундук</div>
+		<div class="bonus_list">
+			{{#if card}}
+				<div class="bonus bonus--card bonus--card-{{card.quality}}">
+					<img src="{{card.icon}}" alt="" {{#ifCond card.quality '==' 3}}class="flip"{{/ifCond}}>
+					<div class="main">{{card.title}}</div>
+					<div class="sub">
+						{{#ifCond card.quality '==' 0}}Стандартная карточка{{/ifCond}}
+						{{#ifCond card.quality '==' 3}}<span class="yellow-fg">Золотая карточка</span>{{/ifCond}}
+					</div>
+				</div>
+			{{/if}}
+			{{#if gold}}
+				<div class="bonus bonus--resource">
+					<img src="/media/img/icons/gold.png" alt="">
+					<div class="main">{{gold}}</div>
+					<div class="sub">золота</div>
+				</div>
+			{{/if}}
+			{{#if dust}}
+				<div class="bonus bonus--resource">
+					<img src="/media/img/icons/gems.png" alt="">
+					<div class="main">{{dust}}</div>
+					<div class="sub">самоцветов</div>
+				</div>
+			{{/if}}
+		</div>
+		<div class="footer"><button class="button--color-teal" id="closeChestWindow">ОК</button></div>
+	</div>	
+</script>
+{% endverbatim %}
 
 {% endblock %}

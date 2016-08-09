@@ -35,6 +35,8 @@ urlpatterns = [
 	
 	url('^event/$', views.EventAPI.as_view()),
 
+	url('^booster/$', views.BoosterAPI.as_view()),
+
 	url('^game/technologies/$', game_api.TechnologiesList.as_view()),
 	url('^game/buildings/$', game_api.BuildingsList.as_view()),
 	url('^game/dogmats/$', game_api.DogmatAPI.as_view()),

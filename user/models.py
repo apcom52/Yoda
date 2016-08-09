@@ -86,6 +86,8 @@ class UserProfile(models.Model):
 	last_visit = models.DateTimeField('Последний просмотр', blank = True, null = True)
 	exp = models.IntegerField('Опыт', default = 0)
 	level = models.IntegerField('Уровень', default = 1)
+	gold = models.IntegerField('Золото', default = 0)
+	dust = models.IntegerField('Пыль', default = 0)
 	bonus_points = models.IntegerField('Бонусные очки', blank = True, null = True, default = 0)
 	avatar = models.ImageField(upload_to='img/%Y/%m/%d/', verbose_name='Фотография пользователя', default='img/2015/08/04/ufo.jpg')
 	facebook = models.CharField('Facebook', max_length = 256, blank = True, null = True)

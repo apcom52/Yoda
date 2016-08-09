@@ -202,5 +202,16 @@ class MapAPI(APIView):
 					game.gmap = json.dumps(gamemap)
 					game.save()
 				return Response(gamemap.generate())
+		elif method == "bounds":
+			game = Game.objects.get(user = request.user, is_completed = False)
+			gmap = Map(game.nation)
+			return Response(gmap.get_bounds(game))
+		elif method == "culture":
+			game = Game.objects.get(user = request.user, is_completed = False)
+			gmap = Map(game.nation)
+			cells = gmap.new_territories(game)
+			game.gmap = str(cells)
+			game.save()
+			return Response(cells)
 		else:
 			return Response("failed")

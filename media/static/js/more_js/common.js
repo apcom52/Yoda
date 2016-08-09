@@ -139,6 +139,24 @@ $(function() {
         );
     });
 
+    // ---------
+    $('#openChest').click(function() {
+    	$.get('/api/booster/', {
+			m: 'open',
+			booster: 2,
+		},
+		function(response) {
+			var source = $('#chestWindow').html();
+			var template = Handlebars.compile(source);
+			var html = template(response);
+			$('body').append(html);
+			console.log(response);
+		});
+    });
+
+    $('body').on('click', '.open-chest #closeChestWindow', function() {
+		$('body .open-chest').remove();
+	});
 
     // ---------
 
