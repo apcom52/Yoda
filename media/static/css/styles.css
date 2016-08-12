@@ -690,3 +690,52 @@ i.ai.margin5 {
   width: 100px;
   height: auto;
 }
+.open-chest {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-image: url('/media/game/ui/chest_bg.jpg');
+  background-size: cover;
+  z-index: 10;
+  text-align: center;
+  align-items: center;
+  height: 400px;
+}
+.open-chest .title {
+  flex: 1;
+  color: white;
+  font-size: 2em;
+  text-align: center;
+  align-items: center;
+}
+.open-chest .footer {
+  flex: 1;
+  text-align: center;
+  align-items: center;
+}
+.open-chest .bonus_list {
+  margin: auto;
+  display: block;
+  padding: 50px 0px;
+  flex: 4;
+}
+.open-chest .bonus_list .bonus {
+  max-width: 300px;
+  overflow: hidden;
+}
+.open-chest .bonus_list .bonus img {
+  animation: jumping 1s linear;
+  max-width: 100px;
+  height: auto;
+}
+@keyframes jumping {
+  from {
+    margin-top: 80px;
+  }
+  50% {
+    margin-top: 0px;
+  }
+  100% {
+    margin-top: 80px;
+  }
+}

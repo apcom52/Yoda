@@ -54,6 +54,7 @@ class Step(models.Model):
 	faith = models.FloatField('Очки веры за ход', default = 0)
 	tourism = models.FloatField('Очки туризма за ход', default = 0)
 	happiness = models.FloatField('Очки настроения за ход', default = 0)
+	citizens = models.IntegerField('Количество жителей', default = 0)
 
 	def __str__(self):
 		return '#%s %s' % (self.step, self.game)
@@ -264,3 +265,12 @@ class UserDogmat(models.Model):
 
 class UserDogmatAdmin(admin.ModelAdmin):
 	list_display = ('login', 'dogmat', 'date')
+
+class Citizen(models.Model):
+	game = models.ForeignKey(Game, verbose_name = 'Игра')
+	x = models.IntegerField('Позиция x', default = 0)
+	y = models.IntegerField('Позиция y', default = 0)
+	free = models.BooleanField('Безработность', default = True)
+
+class CitizenAdmin(admin.ModelAdmin):
+	list_display = ('id', 'game', 'free')

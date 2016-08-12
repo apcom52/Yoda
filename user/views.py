@@ -436,6 +436,41 @@ def inventory(request, id):
 	}
 	return render(request, 'profile_inventory.html', context)
 
+def boosters(request, id):
+	if not request.user.is_authenticated(): return redirect('/auth/in')
+	
+	_bingo = bingo(request.user)
+	UpdateStatus(request.user)
+	up = getProfileInfo(id)	
+	
+	context = {
+		'title': up['title'],
+		'user': up['user'],
+		'bodyclass': 'profile-page',
+		'avatar': up['avatar'],
+		'friends': up['friends'],
+		'actions': up['actions'],
+		'active_page': 6,
+		'actions_morph': up['actions_morph'],
+		'xp': up['xp'],
+		'xp_morph': up['xp_morph'],
+		'ach_counter': up['ach_counter'],
+		'ach_counter_morph': up['ach_counter_morph'],
+		'last_achievements': up['last_achievements'],
+		'rank': up['rank'],
+		'contacts': up['contacts'],
+		'phone': up['phone'],
+		'is_online': up['is_online'],
+		'last_visit': up['last_visit'],		
+		'attendance_percent': up['attendance_percent'],
+		'duties_percent': up['duties_percent'],
+		'level': up['level'],
+		'percent': up['percent'],
+		'bingo': _bingo,
+		'more': up,
+	}
+	return render(request, 'profile_boosters.html', context)
+
 def collection(request, id):
 	if not request.user.is_authenticated(): return redirect('/auth/in')
 	

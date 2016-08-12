@@ -6,6 +6,7 @@
 	<link href="/media/static/css/more_css/index.css" rel="stylesheet"/>
 	<!-- <script type="text/javascript" src="/media/static/js/more_js/timetable.js"></script> -->
 	<script type="text/javascript" src="/media/static/js/more_js/index.js"></script>
+	<script type="text/javascript" src="/media/static/js/phaser.js"></script>
 {% endblock %}
 {% block content %}
 <div class="grid" id="page-content">
@@ -163,7 +164,7 @@
 								</div>
 								<div class="col-6 align-center bold">
 									+2<br>
-									+4<br>
+									+{{game_info.game.culture|floatformat}} (+{{game_info.stats.culture|floatformat}})<br>
 									{{game_info.game.faith|floatformat}} (+{{game_info.stats.faith|floatformat}})
 								</div>
 							</div>
@@ -244,8 +245,13 @@
 
 {% verbatim %}
 <script id="chestWindow" type="text/html">
-	<div class="open-chest">
-		<div class="title">Вы открыли сундук</div>
+	<div id="open-chest">
+		<div id="phaser-example"></div>
+	</div>	
+</script>
+
+<script type="text/html">
+	<div class="title">Вы открыли сундук</div>
 		<div class="bonus_list">
 			{{#if card}}
 				<div class="bonus bonus--card bonus--card-{{card.quality}}">
@@ -273,7 +279,6 @@
 			{{/if}}
 		</div>
 		<div class="footer"><button class="button--color-teal" id="closeChestWindow">ОК</button></div>
-	</div>	
 </script>
 {% endverbatim %}
 

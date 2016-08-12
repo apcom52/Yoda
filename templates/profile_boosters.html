@@ -1,0 +1,32 @@
+{% extends 'basic/base.html' %}
+{% block title %}{{title}}{% endblock %}
+{% block bodyclass %}{{bodyclass}}{% endblock %}
+{% block more_head %}
+	<script src="/media/static/js/more_js/boosters.js"></script>
+{% endblock %}
+{% block content %}
+{% include 'basic/taskbar.html' %}
+{% include 'basic/taskbar_end.html' %}
+{% load humanize %}
+<div class="ui grid">
+	<div class="one wide column"></div>
+	<div class="four wide column">
+		{% include 'basic/profile-side.html' %}
+	</div>
+	<div class="ten wide column">
+		{% include 'basic/profile-nav.html' %}
+		<div class="open-chest">
+			<div class="title">
+				<h1>Вы получили:</h1>
+			</div>
+			<div class="bonus_list">
+				<div class="bonus">
+					<img src="/media/img/cards/djinn.png" alt=""
+				></div>
+			</div>
+			<div class="footer"><button>ОК</button></div>
+		</div>
+	</div>
+	<div class="one wide column"></div>
+</div>
+{% endblock %}

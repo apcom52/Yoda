@@ -141,6 +141,8 @@ $(function() {
 
     // ---------
     $('#openChest').click(function() {
+    	var chestOpening = new Phaser.Game(600, 400, Phaser.CANVAS, 'phaser-example', { preload: chestPreload, create: chestOpen });
+
     	$.get('/api/booster/', {
 			m: 'open',
 			booster: 2,
@@ -440,7 +442,10 @@ NotificationCenter.prototype.clear = function() {
 	this.hide();
 }
 
+function chestPreload() {
+	console.log('preload');
+}
 
-$(function() {
-	
-});
+function chestOpen() {
+	console.log('open');
+}

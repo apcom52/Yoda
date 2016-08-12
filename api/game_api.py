@@ -212,6 +212,6 @@ class MapAPI(APIView):
 			cells = gmap.new_territories(game)
 			game.gmap = str(cells)
 			game.save()
-			return Response(cells)
+			return Response('ok')
 		else:
 			return Response("failed")

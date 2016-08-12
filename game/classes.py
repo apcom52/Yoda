@@ -1,6 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from .models import *
 import random
+import math
 
 class Empire():
 	PLAIN = "plain"
@@ -126,11 +127,24 @@ class Empire():
 	FRANCE_POWER_CHANCE = 0.4
 	FRANCE_POWER_BONUS = 0.5
 
+	# Япония:
+	# +10% к культуре
+	JAPAN_BONUS = 1.1
+
+	BRAZIL_BONUS = 7
+
+	# Уникальные здания
+	BUILDING_SCHOOL = Building.objects.get(name = "Школа")
+	BUILDING_GRANARY = Building.objects.get(name = "Амбар")
+	BUILDING_WORKSHOP = Building.objects.get(name = "Мастерская")
+	BUILDING_COINHOUSE = Building.objects.get(name = "Монетный двор")
+
 
 class Map():
 	cells = [[0 for x in range(32)] for y in range(32)]
 	width = 32
 	height = 32
+	cell_append = 5
 
 	def __init__(self, nation):
 		if nation:
@@ -141,17 +155,25 @@ class Map():
 		return self.cells
 
 	def new_territories(self, game):
+		if game.nation.id == Empire.BRAZIL:
+			self.cell_append = Empire.BRAZIL_BONUS
 		cells = self.get(game)
 		bounds = self.get_bounds(game)
 		
 		# Если дырок нет, или их мало, то увеличивает радиус поиска
-		if self.terr_holes(bounds, cells) == 0 and self.terr_holes(bounds, cells) < 4:
-			if bounds['x1'] != 0: bounds['x1'] -= 1
-			if bounds['y1'] != 0: bounds['y1'] -= 1
-			if bounds['x2'] != 32: bounds['x2'] += 1
-			if bounds['y2'] != 32: bounds['y2'] += 1
-		
-		cells = self.open_holes(bounds, cells, 5)
+		holes = self.terr_holes(bounds, cells)
+		print('holes', holes)
+		print(bounds)
+		while holes < self.cell_append:
+			if bounds['x1'] > 0: bounds['x1'] -= 1
+			if bounds['y1'] > 0: bounds['y1'] -= 1
+			if bounds['x2'] < 32: bounds['x2'] += 1
+			if bounds['y2'] < 32: bounds['y2'] += 1		
+			holes =	self.terr_holes(bounds, cells)
+			print(bounds)
+			print('holes', holes)
+		print('final', bounds)
+		cells = self.open_holes(bounds, cells, self.cell_append)
 		return cells
 
 	def open_holes(self, bounds, cells, count):
@@ -551,6 +573,7 @@ class GameManager():
 		faith_pt = 0
 		gold_pt = 0
 		food_pt = 0
+		culture_pt = 0
 
 		castle = UserBuild.objects.get(game = game, building__name = "Ратуша")
 		mapManager = Map(game.nation)
@@ -564,6 +587,7 @@ class GameManager():
 		castle_culture = 1 * game.castle_level
 		castle_gold = 5 * game.castle_level
 		castle_faith = 1 * game.castle_level
+		castle_culture = 1 * game.castle_level
 
 		if Empire.SEA in castle_near:
 			castle_food += 1
@@ -585,14 +609,27 @@ class GameManager():
 			castle_gold *= 2
 			castle_faith *= 2
 
+		if game.nation.id == Empire.JAPAN:
+			castle_culture += 1
+
 		production_pt += castle_production
 		science_pt += castle_science
 		faith_pt += castle_faith
 		gold_pt += castle_gold
 		food_pt += castle_food
+		culture_pt += castle_culture		
 
-		buildings_q = UserBuild.objects.filter(game = game, completed = True)
-		buildings = [b.building for b in buildings_q]
+		# Получаем список жителей и координаты их работы
+		citizens_count = Citizen.objects.filter(game = game).count()
+		citizens_list = Citizen.objects.all().filter(game = game, free = False)
+		citizens = [[c.x, c.y] for c in citizens_list]
+
+		buildings_list = UserBuild.objects.filter(game = game, completed = True)
+		buildings = []
+		for b in buildings_list:
+			coord = [b.x, b.y]
+			if coord in citizens:
+				buildings.append(b.building)
 
 		#Считаем очки производства
 		prod_bonuses = BuildingBonus.objects.filter(type = 2, building__in = buildings)
@@ -626,13 +663,12 @@ class GameManager():
 
 		#Считаем очки науки
 		science_bonuses = BuildingBonus.objects.filter(type = 5, building__in = buildings)
-
-		science_pt += 1 * (game.castle_level - 1) #Уровень ратуши
-		if game.nation.id == Empire.SPAIN:
-			science_pt += game.castle_level
-
 		for s in science_bonuses:
 			science_pt += s.value
+
+		if Empire.BUILDING_SCHOOL in buildings:
+			science_pt += math.floor(1.0 * citizens_count / 10)
+
 		if game.nation.id == Empire.USA:
 			if Empire.MOUNTAIN in castle_near:
 				science_pt += 1
@@ -642,12 +678,26 @@ class GameManager():
 		if game.nation.id == Empire.USA:
 			science_pt *= Empire.USA_POWER
 
+		#Считаем очки культуры
+		culture_bonuses = BuildingBonus.objects.filter(type = 3, building__in = buildings)
+
+		for c in culture_bonuses:
+			culture_pt += c.value
+		culture_mods = BuildingBonusModificator.objects.filter(type = 3, building__in = buildings)
+		for c in culture_mods:
+			culture_pt *= 1 + c.value / 100
+
+		if game.nation.id == Empire.JAPAN:
+			culture_pt *= Empire.JAPAN_BONUS	
+
+
 		return {
 			'production': production_pt,
 			'faith': faith_pt,
 			'gold': gold_pt,
 			'science': science_pt,
 			'food': food_pt,
+			'culture': culture_pt,
 		}
 
 	def step(self, game):
@@ -661,6 +711,7 @@ class GameManager():
 		faith_pt = stats['faith']
 		gold_pt = stats['gold']
 		science_pt = stats['science']
+		culture_pt = stats['culture']
 
 		step = Step()
 		step.game = game
@@ -764,6 +815,41 @@ class GameManager():
 				step.production = production_pt
 			current_build.save()
 			game.save()
+
+		# Считает культуру
+		culture_level = game.culture_level
+		culture_limit = culture_level * 15
+		game.culture += culture_pt
+
+		if game.culture >= culture_limit:
+			game.culture_level += 1
+			game.culture -= culture_limit
+			gmap = Map(game.nation)
+			gmap.new_territories(game)
+
+			sendNotification({
+				"user": game.user,
+				"title": "Новые территории",
+				"type": 1,
+				"text": "Ваша культура перешла на новый уровень и вы получили дополнительные территории"
+			})
+		step.culture += culture_pt
+
+		# Подсчитываем количество еды и настроения
+		citizens_count = Citizen.objects.filter(game = game).count()
+		if citizens_count < food_pt:
+			citizen_rnd = random.random()
+			if citizen_rnd <= 0.1:
+				citizen = Citizen()
+				citizen.game = game
+				citizen.save()
+				citizen_count += 1
+		elif citizens_count > food_pt:
+			last_citizen = Citizen.objects.all().filter(game = game).latest('id')
+			last_citizen.delete()
+			citizen_count -= 1
+
+		step.citizens = citizens_count
 
 		game.gold += gold_pt
 		game.save()
