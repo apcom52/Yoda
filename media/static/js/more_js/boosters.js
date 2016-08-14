@@ -1,31 +1,41 @@
-var boostOpening = new Phaser.Game(800, 400, Phaser.CANVAS, 'phaser-example', { preload: chestPreload, create: chestOpen });
+var fullUploading = false;
 
-function chestPreload() {
-	boostOpening.load.image('card', '/media/img/cards/djinn.png');
-	console.log('preload');
+$(function (){
+	$('#boostOpen').click(function() {
+		openChest();
+
+		// cards = $('.open-chest .bonus_list .bonus img');		
+		// cards.removeClass('hide-img');
+		// cards.addClass('active');
+		// setTimeout(function() {
+		// 	cards.removeClass('active');
+		// 	cards.css('opacity', '1');
+		// }, 500)
+	});
+});
+
+
+var booster_game = new Phaser.Game(600, 400, Phaser.CANVAS, 'booster', {
+	preload: preload,
+	create: create,
+});
+
+function preload() {
+	booster_game.load.image('cyclop', '/media/img/cards/cyclop.png');
 }
 
-var bonuses = []
-
-function chestOpen() {
-	var card = boostOpening.add.sprite(323, 300, 'card');
-	bonuses.push();
-	console.log('open');
-	tween();
+function create() {
+	fullUploading = true;
 }
 
-function tween() {
-	// for (var i = 0; i < bonuses.length; i++) {
-	// 	var current = bonuses[i];
-	// 	current.opacity = 0;
-	// 	current.scale = 0.8;
-	// 	var jumping = boostOpening.add.tween(current);
-	// 	jumping.to({y: 100}, 2000 + 500 * i, Phaser.Easing.Bounce.In);
-	// 	jumping.onComplete.add(startStarsExplode, this);
-	// 	jumping.start();
-	// }
-}
-
-function startStarsExplode() {
-	console.log('explode');
+function openChest() {
+	var sprites = [];
+	for (var i = 0; i < 3; i++) {
+		var current = booster_game.add.sprite(100 + 150 * i, 200, 'cyclop');
+		sprites.push(current);
+		current.alpha = 0;
+		current.scale = 3;
+		booster_game.add.tween(sprites[i]).to({alpha: 1}, 1000 * i, Phaser.Easing.Bounce.Out, true);
+		booster_game.add.tween(sprites[i].scale).to({x: 1, y: 1}, 1000 * i, Phaser.Easing.Bounce.Out, true);
+	}
 }

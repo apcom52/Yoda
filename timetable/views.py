@@ -47,8 +47,11 @@ def index(request):
 			game_info["technology_progress"] = math.ceil(current_tech.progress * 100 / current_tech.technology.sp)
 			game_info["latest_technology"] = False
 		except ObjectDoesNotExist:
-			latest_tech = UserTeach.objects.filter(login = request.user).latest('id')
-			game_info["latest_technology"] = latest_tech
+			try:
+				latest_tech = UserTeach.objects.filter(login = request.user).latest('id')
+				game_info["latest_technology"] = latest_tech
+			except ObjectDoesNotExist:
+				game_info["latest_technology"] = None
 
 		try:
 			current_build = UserBuild.objects.filter(login = request.user, completed = False).latest('id')

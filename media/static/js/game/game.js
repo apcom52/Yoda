@@ -143,6 +143,7 @@ $(function() {
 	var scienceModal = new Modal($('#scienceModal'));
 	var buildingModal = new Modal($('#buildingModal'));
 	var dogmatsModal = new Modal($('#dogmatsModal'));
+	var statsModal = new Modal($('#statsModal'));
 
 	var loading_screen = "<div class='loading-layout loading-layout--transparent loading-layout--invert'></div>";
 
@@ -297,6 +298,81 @@ $(function() {
 	$('#dogmatsBtn').click(function() {
 		dogmatsModal.show();
 	});
+
+	var statsState = '';
+	var statsModalContent = $('.stats_content');
+	$('#statsBtn').click(function() {
+		statsModal.show();
+		var context = $('#chart');
+		statsData();
+	});
+
+	$('body').on('click', '#statsPopulation', function () {
+		statsPopulation();
+	});
+
+	function statsData() {
+		statsState = 'data';
+
+		statsModalContent.append('<div class="loading-layout loading-layout--invert loading-layout--transparent"></div>');
+		$.get('/api/game/stats/', {
+			m: 'data',
+		},
+		function(response) {
+			var chartConfig = {
+				"type": "line",
+				"legend": {
+
+				},
+				"plot": {
+					"tooltip": {
+				    	"text":"%t в ход<br>%v"
+				    }
+				},
+				"series": response,
+			}
+
+			zingchart.render({ 
+				id : 'stats-chart', 
+				data : chartConfig, 
+				height: "100%", 
+				width: "100%" 
+			});
+			statsModalContent.find('.loading-layout').remove();
+		});
+	}
+
+	function statsPopulation() {
+		statsState = 'population';
+
+		statsModalContent.append('<div class="loading-layout loading-layout--invert loading-layout--transparent"></div>');
+		$.get('/api/game/stats/', {
+			m: 'population',
+		},
+		function(response) {
+			var chartConfig = {
+				"type": "line",
+				"legend": {
+
+				},
+				"plot": {
+					"stacked": true,
+					"tooltip": {
+				    	"text":"%t<br>%v"
+				    }
+				},
+				"series": response,
+			}
+
+			zingchart.render({ 
+				id : 'stats-chart', 
+				data : chartConfig, 
+				height: "100%", 
+				width: "100%" 
+			});
+			statsModalContent.find('.loading-layout').remove();
+		});
+	}
 
 	$('body').on('click', '.dogmats_window .dogmat', function() {
 		// console.log('click!');

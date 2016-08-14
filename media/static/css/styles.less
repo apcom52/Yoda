@@ -720,18 +720,35 @@ i {
 
 	.bonus_list {
 		margin: auto;
-		display: block;
+		display: flex;
 		padding: 50px 0px;
 		flex: 4;
 
 		.bonus {
+			flex: 1;
+			margin: 0px 50px;
 			max-width: 300px;
-			overflow: hidden;
+			overflow: hidden;	
+			padding: 40px 0px;
 
 			img {
-				animation: jumping 1s linear;
 				max-width: 100px;
-				height: auto;				
+				height: auto;		
+				margin-top: 0px;
+				opacity: 0
+				transform: rotate(0deg);
+				.anim(0.5s);
+
+				&.hide-img {
+					opacity: 0;
+				}
+
+				&.active {
+					opacity: 1;
+					transform: rotateY(900deg);
+					margin-top: -80px;
+					.anim(0.3s);
+				}		
 			}
 		}
 	}
@@ -740,9 +757,12 @@ i {
 @keyframes jumping {
 	from {
 		margin-top: 80px;
+		opacity: 0;
+
 	}
 	50% {
 		margin-top: 0px;
+		opacity: 1;
 	}
 	100% {
 		margin-top: 80px;

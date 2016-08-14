@@ -715,25 +715,39 @@ i.ai.margin5 {
 }
 .open-chest .bonus_list {
   margin: auto;
-  display: block;
+  display: flex;
   padding: 50px 0px;
   flex: 4;
 }
 .open-chest .bonus_list .bonus {
+  flex: 1;
+  margin: 0px 50px;
   max-width: 300px;
   overflow: hidden;
+  padding: 40px 0px;
 }
 .open-chest .bonus_list .bonus img {
-  animation: jumping 1s linear;
   max-width: 100px;
   height: auto;
+  margin-top: 0px;
+  opacity: 0;
+  transform: rotate(0deg);
+  transition: all 0.5s linear;
+}
+.open-chest .bonus_list .bonus img.active {
+  opacity: 1;
+  transform: rotateY(-480deg);
+  margin-top: -80px;
+  transition: all 0.3s linear;
 }
 @keyframes jumping {
   from {
     margin-top: 80px;
+    opacity: 0;
   }
   50% {
     margin-top: 0px;
+    opacity: 1;
   }
   100% {
     margin-top: 80px;

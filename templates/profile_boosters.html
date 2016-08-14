@@ -2,7 +2,9 @@
 {% block title %}{{title}}{% endblock %}
 {% block bodyclass %}{{bodyclass}}{% endblock %}
 {% block more_head %}
+	<script src="/media/static/js/phaser.js"></script>
 	<script src="/media/static/js/more_js/boosters.js"></script>
+	<script src="/media/static/js/more_js/chart.js"></script>
 {% endblock %}
 {% block content %}
 {% include 'basic/taskbar.html' %}
@@ -15,17 +17,10 @@
 	</div>
 	<div class="ten wide column">
 		{% include 'basic/profile-nav.html' %}
-		<div class="open-chest">
-			<div class="title">
-				<h1>Вы получили:</h1>
-			</div>
-			<div class="bonus_list">
-				<div class="bonus">
-					<img src="/media/img/cards/djinn.png" alt=""
-				></div>
-			</div>
-			<div class="footer"><button>ОК</button></div>
-		</div>
+		<h2>Ваши комплекты</h2>
+		<button class="ui green button" id="boostOpen">Открыть комплект</button>
+		<br>
+		<div id="booster"></div>
 	</div>
 	<div class="one wide column"></div>
 </div>

@@ -55,6 +55,7 @@ class Step(models.Model):
 	tourism = models.FloatField('Очки туризма за ход', default = 0)
 	happiness = models.FloatField('Очки настроения за ход', default = 0)
 	citizens = models.IntegerField('Количество жителей', default = 0)
+	tourist_count = models.IntegerField('Количество прибывших туристов', default = 0)
 
 	def __str__(self):
 		return '#%s %s' % (self.step, self.game)

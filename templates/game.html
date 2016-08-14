@@ -9,8 +9,11 @@
 	<script type="text/javascript" src="/media/static/js/game/building.js"></script>
 	<script type="text/javascript" src="/media/static/js/game/render.js"></script>
 	<script type="text/javascript" src="/media/static/js/game/game.js"></script>
+	<script type="text/javascript" src="/media/static/js/Chart.js"></script>
 	<link href="/media/static/css/font-awesome.css" rel="stylesheet">
 	<link href="/media/static/css/more_css/game.css" rel="stylesheet">
+	<script src="https://cdn.zingchart.com/zingchart.min.js"></script>
+	<script src="https://cdn.zingchart.com/zingchart.jquery.min.js"></script>
 
 	<style>
 		body {
@@ -53,6 +56,7 @@
 	<div class="game-buttons__button science" data-tooltip="Исследования" data-tooltip-invert="true" id="scienceBtn"></div>
 	<div class="game-buttons__button production" data-tooltip="Строительство" data-tooltip-invert="true" id="buildingBtn"></div>
 	<div class="game-buttons__button faith" data-tooltip="Догматы" data-tooltip-invert="true" id="dogmatsBtn"></div>
+	<div class="game-buttons__button stats" data-tooltip="Статистика" data-tooltip-invert="true" id="statsBtn"></div>
 </div> 
 
 <div class="modal modal--size-xl science_window" id="scienceModal">
@@ -79,6 +83,21 @@
 	</div>
 
 	<div class="build_button" id="build_button"></div>
+</div>
+
+<div class="modal modal--size-xl stats_window" id="statsModal">
+	<div class="title">Статистика</div>
+	<div class="tabs-headers" id="availableBuildingsList">		
+		<div class="tabs tabs--centered tabs--transparent tabs--invert">
+			<div class="tabs__item tabs__item--active" id="statsData">Показатели</div>
+			<div class="tabs__item" id="statsPopulation">Население</div>
+			<div class="tabs__item" id="statsTourism">Туризм</div>
+			<div class="tabs__item" id="statsInfo">Информация</div>
+		</div>
+	</div>
+	<div class="stats_content">
+		<div id="stats-chart"></div>
+	</div>
 </div>
 
 
@@ -145,8 +164,6 @@
 			</div>	
 	</div>
 </div>
-
-
 
 <div class="modal modal--size-xl" id="dogmats-modal">
 	<div class="modal__header">

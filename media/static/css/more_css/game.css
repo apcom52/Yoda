@@ -170,6 +170,9 @@
 .game-buttons .game-buttons__button.faith {
   background-image: url('/media/game/ui/faith_btn.png');
 }
+.game-buttons .game-buttons__button.stats {
+  background-image: url('/media/game/ui/stats_btn.png');
+}
 .game-buttons .game-buttons__hr {
   background-image: url('/media/game/icons/wood_texture.png');
   height: 6px;
@@ -721,4 +724,46 @@
 }
 .choose-dogmats .dogmats_list .dogmat.level-3:hover {
   box-shadow: 0 0 32px #ffff00;
+}
+.stats_window {
+  background-color: transparent;
+  width: 800px !important;
+  min-width: 800px;
+  max-width: 800px;
+  height: 584px !important;
+  min-height: 584px !important;
+  max-height: 584px;
+  left: calc(50% - 400px) !important;
+  margin-left: 0px !important;
+  background-image: url('/media/game/ui/stats_window.png');
+  background-repeat: no-repeat;
+  background-size: 800px 571px;
+  content: "";
+  top: 32px !important;
+}
+.stats_window .title {
+  margin-left: 200px;
+  margin-top: 5px;
+  width: 400px;
+  height: 28px;
+  text-align: center;
+  font-size: 20px;
+  color: #fce49a;
+  font-family: 'El Messiri', sans-serif;
+}
+.stats_window .tabs-headers {
+  width: 100%;
+  position: relative;
+  top: 12px;
+}
+.stats_window .stats_content {
+  display: block;
+  position: relative;
+  left: 20px;
+  top: 22px;
+  width: 760px;
+  height: 466px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  align-items: center;
 }

@@ -1,5 +1,6 @@
 from django.core.exceptions import ObjectDoesNotExist
 from .models import *
+from timetable.utils import sendNotification
 import random
 import math
 
@@ -131,7 +132,15 @@ class Empire():
 	# +10% к культуре
 	JAPAN_BONUS = 1.1
 
+	# Бразилия
+	# 7 клеток при новом уровне культуры
 	BRAZIL_BONUS = 7
+
+	# Таиланд
+	# +1 золота за каждого туриста
+	# +5% туристического влияния на страны
+	THAILAND_BONUS = 1
+	THAILAND_BASE_TOURISM_BONUS = 5
 
 	# Уникальные здания
 	BUILDING_SCHOOL = Building.objects.get(name = "Школа")
@@ -574,6 +583,7 @@ class GameManager():
 		gold_pt = 0
 		food_pt = 0
 		culture_pt = 0
+		tourism_pt = 0
 
 		castle = UserBuild.objects.get(game = game, building__name = "Ратуша")
 		mapManager = Map(game.nation)
@@ -690,6 +700,10 @@ class GameManager():
 		if game.nation.id == Empire.JAPAN:
 			culture_pt *= Empire.JAPAN_BONUS	
 
+		# Считаем очки туризма
+		tourism_bonuses = BuildingBonus.objects.filter(type = 7, building__in = buildings)
+		for t in tourism_bonuses:
+			tourism_pt += t.value
 
 		return {
 			'production': production_pt,
@@ -698,6 +712,7 @@ class GameManager():
 			'science': science_pt,
 			'food': food_pt,
 			'culture': culture_pt,
+			'tourism': tourism_pt,
 		}
 
 	def step(self, game):
@@ -712,6 +727,8 @@ class GameManager():
 		gold_pt = stats['gold']
 		science_pt = stats['science']
 		culture_pt = stats['culture']
+		food_pt = stats['food']
+		tourism_pt = stats['tourism']
 
 		step = Step()
 		step.game = game
@@ -734,7 +751,7 @@ class GameManager():
 			current_sp = current_tech.progress + science_pt
 			
 			if current_sp >= current_tech.technology.sp:
-				from timetable.utils import sendNotification
+				
 
 				current_tech.progress = current_tech.technology.sp
 				current_sp -= current_tech.technology.sp
@@ -820,12 +837,15 @@ class GameManager():
 		culture_level = game.culture_level
 		culture_limit = culture_level * 15
 		game.culture += culture_pt
+		print('culture:', culture_limit)
 
 		if game.culture >= culture_limit:
+			from timetable.utils import sendNotification
 			game.culture_level += 1
 			game.culture -= culture_limit
 			gmap = Map(game.nation)
-			gmap.new_territories(game)
+			cells = gmap.new_territories(game)
+			game.gmap = str(cells)
 
 			sendNotification({
 				"user": game.user,
@@ -843,15 +863,45 @@ class GameManager():
 				citizen = Citizen()
 				citizen.game = game
 				citizen.save()
-				citizen_count += 1
+				citizens_count += 1
 		elif citizens_count > food_pt:
 			last_citizen = Citizen.objects.all().filter(game = game).latest('id')
 			last_citizen.delete()
-			citizen_count -= 1
+			citizens_count -= 1
 
 		step.citizens = citizens_count
 
+		# Механика туризма
+		base_tourism = 10
+		if game.nation.id == Empire.THAILAND:
+			base_tourism += Empire.THAILAND_BASE_TOURISM_BONUS
+		base_tourism += tourism_pt
+		tourist_count = 0
+		all_empires = Game.objects.all().filter(is_completed = False).exclude(id = game.id)
+		for empire in all_empires:
+			# Получаем последнее количество культуры на ходу
+			last_step = Step.objects.all().filter(game = empire).latest('id')
+			empire_culture = last_step.culture
+			diff = (base_tourism - empire_culture) * 0.01
+			if diff > 0:
+				# Получаем количество жителей
+				citizen_count = Citizen.objects.filter(game = empire).count()
+				for c in range(0, citizens_count):
+					rnd = random.random()
+					if rnd <= diff:
+						tourist_count += 1
+
+		if game.nation.id == Empire.THAILAND:
+			gold_pt += (1 + Empire.THAILAND_BONUS) * tourist_count
+		else:
+			gold_pt += tourist_count
+
+		step.tourism = tourism_pt
+		step.tourist_count = tourist_count
+
 		game.gold += gold_pt
+		game.user.userprofile.gold += gold_pt
+		game.user.save()
 		game.save()
 
 		step.gold += gold_pt

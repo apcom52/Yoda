@@ -185,6 +185,17 @@ class MapAPI(APIView):
 				(gmap[b.y][b.x])["building"] = serializer.data
 				(gmap[b.y][b.x])["building"]["progress"] = progress
 			return Response(gmap)
+
+		elif method == "citizens":
+			game = Game.objects.get(user = request.user, is_completed = False)
+			citizens = Citizen.objects.all().filter(game = game, free = False)
+			coordinates = []
+			for c in citizens:
+				coordinates.append({
+					"x": c.x,
+					"y": c.y,
+				})
+			return Response(coordinates)			
 		elif method == "save":
 			new_map = data.get("map", False)
 			if new_map:
@@ -215,3 +226,97 @@ class MapAPI(APIView):
 			return Response('ok')
 		else:
 			return Response("failed")
+
+class StatsAPI(APIView):
+	def get(self, request, format = None):
+		from game.classes import Map
+
+		data = request.GET
+		method = data.get("m", False)
+		game = Game.objects.all().filter(user = request.user, is_completed = False).latest('id')
+
+		if method == "data":			
+			production_data = []
+			food_data = []
+			faith_data = []
+			culture_data = []
+			gold_data = []
+
+			latest_steps = Step.objects.all().filter(game = game).order_by('-id')[:48]
+
+			for step in latest_steps:
+				production_data.append(round(step.production, 1))
+				food_data.append(round(step.food, 1))
+				faith_data.append(round(step.faith, 1))
+				culture_data.append(round(step.culture, 1))
+				gold_data.append(round(step.gold, 1))
+
+
+			production = {
+				"text": "Производство",
+				"legend-text": "Производство",
+				"line-color":"#ffa500",
+				"marker": {
+					"size": 2,
+				},
+				"values": production_data
+			}
+			food = {
+				"text": "Еда",
+				"legend-text": "Еда",
+				"borderColor": "#66ff66",
+				"line-color":"#66ff66",
+				"marker": {
+					"size": 2,
+				},
+				"values": food_data
+			}
+			faith = {
+				"text": "Вера",
+				"legend-text": "Вера",
+				"borderColor": "#bbbbbb",
+				"line-color":"#bbbbbb",
+				"marker": {
+					"size": 2,
+				},
+				"values": faith_data
+			}
+			culture = {
+				"text": "Культура",
+				"legend-text": "Культура",
+				"borderColor": "#8b00ff",
+				"line-color":"#8b00ff",
+				"marker": {
+					"size": 2,
+				},
+				"values": culture_data
+			}
+			gold = {
+				"text": "Золото",
+				"legend-text": "Золото",
+				"borderColor": "#ffff00",
+				"line-color":"#ffff00",
+				"marker": {
+					"size": 2,
+				},
+				"values": gold_data
+			}
+			return Response([production, food, faith, culture, gold]) #, food, faith, culture, gold])
+
+		if method == "population":			
+			citizens_data = []
+
+			latest_steps = reversed(Step.objects.all().filter(game = game).order_by('-id')[:50])
+
+			for step in latest_steps:
+				citizens_data.append(step.citizens)
+
+			return Response([{
+				"text": "Население",
+				"legend-text": "Население",
+				"line-color":"#00ff00",
+				"marker": {
+					"size": 2,
+				},
+				"values": citizens_data
+			}])
