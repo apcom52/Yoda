@@ -61,7 +61,7 @@
         <!-- <div class="taskbar__item taskbar__item--pin-right bold" id="showFriends"><i class="flaticon-profiles"></i></div>
         <div class="taskbar__item taskbar__item--pin-right bold" id="showNotification"><i class="flaticon-alarm-fill"></i></div>
         <div class="taskbar__item taskbar__item--pin-right bold" id="showFeedback"><i class="flaticon-speach-square"></i></div> -->
-        <div class="taskbar__item taskbar__item--no-select taskbar__item--pin-right">{% get_vallet %} <i class="flaticon-cup bold"></i></div>
+        <div class="taskbar__item taskbar__item--no-select taskbar__item--pin-right"><div class="game-icon"><span>{{request.user.userprofile.gold}}</span><img src="/media/game/icons/gold.png" alt=""></div></div>
     {% else %}
         <a href="/auth/up"><div class="taskbar__item taskbar__item--pin-right">РЕГИСТРАЦИЯ</div></a>
         <a href="/auth/in"><div class="taskbar__item taskbar__item--pin-right">ВХОД</div></a>

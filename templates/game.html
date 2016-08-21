@@ -56,6 +56,7 @@
 	<div class="game-buttons__button science" data-tooltip="Исследования" data-tooltip-invert="true" id="scienceBtn"></div>
 	<div class="game-buttons__button production" data-tooltip="Строительство" data-tooltip-invert="true" id="buildingBtn"></div>
 	<div class="game-buttons__button faith" data-tooltip="Догматы" data-tooltip-invert="true" id="dogmatsBtn"></div>
+	<div class="game-buttons__button workers" data-tooltip="Расстановка горожан" data-tooltip-invert="true" id="citizensBtn"></div>
 	<div class="game-buttons__button stats" data-tooltip="Статистика" data-tooltip-invert="true" id="statsBtn"></div>
 </div> 
 
@@ -73,6 +74,11 @@
 	<div class="teach_button" id="startTeach"></div>
 </div>
 
+<div class="free_citizens_window">
+	<h3>Безработные</h3>
+	<p>У вас есть 5 безработных жителей. Нажмите на красные клетки, чтобы заставить жителей их обрабатывать</p>
+</div>
+
 <div class="modal modal--size-xl buildings_window" id="buildingModal">
 	<div class="title">Строительство</div>
 	<div class="buildings-list" id="availableBuildingsList">		
@@ -81,6 +87,8 @@
 	<div class="info" id="BuildingInfo">
 		
 	</div>
+
+	<div class="window_splash white-fg" id="buildingSplash" data-type="building_current"></div>
 
 	<div class="build_button" id="build_button"></div>
 </div>

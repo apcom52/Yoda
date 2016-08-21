@@ -23,6 +23,7 @@ class Empire():
 	RESOURCE_CITRUS = "citrus";
 
 	BUILDING_CASTLE1 = "castle1";
+	BUILDING_HOMES = [27, 35]
 
 	STONE_RESOURCE_CHANCE = {
 		"from": 0,
@@ -143,6 +144,7 @@ class Empire():
 	THAILAND_BASE_TOURISM_BONUS = 5
 
 	# Уникальные здания
+	BUILDING_CASTLE = Building.objects.get(name = "Ратуша")
 	BUILDING_SCHOOL = Building.objects.get(name = "Школа")
 	BUILDING_GRANARY = Building.objects.get(name = "Амбар")
 	BUILDING_WORKSHOP = Building.objects.get(name = "Мастерская")
@@ -559,17 +561,18 @@ class GameManager():
 		from datetime import datetime, timezone
 		from django.utils import timezone
 		from timetable.utils import utc_to_local
-		now = timezone.now()
+		now = utc_to_local(timezone.now())
 
 		actives_games = Game.objects.all().filter(is_completed = False)
 		for game in actives_games:
 			last_step = Step.objects.filter(game = game).latest('id')
-			print(last_step)
+			print(now, last_step.date)
 			step_time = last_step.date
 			time_delta = now - step_time
 			print(time_delta)
+			print(time_delta.seconds)
 
-			delta_hours = (time_delta.seconds) // 3600
+			delta_hours = math.floor(time_delta.seconds / 3600)
 			print(delta_hours)
 			if (delta_hours >= 1):
 				for i in range(0, delta_hours):
@@ -717,6 +720,7 @@ class GameManager():
 
 	def step(self, game):
 		import datetime
+		print('Start step')
 		last_step = Step.objects.filter(game = game).latest('id')
 		science_pt = 3
 		faith_pt = 1
@@ -750,9 +754,8 @@ class GameManager():
 		if current_tech:
 			current_sp = current_tech.progress + science_pt
 			
-			if current_sp >= current_tech.technology.sp:
-				
-
+			if current_sp >= current_tech.technology.sp:	
+				from timetable.utils import sendNotification
 				current_tech.progress = current_tech.technology.sp
 				current_sp -= current_tech.technology.sp
 				game.science = current_sp
@@ -857,6 +860,16 @@ class GameManager():
 
 		# Подсчитываем количество еды и настроения
 		citizens_count = Citizen.objects.filter(game = game).count()
+
+		# Подсчитываем количество доступных мест для жителей
+		citizens_places = 3 + (game.castle_level - 1) * 2
+		homes = UserBuild.objects.filter(id__in = Empire.BUILDING_HOMES)
+		for home in homes:
+			if home.id == Empire.BUILDING_HOMES[0]:
+				citizens_places += 3
+			elif home.id == Empire.BUILDING_HOMES[1]:
+				citizens_places += 5
+
 		if citizens_count < food_pt:
 			citizen_rnd = random.random()
 			if citizen_rnd <= 0.1:

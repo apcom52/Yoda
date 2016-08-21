@@ -4,6 +4,8 @@ Render = function(game, map = null) {
 	this.game = game;
 	this.map = map;
 	this.hasBuildingInProgress = true;
+	this.leftCorner = null;
+	this.citizensMap = null;
 }
 
 Render.prototype.draw = function(map = undefined) {
@@ -20,6 +22,7 @@ Render.prototype.draw = function(map = undefined) {
 	cells = map.cells;
 	game = target.game;
 	target.cells = game.add.group();
+	target.citizensMap = game.add.group();
 
 	/* Ищем границы "видимого" мира */
 	var visibleBounds = {
@@ -77,12 +80,32 @@ Render.prototype.draw = function(map = undefined) {
 			if (cell.visible) {
 				hasVisibleCells = true;
 				var current = game.add.sprite(512 + 64 * n, 384 + 64 * m, cell.sprite);
+				if (i == 0 && j == 0) {
+					target.leftCorner = {
+						x: 512 + 64 * n,
+						y: 384 + 64 * m
+					}
+				}
 				target.cells.add(current);
 				current.inputEnabled = true;
 				current.events.onInputOver.add(over, this);
 				current.events.onInputOut.add(out, this);
 				current.events.onInputDown.add(cellClick, this);
 				current.cell = cell;
+
+				if (cell.citizen) {
+					var citizenTrueSprite = game.add.sprite(512 + 64 * n + 32, 384 + 64 * m + 32, 'work-on');
+					citizenTrueSprite.anchor.setTo(0.5, 0.5);
+					target.citizensMap.add(citizenTrueSprite);
+					cell.citizenSprite = citizenTrueSprite;
+				} else {
+					var citizenFalseSprite = game.add.sprite(512 + 64 * n + 32, 384 + 64 * m + 32, 'work-off');
+					citizenFalseSprite.anchor.setTo(0.5, 0.5);
+					target.citizensMap.add(citizenFalseSprite);
+					cell.citizenSprite = citizenFalseSprite;
+				}
+
+
 
 				/* Если есть ресурсы, то добавляем спрайт ресурсов */
 				if (cell.building) {
@@ -198,10 +221,16 @@ Render.prototype.draw = function(map = undefined) {
 			
 		}
 	}
+
+	target.citizensMap.visible = false;
 }
 
 Render.prototype.setActiveBuilding = function(building) {
 	this.activeBuilding = building;
+}
+
+Render.prototype.showCitizens = function() {
+	
 }
 
 function over(item) {
@@ -237,5 +266,22 @@ function cellClick(item) {
 			}
 		)
 		this.activeBuilding = null;
+	}
+
+	// Если отображается сетка рабочих
+	if (target.citizensMap.visible) {
+		console.log('change work mode');
+		var currentCell = item.cell;
+		console.log(currentCell);
+		$.get('/api/game/map/', 
+			{
+				m: 'citizen_set',
+				x: currentCell.position.x,
+				y: currentCell.position.y,
+				status: !currentCell.citizen,
+			}, function(response) {
+				console.log('success change');
+				console.log(response);
+		});
 	}
 }

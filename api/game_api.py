@@ -54,7 +54,7 @@ class TechnologiesList(APIView):
 
 			return Response({
 				'available': serializer.data,
-				'current': current,
+				'current': current,				
 			})
 		elif method == 'start':
 			id = data.get("id", False)
@@ -81,6 +81,11 @@ class BuildingsList(APIView):
 
 		if method == 'available_list':
 			buildings = []
+			# Каждый игрок может построить дом в любых количествах
+			home_building = Building.objects.get(name = 'Дом')
+			buildings.append(home_building)
+
+
 			completed_branches_list = UserTeach.objects.filter(game = game, completed = True)
 			builded = UserBuild.objects.filter(game = game, completed = True)
 			completed_buildings = [b.building for b in builded]
@@ -88,7 +93,7 @@ class BuildingsList(APIView):
 			for branch in completed_branches_list:
 				print(branch.technology.buildings.all())
 				for build in branch.technology.buildings.all():
-					if not build in completed_buildings:
+					if not build in completed_buildings and not build == home_building:
 						#Если здание является общим или эксклюзивным для данной страны, то добавляем его в список
 						if build.nations_id:
 							if build.nations_id == nation.id:
@@ -97,7 +102,57 @@ class BuildingsList(APIView):
 							buildings.append(build)	
 
 			serializer = BuildingSerializer(buildings, many = True)
-			return Response(serializer.data)
+			serializer_data = serializer.data
+
+			# Получаем сведения о текущем проекте
+			current = False
+			try:
+				current_build = UserBuild.objects.filter(game = game, completed = False).latest('id')
+				current = BuildingSerializer(current_build.building, many = False)
+				current = current.data
+				current["progress"] = 100 * game.production / current_build.building.pp
+			except ObjectDoesNotExist:
+				pass
+
+			# Если ратушу можно улучшить
+			if self.canCastleUpgrade(game):
+				castle = {}
+				castle['id'] = Empire.BUILDING_CASTLE.id
+				castle['name'] = "Ратуша (Улучшение до " + str(game.castle_level + 1) + "-го уровня)"
+				castle['pp'] = (game.castle_level) * 100
+				castle['icon'] = '/media/game/buildings/castle_' + str(game.castle_level + 1) + '.png'
+				castle['bonus'] = [
+					{
+	                    "value": 1,
+	                    "type": "culture"
+	                },
+	                {
+	                    "value": 1,
+	                    "type": "faith"
+	                },
+	                {
+	                    "value": 1,
+	                    "type": "science"
+	                },
+	                {
+	                    "value": 1,
+	                    "type": "production"
+	                },
+	                {
+	                    "value": 1,
+	                    "type": "food"
+	                },
+	                {
+	                    "value": 5,
+	                    "type": "gold"
+	                }
+				]
+				serializer_data.insert(0, castle)
+
+			return Response({
+				"available": serializer_data,
+				"current": current,			
+			})
 		elif method == 'build':
 			building_id = data.get('id', False)
 			game = Game.objects.all().filter(user = request.user, is_completed = False).latest('id')
@@ -142,6 +197,22 @@ class BuildingsList(APIView):
 		types = ["food", "production", "culture", "faith", "science", "happiness", "tourism", "gold"]
 		return types[type - 1]
 
+	def canCastleUpgrade(self, game):
+		technologies_bonuses_list = TechnologyBonus.objects.all().filter(bonus = 'Улучшение ратуши')
+		technologies = [t.technology for t in technologies_bonuses_list]
+
+		max_castle_level = 1
+
+		my_technologies = UserTeach.objects.all().filter(game = game, completed = True)
+		for t in my_technologies:
+			if t.technology in technologies:
+				max_castle_level += 1
+		if max_castle_level > game.castle_level:
+			return True
+		return False
+
+
+
 class DogmatAPI(APIView):
 	def get(self, request, format = None):
 		data = request.GET
@@ -184,6 +255,20 @@ class MapAPI(APIView):
 				serializer = BuildingSerializer(b.building, many = False)
 				(gmap[b.y][b.x])["building"] = serializer.data
 				(gmap[b.y][b.x])["building"]["progress"] = progress
+
+				if (gmap[b.y][b.x])["building"]["name"] == 'Ратуша':
+					(gmap[b.y][b.x])["building"]["sprite"] = "castle" + str(game.castle_level)
+
+			# Получаем список всех жителей
+			citizens = Citizen.objects.filter(game = game, free = False)
+			citizens_array = [[c.x, c.y] for c in citizens]
+			for i in range(0, 32):
+				for j in range(0, 32):
+					if [j, i] in citizens_array:
+						gmap[i][j]['citizen'] = True
+					else:
+						gmap[i][j]['citizen'] = False
+
 			return Response(gmap)
 
 		elif method == "citizens":
@@ -224,6 +309,49 @@ class MapAPI(APIView):
 			game.gmap = str(cells)
 			game.save()
 			return Response('ok')
+		elif method == "citizens_cells":
+			game = Game.objects.get(user = request.user, is_completed = False)
+			gmap = Map(game.nation)
+			bounds = gmap.get_bounds(game)
+
+			citizens = Citizen.objects.filter(game = game, free = False).order_by('y').order_by('x')
+			citizens_array = [[c.x, c.y] for c in citizens]
+			print(citizens_array)
+			citizens_cells = [[0 for x in range(bounds['x2'] - bounds['x1'] + 1)] for y in range(bounds['y2'] - bounds['y1'] + 1)]
+			for i in range(0, bounds['y2'] - bounds['y1'] + 1):
+				for j in range(0, bounds['x2'] - bounds['x1'] + 1):
+					print('check', [j + bounds['x1'], i + bounds['y1']])
+					if [j + bounds['x1'], i + bounds['y1']] in citizens_array:
+						citizens_cells[i][j] = True
+					else:
+						citizens_cells[i][j] = False
+			return Response(citizens_cells)
+		elif method == "citizen_set":
+			game = Game.objects.get(user = request.user, is_completed = False)
+			x = int(data.get("x", False))
+			y = int(data.get("y", False))
+			status = bool(data.get("status", False))
+			print(x, y, status)
+
+			if status == False:
+				citizen = Citizen.objects.filter(game = game, x = x, y = y).latest('id')
+				citizen.x = 0
+				citizen.y = 0
+				citizen.free = True
+				citizen.save()
+				print('false status')
+			elif status == True:
+				citizen = Citizen.objects.filter(game = game, free = True).latest('id')
+				citizen.x = x
+				citizen.y = y
+				citizen.free = False
+				citizen.save()
+				print('true status')
+			return Response("%s %s %s" % (x, y, status))
+		elif method == "free_citizens":
+			game = Game.objects.get(user = request.user, is_completed = False)
+			citizens_count = Citizen.objects.filter(game = game, free = True).count()
+			return Response(citizens_count)
 		else:
 			return Response("failed")
 

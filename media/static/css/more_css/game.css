@@ -138,7 +138,7 @@
 }
 .game-buttons {
   position: fixed;
-  width: 244px;
+  width: 300px;
   text-align: center;
   left: 2em;
   bottom: 1em;
@@ -172,6 +172,9 @@
 }
 .game-buttons .game-buttons__button.stats {
   background-image: url('/media/game/ui/stats_btn.png');
+}
+.game-buttons .game-buttons__button.workers {
+  background-image: url('/media/game/ui/citizens_btn.png');
 }
 .game-buttons .game-buttons__hr {
   background-image: url('/media/game/icons/wood_texture.png');
@@ -330,6 +333,20 @@
 }
 .buildings_window .info .info__block .info__block__p {
   color: #f5f5f5;
+}
+.buildings_window .window_splash {
+  content: "";
+  position: relative;
+  width: 300px;
+  height: 50px;
+  background-image: url('/media/game/ui/window_splash.png');
+  background-size: 100%;
+  left: 22px;
+  top: 26px;
+  cursor: pointer;
+}
+.buildings_window .window_splash:hover {
+  opacity: 0.9;
 }
 .buildings_window .build_button {
   width: 130px;
@@ -766,4 +783,16 @@
   overflow-y: auto;
   box-sizing: border-box;
   align-items: center;
+}
+.free_citizens_window {
+  display: none;
+  position: fixed;
+  background-color: rgba(100, 53, 201, 0.5);
+  color: #ffffff;
+  font-family: 'Ubuntu', sans-serif;
+  top: 100px;
+  left: 10px;
+  padding: 0.5em 1em;
+  width: 200px;
+  box-sizing: border-box;
 }

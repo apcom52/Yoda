@@ -190,7 +190,7 @@
 
 .game-buttons {
 	position: fixed;
-	width: 244px;	
+	width: 300px;	
 	text-align: center;
 	left: 2em;
 	bottom: 1em;
@@ -228,6 +228,10 @@
 
 		&.stats {
 			background-image: url('/media/game/ui/stats_btn.png');
+		}
+
+		&.workers {
+			background-image: url('/media/game/ui/citizens_btn.png');
 		}
 	}
 
@@ -417,6 +421,22 @@
 				color: @u-gray;
 			}
 		}	
+	}
+
+	.window_splash {
+		content: "";
+		position: relative;
+		width: 300px;
+		height: 50px;
+		background-image: url('/media/game/ui/window_splash.png');
+		background-size: 100%;
+		left: 22px;
+		top: 26px;
+		cursor: pointer;
+
+		&:hover {
+			opacity: 0.9;
+		}
 	}
 
 	.build_button {
@@ -929,4 +949,17 @@
 		box-sizing: border-box;		
 		align-items: center;
 	}
+}
+
+.free_citizens_window {
+	display: none;
+	position: fixed;
+	background-color: rgba(red(@violet), green(@violet), blue(@violet), .5);
+	color: @white;
+	.ubuntu();
+	top: 100px;
+	left: 10px;
+	padding: 0.5em 1em;
+	width: 200px;
+	box-sizing: border-box;
 }

@@ -21,6 +21,9 @@ function preload() {
 	game.load.image('culture', '/media/game/icons/culture.png');
 	game.load.image('faith', '/media/game/icons/faith.png');
 	game.load.image('science', '/media/game/icons/science.png');
+	
+	game.load.image('work-on', '/media/game/icons/work-on.png');
+	game.load.image('work-off', '/media/game/icons/work-off.png');
 
 	game.load.image('plain', '/media/game/grass.png');
 	game.load.image('plain1', '/media/game/grass1.png');
@@ -72,6 +75,7 @@ function preload() {
 	// game.load.tilemap('landscape', '/media/game/landscape_tilemap.png');
 
 	game.load.image('castle1', '/media/game/castle1.png');
+	game.load.image('castle3', '/media/game/castle3.png');
 	game.load.image('market', '/media/game/market.png');
 	game.load.image('chapel', '/media/game/chapel.png');
 	game.load.image('forge', '/media/game/forge.png');
@@ -81,9 +85,7 @@ function preload() {
 	game.load.image('progress', '/media/game/build.png');
 }
 
-//var map = new Map('RUS');
 var render = new Render(game);
-//map.generate();\
 
 function refreshMap(renderObj) {
 	$.get('/api/game/map?m=get', {},
@@ -223,6 +225,7 @@ $(function() {
 	var currentBuilding = null;
 	$('#buildingBtn').click(function() {
 		buildingModal.show();
+		var scienceSplash = $('#buildingSplash');
 
 		if (render.hasBuildingInProgress) {
 			$('#build_button').hide();
@@ -242,17 +245,32 @@ $(function() {
 
 				var source = $('#BuildingsListTemplate').html();
 				var template = Handlebars.compile(source);
-				var html = template(response);
+				var html = template(response.available);
 				availableBuildingsDOM.html(html);
+
+				if (response.current) {
+					var splash_source = $('#windowSplashTemplate').html();
+					var splash_template = Handlebars.compile(splash_source);
+					var splash_html = splash_template(response.current);
+					scienceSplash.html(splash_html);
+				} else {
+					scienceSplash.hide();
+				}
 			}
 		);
 
-		$('body').on('click', '.buildings-list .icon', function(e) {
+		$('body').on('click', '.buildings-list .icon, [data-type="building_current"]', function(e) {
 			var target = $(this);
 			var id = parseInt(target.data('id'));
-			console.log(id);
-			currentBuilding = availableBuildings[id];
-			console.log(currentBuilding);
+
+			if ($(this).data('type') == 'building_current') {
+				currentBuilding = availableBuildings.current;				
+			} else {
+				currentBuilding = availableBuildings.available[id];
+				if (!$('[data-type="building_current"]').is(':visible')) {
+					$('#build_button').show();					
+				}
+			}
 
 			var source = $('#BuildingInfoTemplate').html();
 			var template = Handlebars.compile(source);
@@ -394,5 +412,15 @@ $(function() {
 
 	$('#help_button').click(function() {
 		buildCastle = !buildCastle;
+	});
+
+	$('#citizensBtn').click(function() {
+		$('.free_citizens_window').toggle();
+		render.citizensMap.visible = !render.citizensMap.visible;
+		if (render.citizensMap.visible) {
+			render.cells.alpha = 0.5;
+		} else {
+			render.cells.alpha = 1;			
+		}
 	});
 });

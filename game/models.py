@@ -147,7 +147,7 @@ class BuildingBonusModInline(admin.StackedInline):
 
 class BuildingAdmin(admin.ModelAdmin):
 	inlines = (BuildingBonusInline, BuildingBonusModInline)
-	list_display = ('name', 'pp')
+	list_display = ('id', 'name', 'pp')
 
 
 class Technology(models.Model):
