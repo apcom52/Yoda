@@ -222,9 +222,47 @@ class DogmatAPI(APIView):
 		if method == "list":
 			level = int(data.get("level", 0))
 			limit = 5 - level
-			dogmats_list = Dogma.objects.all().filter(level = level).order_by('?')[:limit]
+
+			my_dogmats_list = UserDogmat.objects.filter(game = game)
+			my_dogmats = [d.dogmat.id for d in my_dogmats_list]
+			print(my_dogmats)
+
+			dogmats_list = Dogma.objects.all().filter(level = level).exclude(id__in = my_dogmats).order_by('?')[:limit]
 			serializer = DogmatSerializer(dogmats_list, many = True)
 			return Response(serializer.data)
+
+		elif method == "my_dogmats":
+			dogmats = [{
+				"level": 1,
+				"class": "first",
+				"price": 300,
+				"dogmats": []
+			}, {
+				"level": 2,
+				"class": "second",
+				"price": 700,
+				"dogmats": []
+			}, {
+				"level": 3,
+				"class": "third",
+				"price": 1500,
+				"dogmats": []
+			}]
+			dogmats_list = UserDogmat.objects.filter(game = game)
+			for d in dogmats_list:
+				dogmat = d.dogmat
+				dogmats[dogmat.level - 1]["dogmats"].append({
+					"content": dogmat.content,
+					"level": dogmat.level,
+				})
+
+			for i in range(0, 3):
+				delta = (6 - i) - len(dogmats[i]["dogmats"])
+				for j in range(0, delta):
+					dogmats[i]["dogmats"].append({
+						"locked": True,
+					})
+			return Response(dogmats)
 		return Response('failed')
 
 class MapAPI(APIView):
@@ -268,6 +306,123 @@ class MapAPI(APIView):
 						gmap[i][j]['citizen'] = True
 					else:
 						gmap[i][j]['citizen'] = False
+
+					food = 0
+					production = 0
+					gold = 0
+					culture = 0
+					science = 0
+					faith = 0
+					tourism = 0
+
+					# Добавляем подсказку
+					cell_type = gmap[i][j]['type']
+					land_type = 'Равнина'
+					resource_type = False
+
+
+					if cell_type == Empire.PLAIN:
+						food = 1
+					if cell_type == Empire.SAND:
+						land_type = 'Пустыня'
+						faith = 1
+					elif cell_type == Empire.SEA:
+						land_type = 'Море'
+						food = 1
+					elif cell_type == Empire.MOUNTAIN:
+						land_type = 'Горы'
+						science = 1
+						production = 1
+
+					# Определяем вид ресурса
+					cell_resource = gmap[i][j]['resource']
+					if cell_resource == Empire.RESOURCE_STONE:
+						resource_type = 'Камень'
+					if cell_resource == Empire.RESOURCE_WOOD:
+						resource_type = 'Дерево'
+					if cell_resource == Empire.RESOURCE_SANDS:
+						resource_type = 'Песок'
+					if cell_resource == Empire.RESOURCE_IRON:
+						resource_type = 'Железо'
+					if cell_resource == Empire.RESOURCE_CARBON:
+						resource_type = 'Уголь'
+					if cell_resource == Empire.RESOURCE_OIL:
+						resource_type = 'Нефть'
+					if cell_resource == Empire.RESOURCE_URAN:
+						resource_type = 'Уран'
+					if cell_resource == Empire.RESOURCE_WHEAT:
+						resource_type = 'Пшеница'
+					if cell_resource == Empire.RESOURCE_GRAPES:
+						resource_type = 'Виноград'
+					if cell_resource == Empire.RESOURCE_CITRUS:
+						resource_type = 'Цитрусовые'
+					if cell_resource == Empire.RESOURCE_FISH:
+						resource_type = 'Рыба'
+
+					tooltip_building = False
+					if gmap[i][j]["building"] != "":
+						tooltip_building = gmap[i][j]["building"]["name"]
+						food, faith, science, production = (0,0,0,0)
+						for bonus in gmap[i][j]["building"]["bonus"]:
+							if bonus["type"] == "food":
+								food += bonus["value"]
+							elif bonus["type"] == "production":
+								production += bonus["value"]
+							elif bonus["type"] == "culture":
+								culture += bonus["value"]
+							elif bonus["type"] == "faith":
+								faith += bonus["value"]
+							elif bonus["type"] == "science":
+								science += bonus["value"]
+							elif bonus["type"] == "tourism":
+								tourism += bonus["value"]
+							elif bonus["type"] == "gold":
+								gold += bonus["value"]
+
+
+					resources = []
+					if food > 0:
+						resources.append({
+							"icon": "food",
+							"value": food,
+						})
+					if production > 0:
+						resources.append({
+							"icon": "production",
+							"value": production,
+						})
+					if culture > 0:
+						resources.append({
+							"icon": "culture",
+							"value": culture,
+						})
+					if science > 0:
+						resources.append({
+							"icon": "science",
+							"value": science,
+						})
+					if faith > 0:
+						resources.append({
+							"icon": "faith",
+							"value": faith,
+						})
+					if gold > 0:
+						resources.append({
+							"icon": "gold",
+							"value": gold,
+						})
+					if tourism > 0:
+						resources.append({
+							"icon": "tourism",
+							"value": tourism,
+						})
+					
+					gmap[i][j]['tooltip'] = {
+						"land": land_type,
+						"building": tooltip_building,
+						"resources": resources,
+						"resource_type": resource_type,
+					}
 
 			return Response(gmap)
 
@@ -330,7 +485,11 @@ class MapAPI(APIView):
 			game = Game.objects.get(user = request.user, is_completed = False)
 			x = int(data.get("x", False))
 			y = int(data.get("y", False))
-			status = bool(data.get("status", False))
+			data_status = data.get("status", False)
+			if data_status == "false":
+				status = False
+			else:
+				status = True
 			print(x, y, status)
 
 			if status == False:
@@ -339,21 +498,36 @@ class MapAPI(APIView):
 				citizen.y = 0
 				citizen.free = True
 				citizen.save()
+				return Response("ok")
 				print('false status')
 			elif status == True:
-				citizen = Citizen.objects.filter(game = game, free = True).latest('id')
-				citizen.x = x
-				citizen.y = y
-				citizen.free = False
-				citizen.save()
-				print('true status')
-			return Response("%s %s %s" % (x, y, status))
+				try:
+					citizen = Citizen.objects.filter(game = game, free = True).latest('id')
+					citizen.x = x
+					citizen.y = y
+					citizen.free = False
+					citizen.save()
+					return Response("ok")
+					print('true status')
+				except ObjectDoesNotExist:
+					return Response('failed')			
+			return Response("failed")
 		elif method == "free_citizens":
 			game = Game.objects.get(user = request.user, is_completed = False)
 			citizens_count = Citizen.objects.filter(game = game, free = True).count()
-			return Response(citizens_count)
-		else:
-			return Response("failed")
+
+			full_count_citizens = Citizen.objects.filter(game = game).count()
+
+			places = 0
+			gm = GameManager()
+			stats = gm.get_stats(game)
+			places = stats['places']
+
+			return Response({
+				"free": citizens_count,
+				"count": full_count_citizens,
+				"places": places,
+			})
 
 class StatsAPI(APIView):
 	def get(self, request, format = None):
@@ -362,6 +536,23 @@ class StatsAPI(APIView):
 		data = request.GET
 		method = data.get("m", False)
 		game = Game.objects.all().filter(user = request.user, is_completed = False).latest('id')
+
+		if method == "stats":
+			gm = GameManager()
+			stats = gm.get_stats(game)
+			current_stats = {
+				"gold": round(request.user.userprofile.gold, 1),
+				"production": round(game.production, 1),
+				"science": round(game.science, 1),
+				"faith": round(game.faith, 1),
+				"food": round(game.food, 1),
+				"culture": round(game.culture, 1),
+				"culture_next": game.culture_level * 15,
+			}
+			return Response({
+				"current": current_stats,
+				"step": stats
+			})
 
 		if method == "data":			
 			production_data = []
@@ -448,3 +639,28 @@ class StatsAPI(APIView):
 				},
 				"values": citizens_data
 			}])
+
+		if method == "nations":
+			nations = Nation.objects.all()
+			games = Game.objects.all().filter(is_completed = False)
+
+			nation_response = []
+
+			for nation in nations:
+				unique_building = Building.objects.get(nations = nation)
+				serializer = BuildingSerializer(unique_building, many = False)
+				is_locked = False
+
+				if games.filter(nation = nation).exists():
+					is_locked = True
+
+				nation_response.append({
+					"id": nation.id,
+					"title": nation.title,
+					"icon": nation.icon.url,
+					"bonus": nation.bonus,
+					"building": serializer.data,
+					"is_locked": is_locked,
+				})
+
+			return Response(nation_response)

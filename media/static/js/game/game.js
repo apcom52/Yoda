@@ -82,14 +82,59 @@ function preload() {
 	game.load.image('arena', '/media/game/arena.png');
 	game.load.image('circus', '/media/game/circus.png');
 	game.load.image('library', '/media/game/library.png');
+	
+	game.load.image('oil_company', '/media/game/oil_company.png');
+	game.load.image('big_ben', '/media/game/big_ben.png');
+	game.load.image('fly_gardens', '/media/game/fly_gardens.png');
+	game.load.image('radio', '/media/game/radio.png');
+	game.load.image('factory', '/media/game/factory.png');
+	game.load.image('coloss', '/media/game/coloss.png');
+	game.load.image('coin_house', '/media/game/coin_house.png');
+	game.load.image('white_house', '/media/game/white_house.png');
+	game.load.image('airport', '/media/game/airport.png');
+	game.load.image('pizan', '/media/game/pizan.png');
+	game.load.image('alexander_lighthouse', '/media/game/alexander_lighthouse.png');
+	game.load.image('c-ica', '/media/game/c-ica.png');
+	game.load.image('school', '/media/game/school.png');
+	game.load.image('skyscaper', '/media/game/skyscaper.png');
+	game.load.image('hospital', '/media/game/hospital.png');
+	game.load.image('church', '/media/game/church.png');
+	game.load.image('mill', '/media/game/mill.png');
+	game.load.image('pyramids', '/media/game/pyramids.png');
+	game.load.image('stonehendge', '/media/game/stonehendge.png');
+
 	game.load.image('progress', '/media/game/build.png');
 }
 
+var startLoading = function() {
+	$('body').append("<div class='spinner'></div>");
+}
+
+var endLoading = function() {
+	$('body .spinner').remove();
+}
+
+var showLoadingScreen = function() {
+	$('body').append($('#loadingTemplate').html());
+	$('.overflow').foggy();
+}
+
+var hideLoadingScreen = function() {
+	$('body .game-preload').remove();
+}
+
 var render = new Render(game);
+render.startLoading = startLoading;
+render.endLoading = endLoading;
+render.endLoadingScreen = hideLoadingScreen;
+var stats = 0;
 
 function refreshMap(renderObj) {
+	startLoading();
 	$.get('/api/game/map?m=get', {},
 		function(response) {
+			endLoading();
+			hideLoadingScreen();
 			renderObj.hasBuildingInProgress = false;
 			console.log(response);
 			var m = {}
@@ -100,19 +145,9 @@ function refreshMap(renderObj) {
 }
 
 function create() {
-	// console.log(map.cells);
 	game.world.setBounds(-1024, -768, 4096, 3072);
-	// game.world.setBounds(0, 0, 1024, 768);
 	game.debug.text(game.time.fps, 8, 16, '#00FF00');
-	// var loading_screen = game.add.sprite(0, 0, 'loading-screen');
-	// var loading_tooltip = game.add.text(game.world.centerX, 100, "Ратуша - основное здание в игре");
-	// loading_tooltip.anchor.setTo(0.5);
-	// loading_tooltip.font = 'Neucha';
-	// loading_tooltip.fontSize = 14;
-	// loading_tooltip.fill = "#ffd700";
-	// loading_tooltip.setShadow(2, 2, 'rgba(0,0,0,0.5)', 2);
-	refreshMap(render);
-	// render.draw(map);
+	// refreshMap(render);
 
 	game.kineticScrolling.configure({
 		kineticMovement: false,
@@ -123,7 +158,6 @@ function create() {
 		deltaWheel: 0
 	});
 	game.kineticScrolling.start();
-	console.log(game);
 }
 
 var mouseTrack = {
@@ -131,11 +165,11 @@ var mouseTrack = {
 }
 
 function update() {
-	game.debug.text(game.time.fps, 8, 16, '#00FF00');
+	// game.debug.text(game.time.fps, 8, 16, '#00FF00');
 }
 
 function render() {
-	game.debug.cameraInfo(game.camera, 32, 16);
+	// game.debug.cameraInfo(game.camera, 32, 16);
 }
 
 $(function() {
@@ -161,10 +195,12 @@ $(function() {
 
 		$('#scienceInfo').html('');
 
+		startLoading();
 		$.get('/api/game/technologies/', {
 				m: 'available_list',
 			},
 			function(response) {
+				endLoading();
 				console.log('success');
 				console.log(response);
 
@@ -203,21 +239,6 @@ $(function() {
 			var html = template(currentTech);
 			$('#scienceInfo').html(html);
 		});
-
-
-
-		// $.get('/api/game/technologies/', {}, 
-		// 	function (response) {
-		// 		console.log('success');
-		// 		console.log(response);
-		// 		// var source = $('#ModalListItemTemplate');
-		// 		// var template = Handlebars.compile(source);
-		// 		// var html = template(response);
-		// 		// availableTechnologies.html(html);
-		// 	}, function(response) {
-		// 		console.log('error');
-		// 		// availableTechnologies.html(response);
-		// });
 	});
 
 	//окно строительства
@@ -234,10 +255,12 @@ $(function() {
 		var availableBuildingsDOM = $('#availableBuildingsList');
 		availableBuildingsDOM.html(loading_screen);
 
+		startLoading();
 		$.get('/api/game/buildings/', {
 				m: 'available_list',
 			},
 			function(response) {
+				endLoading();
 				console.log('success');
 				console.log(response);
 
@@ -277,21 +300,12 @@ $(function() {
 			var html = template(currentBuilding);
 			$('#BuildingInfo').html(html);
 		});
-
-		// $('body').on('click', '.technology-list__item[data-type="science"]', function(e) {
-		// 	var target = $(this);
-		// 	var id = parseInt(target.data('id'));
-		// 	currentTech = availableScience.available[id];
-
-		// 	var source = $('#ModalTechnologyInfo').html();
-		// 	var template = Handlebars.compile(source);
-		// 	var html = template(currentTech);
-		// 	$('#scienceInfo').html(html);
-		// });
 	});
 
 	$('body').on('click', '#startTeach', function(e) {
+		startLoading();
 		if (currentTech) {
+			endLoading();
 			$.get('/api/game/technologies/', {
 				m: 'start',
 				id: currentTech.id,
@@ -315,6 +329,20 @@ $(function() {
 
 	$('#dogmatsBtn').click(function() {
 		dogmatsModal.show();
+		var dogmatsContent = $('#availableDogmatsList');
+		dogmatsContent.html('<div class="loading-layout loading-layout--invert loading-layout--transparent></div>');
+
+		startLoading();
+		$.get('/api/game/dogmats/', {
+			m: 'my_dogmats',
+		},
+		function(response) {
+			endLoading();
+			var source = $('#dogmatsWindowList').html();
+			var template = Handlebars.compile(source);
+			var html = template(response);
+			dogmatsContent.html(html);
+		});
 	});
 
 	var statsState = '';
@@ -333,10 +361,12 @@ $(function() {
 		statsState = 'data';
 
 		statsModalContent.append('<div class="loading-layout loading-layout--invert loading-layout--transparent"></div>');
+		startLoading();
 		$.get('/api/game/stats/', {
 			m: 'data',
 		},
 		function(response) {
+			endLoading();
 			var chartConfig = {
 				"type": "line",
 				"legend": {
@@ -364,10 +394,12 @@ $(function() {
 		statsState = 'population';
 
 		statsModalContent.append('<div class="loading-layout loading-layout--invert loading-layout--transparent"></div>');
+		startLoading();
 		$.get('/api/game/stats/', {
 			m: 'population',
 		},
 		function(response) {
+			endLoading();
 			var chartConfig = {
 				"type": "line",
 				"legend": {
@@ -392,13 +424,15 @@ $(function() {
 		});
 	}
 
-	$('body').on('click', '.dogmats_window .dogmat', function() {
+	$('body').on('click', '.dogmats_window .dogmat.locked', function() {
 		// console.log('click!');
+		startLoading();
 		$.get('/api/game/dogmats/', {
 			m: 'list',
 			level: $(this).data('dogmatLevel'), 
 		},
 		function(response) {
+			endLoading();
 			var source = $('#dogmatsChooseWindow').html();
 			var template = Handlebars.compile(source);
 			var html = template(response);
@@ -414,13 +448,117 @@ $(function() {
 		buildCastle = !buildCastle;
 	});
 
+	var updateCitizensStats = function() {		
+		response = render.citizensStats;
+		var source = $('#citizensWindowTemplate').html();
+		var template = Handlebars.compile(source);
+		var html = template(response);
+		$('.free_citizens_window').html(html);
+	}
+	render.citizensStatsUpdate = updateCitizensStats;
+
 	$('#citizensBtn').click(function() {
-		$('.free_citizens_window').toggle();
 		render.citizensMap.visible = !render.citizensMap.visible;
 		if (render.citizensMap.visible) {
 			render.cells.alpha = 0.5;
+			$('.free_citizens_window').show();
+			startLoading();
+
+			$.get('/api/game/map/', {
+				m: 'free_citizens',
+			},
+			function(response) {
+				endLoading();
+				render.citizensStats = response;
+				updateCitizensStats();
+			});
 		} else {
 			render.cells.alpha = 1;			
+			$('.free_citizens_window').hide();
 		}
+	});	
+
+	function updateStats() {
+		startLoading();
+		$.get('/api/game/stats/', {
+			m: 'stats',
+		},
+		function(response) {
+			endLoading();
+			var source = $('#statsPanelTemplate').html();
+			var template = Handlebars.compile(source);
+			var html = template(response);
+			$('#stats_panel').html(html);
+			stats = response;
+		});
+	}
+
+	updateStats();
+
+	var introLevel = 1;
+	var nationsArray = [];
+
+	function firstGame() {
+		if (introLevel == 1) {
+			var introModal = new Modal($('#intro1'), {}, {
+				onDiscard: function() {
+					introLevel += 1;
+					firstGame();
+					this.hide();
+				}
+			});
+			introModal.show();
+		} else if (introLevel == 2) {
+			var introModal = new Modal($('#intro2'), {}, {
+				onDiscard: function() {
+					introLevel += 1;
+					firstGame();
+				}
+			});
+			introModal.show();
+		} else if (introLevel == 3) {
+			var introModal = new Modal($('#intro3'), {}, {
+				onDiscard: function() {
+					introLevel += 1;
+					firstGame();
+				}
+			});
+			introModal.show();
+
+			startLoading();
+
+			var nationsList = $('#nationsList');
+		
+			$.get('/api/game/stats/', {
+				m: 'nations',
+			},
+			function(response) {
+				endLoading();
+				var source = $('#nationsListTemplate').html();
+				var template = Handlebars.compile(source);
+				var html = template(response);
+				nationsList.html(html);
+				nationsArray = response;
+			});
+		} else if (introLevel == 4) {
+			showLoadingScreen();
+			startLoading();
+			refreshMap(render);
+		}
+	}
+
+	$('body').on('click', '[data-nation-id]', function() {
+		var nationsContent = $('#nationsContent');
+		var id = parseInt($(this).data('nationId'));
+		console.log(id);
+		var content = nationsArray[id - 1];
+		console.log(content);
+
+		var source = $('#nationsContentTemplate').html();
+		var template = Handlebars.compile(source);
+		var html = template(content);
+		nationsContent.html(html);
 	});
+
+	firstGame();	
 });

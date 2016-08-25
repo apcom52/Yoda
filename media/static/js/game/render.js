@@ -1,4 +1,5 @@
 var buildCastle = false;
+var targetrender = null;
 
 Render = function(game, map = null) {
 	this.game = game;
@@ -6,6 +7,9 @@ Render = function(game, map = null) {
 	this.hasBuildingInProgress = true;
 	this.leftCorner = null;
 	this.citizensMap = null;
+	this.citizensStats = null;
+	this.citizensStatsUpdate = null;
+	targetrender = this;
 }
 
 Render.prototype.draw = function(map = undefined) {
@@ -96,16 +100,16 @@ Render.prototype.draw = function(map = undefined) {
 				if (cell.citizen) {
 					var citizenTrueSprite = game.add.sprite(512 + 64 * n + 32, 384 + 64 * m + 32, 'work-on');
 					citizenTrueSprite.anchor.setTo(0.5, 0.5);
-					target.citizensMap.add(citizenTrueSprite);
+					if (cell.building.name != "Ратуша" || cell.building.name != "Дом"|| cell.building.name != "Небоскреб")
+						target.citizensMap.add(citizenTrueSprite);
 					cell.citizenSprite = citizenTrueSprite;
 				} else {
 					var citizenFalseSprite = game.add.sprite(512 + 64 * n + 32, 384 + 64 * m + 32, 'work-off');
 					citizenFalseSprite.anchor.setTo(0.5, 0.5);
-					target.citizensMap.add(citizenFalseSprite);
-					cell.citizenSprite = citizenFalseSprite;
+					if (cell.building.name != "Ратуша" || cell.building.name != "Дом"|| cell.building.name != "Небоскреб")
+						target.citizensMap.add(citizenFalseSprite);
+ 					cell.citizenSprite = citizenFalseSprite;
 				}
-
-
 
 				/* Если есть ресурсы, то добавляем спрайт ресурсов */
 				if (cell.building) {
@@ -236,10 +240,18 @@ Render.prototype.showCitizens = function() {
 function over(item) {
 	item.alpha = 0.9;
 	console.log(item.cell.position);
+
+	$('.tooltip_window').show();
+	var source = $('#tooltipTemplate').html();
+	var template = Handlebars.compile(source);
+	var html = template(item.cell.tooltip);
+	$('.tooltip_window').html(html);
+	console.log(item.cell.tooltip);
 }
 
 function out(item) {
 	item.alpha = 1; 
+	$('.tooltip_window').hide();
 }
 
 function cellClick(item) {
@@ -273,15 +285,38 @@ function cellClick(item) {
 		console.log('change work mode');
 		var currentCell = item.cell;
 		console.log(currentCell);
+
+		if (currentCell.citizen) {
+			currentCell.citizenSprite.key = 'work-off';
+		} else {
+			currentCell.citizenSprite.key = 'work-on';			
+		}
+
+		var status = !currentCell.citizen;
+
 		$.get('/api/game/map/', 
 			{
 				m: 'citizen_set',
 				x: currentCell.position.x,
 				y: currentCell.position.y,
-				status: !currentCell.citizen,
+				status: status,
 			}, function(response) {
-				console.log('success change');
 				console.log(response);
+				if (response == "ok") {
+					if (status) {
+						var work_key = "work-on";
+						targetrender.citizensStats.free -= 1;
+						currentCell.citizen = true;
+					} else {
+						var work_key = "work-off";						
+						targetrender.citizensStats.free += 1;
+						currentCell.citizen = false;
+					}
+					targetrender.citizensStatsUpdate();
+					currentCell.citizenSprite.loadTexture(work_key, 0);
+				} else {
+					showToast('У вас нет безработных жителей!')
+				}
 		});
 	}
 }

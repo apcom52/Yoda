@@ -17,13 +17,41 @@ class Empire():
 	RESOURCE_CARBON = "carbon";
 	RESOURCE_OIL = "oil";
 	RESOURCE_URAN = "uran";
+	RESOURCE_CHANCE = 0.25
 
 	RESOURCE_WHEAT = "wheat";
 	RESOURCE_GRAPES = "grapes";
 	RESOURCE_CITRUS = "citrus";
+	RESOURCE_PLANT_CHANCE = [0.26, 0.32]
+
+	RESOURCE_FISH = "fish";
 
 	BUILDING_CASTLE1 = "castle1";
 	BUILDING_HOMES = [27, 35]
+
+	DOGMAT_1_TOURISMGOLD = 1
+	DOGMAT_1_HOUSE = 2
+	DOGMAT_1_GRANARY = 3
+	DOGMAT_1_SILVERGOLD = 4
+	DOGMAT_1_FAITHTOURISM = 5
+	DOGMAT_1_RANDOMWONDER = 6
+	DOGMAT_1_CULTURETOURISM = 7
+	DOGMAT_1_WOODOIL = 8
+	
+	DOGMAT_2_WONDERPRODUCTION = 9
+	DOGMAT_2_PLANTATIONGOLD = 10
+	DOGMAT_2_CASTLEUPGRADE = 11
+	DOGMAT_2_SCIENCE = 12
+	DOGMAT_2_RESOURCEPRODUCTION = 13
+	DOGMAT_2_HAPPINESS = 14
+	DOGMAT_2_MARKETRADIO = 15
+	
+	DOGMAT_3_TOURISTS = 16
+	DOGMAT_3_PLANTATIONFOOD = 17
+	DOGMAT_3_CASTLEPRODUCTION = 18
+	DOGMAT_3_FAITHSANDS = 19
+	DOGMAT_3_GOLD25 = 20
+	DOGMAT_3_WONDERCULTURE = 21
 
 	STONE_RESOURCE_CHANCE = {
 		"from": 0,
@@ -143,12 +171,29 @@ class Empire():
 	THAILAND_BONUS = 1
 	THAILAND_BASE_TOURISM_BONUS = 5
 
+	# Швеция
+	SWEDEN_CULTURE_CITIZENS = 1
+
+	# Германия
+	GERMANY_BONUS = 0.25
+
+	# Индия
+	INDIA_BONUS = 0.2
+
 	# Уникальные здания
 	BUILDING_CASTLE = Building.objects.get(name = "Ратуша")
 	BUILDING_SCHOOL = Building.objects.get(name = "Школа")
 	BUILDING_GRANARY = Building.objects.get(name = "Амбар")
+	BUILDING_FORGE = Building.objects.get(name = "Кузница")
 	BUILDING_WORKSHOP = Building.objects.get(name = "Мастерская")
+	BUILDING_FACTORY = Building.objects.get(name = "Фабрика")
+	BUILDING_WORKS = Building.objects.get(name = "Завод")
 	BUILDING_COINHOUSE = Building.objects.get(name = "Монетный двор")
+	
+	BUILDING_FARM = Building.objects.get(name = "Ферма")
+	BUILDING_PLANTATION = Building.objects.get(name = "Плантация")
+	BUILDING_MINE = Building.objects.get(name = "Рудник")
+	BUILDING_BOAT = Building.objects.get(name = "Лодка")
 
 
 class Map():
@@ -410,76 +455,84 @@ class Map():
 				# Редкого (рудник) - 8% и плантации - 9%
 				hasResource = random.random()
 				resource = ""
+
+				resourceChance = Empire.RESOURCE_CHANCE
+
+				if game.nation.id == Empire.AUSTRALIA:
+					resourceChance += 0.1
+
 				if hasResource <= 0.25:
-					# Шансы появления ресурсов:
-					# Камень	20%
-					# Песок		18%
-					# Лес		16%
-					# Железо 	13%
-					# Уголь		11%
-					# Алюминий 	9%
-					# Нефть		8%
-					# Уран		5%
-					resourceRnd = random.random()
-					if resourceRnd > Empire.STONE_RESOURCE_CHANCE["from"] and resourceRnd <= Empire.STONE_RESOURCE_CHANCE["to"]:
-						if type in (Empire.PLAIN, Empire.SAND):
-							resource = Empire.RESOURCE_STONE
-							production += 1
-							faith = 0
-							food = 0
-					elif resourceRnd > Empire.WOOD_RESOURCE_CHANCE["from"] and resourceRnd <= Empire.WOOD_RESOURCE_CHANCE["to"]:
-						if type in (Empire.PLAIN,):
-							resource = Empire.RESOURCE_WOOD
-							production += 1
-							faith = 0
-							food = 1
-					elif resourceRnd > Empire.IRON_RESOURCE_CHANCE["from"] and resourceRnd <= Empire.IRON_RESOURCE_CHANCE["to"]:
-						if type in (Empire.PLAIN, Empire.SAND):
-							resource = Empire.RESOURCE_IRON
-							production += 1
-							faith = 0
-							food = 0
-					elif resourceRnd > Empire.CARBON_RESOURCE_CHANCE["from"] and resourceRnd <= Empire.CARBON_RESOURCE_CHANCE["to"]:
-						if type in (Empire.PLAIN,):
-							resource = Empire.RESOURCE_CARBON
-							production += 1
-							faith = 0
-							food = 0
-					elif resourceRnd > Empire.OIL_RESOURCE_CHANCE["from"] and resourceRnd <= Empire.OIL_RESOURCE_CHANCE["to"]:
-						if type in (Empire.PLAIN, Empire.SEA):
-							resource = Empire.RESOURCE_OIL
-							production += 1
-							faith = 0
-							food = 0
-					elif resourceRnd > Empire.URAN_RESOURCE_CHANCE["from"] and resourceRnd <= Empire.URAN_RESOURCE_CHANCE["to"]:
-						if type in (Empire.PLAIN, Empire.SAND):
-							resource = Empire.RESOURCE_URAN
-							production += 1
-							faith = 0
-							food = 0
-					elif resourceRnd > Empire.SAND_RESOURCE_CHANCE["from"] and resourceRnd <= Empire.SAND_RESOURCE_CHANCE["to"]:
-						if type in (Empire.SAND,):
-							resource = Empire.RESOURCE_SANDS
-							production += 1
-							faith = 0
-							food = 0
-				elif hasResource > 0.25 and hasResource <= 0.34:
-					resourceRnd = random.random()
-					if resourceRnd > Empire.WHEAT_RESOURCE_CHANCE["from"] and resourceRnd <= Empire.WHEAT_RESOURCE_CHANCE["to"]:
-						if type in (Empire.PLAIN,):
-							resource = Empire.RESOURCE_WHEAT
-							production = 0
-							food = 2
-					elif resourceRnd > Empire.GRAPES_RESOURCE_CHANCE["from"] and resourceRnd <= Empire.GRAPES_RESOURCE_CHANCE["to"]:
-						if type in (Empire.PLAIN,):
-							resource = Empire.RESOURCE_GRAPES
-							production = 0
-							food = 2
-					elif resourceRnd > Empire.CITRUS_RESOURCE_CHANCE["from"] and resourceRnd <= Empire.CITRUS_RESOURCE_CHANCE["to"]:
-						if type in (Empire.PLAIN,):
-							resource = Empire.RESOURCE_CITRUS
-							production = 0
-							food = 2
+					resourceQuality = random.random()
+					if resourceQuality <= 0.65:
+						# Шансы появления ресурсов:
+						# Камень	20%
+						# Песок		18%
+						# Лес		16%
+						# Железо 	13%
+						# Уголь		11%
+						# Алюминий 	9%
+						# Нефть		8%
+						# Уран		5%
+						resourceRnd = random.random()
+						if resourceRnd > Empire.STONE_RESOURCE_CHANCE["from"] and resourceRnd <= Empire.STONE_RESOURCE_CHANCE["to"]:
+							if type in (Empire.PLAIN, Empire.SAND):
+								resource = Empire.RESOURCE_STONE
+								production += 1
+								faith = 0
+								food = 0
+						elif resourceRnd > Empire.WOOD_RESOURCE_CHANCE["from"] and resourceRnd <= Empire.WOOD_RESOURCE_CHANCE["to"]:
+							if type in (Empire.PLAIN,):
+								resource = Empire.RESOURCE_WOOD
+								production += 1
+								faith = 0
+								food = 1
+						elif resourceRnd > Empire.IRON_RESOURCE_CHANCE["from"] and resourceRnd <= Empire.IRON_RESOURCE_CHANCE["to"]:
+							if type in (Empire.PLAIN, Empire.SAND):
+								resource = Empire.RESOURCE_IRON
+								production += 1
+								faith = 0
+								food = 0
+						elif resourceRnd > Empire.CARBON_RESOURCE_CHANCE["from"] and resourceRnd <= Empire.CARBON_RESOURCE_CHANCE["to"]:
+							if type in (Empire.PLAIN,):
+								resource = Empire.RESOURCE_CARBON
+								production += 1
+								faith = 0
+								food = 0
+						elif resourceRnd > Empire.OIL_RESOURCE_CHANCE["from"] and resourceRnd <= Empire.OIL_RESOURCE_CHANCE["to"]:
+							if type in (Empire.PLAIN, Empire.SEA):
+								resource = Empire.RESOURCE_OIL
+								production += 1
+								faith = 0
+								food = 0
+						elif resourceRnd > Empire.URAN_RESOURCE_CHANCE["from"] and resourceRnd <= Empire.URAN_RESOURCE_CHANCE["to"]:
+							if type in (Empire.PLAIN, Empire.SAND):
+								resource = Empire.RESOURCE_URAN
+								production += 1
+								faith = 0
+								food = 0
+						elif resourceRnd > Empire.SAND_RESOURCE_CHANCE["from"] and resourceRnd <= Empire.SAND_RESOURCE_CHANCE["to"]:
+							if type in (Empire.SAND,):
+								resource = Empire.RESOURCE_SANDS
+								production += 1
+								faith = 0
+								food = 0
+					else:
+						resourceRnd = random.random()
+						if resourceRnd > Empire.WHEAT_RESOURCE_CHANCE["from"] and resourceRnd <= Empire.WHEAT_RESOURCE_CHANCE["to"]:
+							if type in (Empire.PLAIN,):
+								resource = Empire.RESOURCE_WHEAT
+								production = 0
+								food = 2
+						elif resourceRnd > Empire.GRAPES_RESOURCE_CHANCE["from"] and resourceRnd <= Empire.GRAPES_RESOURCE_CHANCE["to"]:
+							if type in (Empire.PLAIN,):
+								resource = Empire.RESOURCE_GRAPES
+								production = 0
+								food = 2
+						elif resourceRnd > Empire.CITRUS_RESOURCE_CHANCE["from"] and resourceRnd <= Empire.CITRUS_RESOURCE_CHANCE["to"]:
+							if type in (Empire.PLAIN,):
+								resource = Empire.RESOURCE_CITRUS
+								production = 0
+								food = 2
 
 				
 				cells[i][j] = {
@@ -587,6 +640,11 @@ class GameManager():
 		food_pt = 0
 		culture_pt = 0
 		tourism_pt = 0
+		happiness_pt = 0
+
+		# Получаем список всех принятых догматов
+		dogmats_list = UserDogmat.objects.all().filter(game = game)
+		dogmats = [d.dogmat.id for d in dogmats_list]
 
 		castle = UserBuild.objects.get(game = game, building__name = "Ратуша")
 		mapManager = Map(game.nation)
@@ -600,7 +658,28 @@ class GameManager():
 		castle_culture = 1 * game.castle_level
 		castle_gold = 5 * game.castle_level
 		castle_faith = 1 * game.castle_level
-		castle_culture = 1 * game.castle_level
+
+		# Догмат на +1 к показателям ратуши
+		if Empire.DOGMAT_2_CASTLEUPGRADE in dogmats:
+			castle_production += 1
+			castle_food += 1
+			castle_science += 1
+			castle_culture += 1
+			castle_faith += 1
+
+		# Догмат на +1 pp/sp/fp/cp для каждого чуда света
+		if Empire.DOGMAT_1_RANDOMWONDER in dogmats:
+			user_wonders = UserBuild.objects.filter(game = game, completed = True, building__wonder = True).count()
+			for i in range(0, user_wonders):
+				rnd = random.random()
+				if rnd <= 0.25:
+					production_pt += 1
+				elif rnd > 0.25 and rnd <= 0.5:
+					science_pt += 1
+				elif rnd > 0.55 and rnd <= 0.75:
+					faith_pt += 1
+				elif rnd > 0.75:
+					culture_pt += 1
 
 		if Empire.SEA in castle_near:
 			castle_food += 1
@@ -622,8 +701,17 @@ class GameManager():
 			castle_gold *= 2
 			castle_faith *= 2
 
+		# +1 к производству для Австралии
+		if game.nation.id == Empire.AUSTRALIA:
+			castle_production += 1
+
+		# +1 к культуре для Японии
 		if game.nation.id == Empire.JAPAN:
 			castle_culture += 1
+
+		# +1 к науке для США
+		if game.nation.id == Empire.JAPAN:
+			castle_science += 1
 
 		production_pt += castle_production
 		science_pt += castle_science
@@ -644,6 +732,13 @@ class GameManager():
 			if coord in citizens:
 				buildings.append(b.building)
 
+		# Россия: если обрабатывается клетка с ресурсом, то +1 к золоту
+		if game.nation.id == Empire.RUSSIA:
+			for c in citizens:
+				if gmap[c[1]][c[0]]["resource"]:
+					gold_pt += 1
+
+		# ---------------------------
 		#Считаем очки производства
 		prod_bonuses = BuildingBonus.objects.filter(type = 2, building__in = buildings)
 
@@ -656,6 +751,8 @@ class GameManager():
 		if game.nation.id == Empire.CHINA:
 			production_pt *= Empire.CHINA_POWER
 
+		
+		# ---------------------------
 		#Считаем очки веры
 		faith_bonuses = BuildingBonus.objects.filter(type = 4, building__in = buildings)
 
@@ -664,9 +761,14 @@ class GameManager():
 		faith_mods = BuildingBonusModificator.objects.filter(type = 4, building__in = buildings)
 		for f in faith_mods:
 			faith_pt *= 1 + f.value / 100
-
+		
+		# ---------------------------
 		#Считаем очки золота
 		gold_bonuses = BuildingBonus.objects.filter(type = 8, building__in = buildings)
+
+		# +1-5 к золоту Израилю (за уровень ратуши)
+		if game.nation.id == Empire.ISRAEL:
+			gold_pt += game.castle_level
 
 		for g in gold_bonuses:
 			gold_pt += g.value
@@ -674,6 +776,8 @@ class GameManager():
 		for g in gold_mods:
 			gold_pt *= 1 + g.value / 100
 
+		
+		# ---------------------------
 		#Считаем очки науки
 		science_bonuses = BuildingBonus.objects.filter(type = 5, building__in = buildings)
 		for s in science_bonuses:
@@ -688,25 +792,94 @@ class GameManager():
 		science_mods = BuildingBonusModificator.objects.filter(type = 5, building__in = buildings)
 		for s in science_mods:
 			science_pt *= 1 + s.value / 100
+
+		# США: +10% к науке
 		if game.nation.id == Empire.USA:
 			science_pt *= Empire.USA_POWER
 
+		
+		# ---------------------------
 		#Считаем очки культуры
 		culture_bonuses = BuildingBonus.objects.filter(type = 3, building__in = buildings)
 
 		for c in culture_bonuses:
 			culture_pt += c.value
+			if game.nation.id == Empire.JAPAN:
+				happiness_pt += 1
 		culture_mods = BuildingBonusModificator.objects.filter(type = 3, building__in = buildings)
 		for c in culture_mods:
 			culture_pt *= 1 + c.value / 100
 
+		# Япония: +10% к культуре
 		if game.nation.id == Empire.JAPAN:
 			culture_pt *= Empire.JAPAN_BONUS	
 
+		
+		# ---------------------------
 		# Считаем очки туризма
 		tourism_bonuses = BuildingBonus.objects.filter(type = 7, building__in = buildings)
 		for t in tourism_bonuses:
 			tourism_pt += t.value
+
+		# ---------------------------
+		# Считаем очки настроения
+		happiness_bonuses = BuildingBonus.objects.filter(type = 6, building__in = buildings)
+		for h in happiness_bonuses:
+			happiness_pt += h.value
+
+		citizens = Citizen.objects.filter(game = game, free = False)
+		free_citizens_count = Citizen.objects.filter(game = game, free = True).count()
+		# Безработные граждане уменьшают настроение
+		user_building = UserBuild.objects.filter(game = game, completed = True)
+		happiness_pt -= free_citizens_count 
+		for citizen in citizens:
+			bad_buildings = [Empire.BUILDING_FORGE.id, Empire.BUILDING_WORKSHOP.id, Empire.BUILDING_FACTORY.id, Empire.BUILDING_WORKS.id]
+			x = citizen.x
+			y = citizen.y
+			print(gmap[y][x])
+			current = gmap[y][x]
+			print(bad_buildings)
+			if user_building.filter(x = x, y = y).exists():
+				building = UserBuild.objects.get(game = game, completed = True, x = x, y = y)
+				print(building.id)
+				if building.building.id in bad_buildings:
+					happiness_pt -= 1
+					print('bad building')					
+				else:
+					happiness_pt += 1
+					print('good building')
+			else:
+				if current["resource"]:
+					happiness_pt -= 1
+					print('bad resource')
+				else:
+					happiness_pt += 0
+					print('neutral')
+
+		# ---------------------------
+		# Количество мест для жителей
+		citizens_places = 3 + (game.castle_level - 1) * 2
+		homes = UserBuild.objects.filter(id__in = Empire.BUILDING_HOMES)
+		for home in homes:
+			if home.id == Empire.BUILDING_HOMES[0]:
+				citizens_places += 3
+				if game.nation.id == Empire.INDIA:
+					citizens_places += 2
+			elif home.id == Empire.BUILDING_HOMES[1]:
+				citizens_places += 15
+
+
+		# ---------------------------
+		# Пробегаемся по всем зданиям и вычитаем расходы на содержание
+		user_build_list = UserBuild.objects.filter(game = game, completed = True)
+		user_buildings_obj = [b.building for b in user_build_list]
+		for build in user_buildings_obj:
+			cost = build.cost
+			if game.nation.id == Empire.ISRAEL:
+				if cost > 0:
+					cost -= 1
+			gold_pt -= cost
+
 
 		return {
 			'production': production_pt,
@@ -716,14 +889,18 @@ class GameManager():
 			'food': food_pt,
 			'culture': culture_pt,
 			'tourism': tourism_pt,
+			'places': citizens_places,
+			'happiness': happiness_pt,
 		}
 
 	def step(self, game):
 		import datetime
 		print('Start step')
 		last_step = Step.objects.filter(game = game).latest('id')
-		science_pt = 3
-		faith_pt = 1
+		
+		# Полчаем список всех принятых догматов
+		dogmats_list = UserDogmat.objects.all().filter(game = game)
+		dogmats = [d.dogmat.id for d in dogmats_list]
 		
 		stats = self.get_stats(game)
 		production_pt = stats['production']
@@ -733,17 +910,35 @@ class GameManager():
 		culture_pt = stats['culture']
 		food_pt = stats['food']
 		tourism_pt = stats['tourism']
+		happiness_pt = stats['happiness']
+		citizens_places = stats['places']		
 
 		step = Step()
 		step.game = game
 		step.date = datetime.datetime.today()
 		step.step = last_step.step + 1
 
-		step.science = science_pt
-		step.faith = faith_pt
-		step.production = production_pt
+		# step.science = science_pt
+		# step.faith = faith_pt
+		# step.production = production_pt
 
 		game.faith += step.faith
+
+		# Германия: +1 ед производства/науки от каждого безработного
+		if game.nation.id == Empire.GERMANY:
+			free_citizens = Citizen.objects.filter(game = game, free = True).count()
+			for i in range(0, free_citizens):
+				rnd = random.random()
+				if rnd <= 0.5:
+					production_pt += 1
+				else:
+					science_pt += 1
+
+		# Швеция: +1 к культуре за каждых 10 жителей
+		if game.nation.id == Empire.SWEDEN:
+			citizens_count = Citizen.objects.filter(game = game).count()
+			sweden_culture_bonus = 1 + citizens_count / Empire.SWEDEN_CULTURE_CITIZENS
+			culture_pt += sweden_culture_bonus
 
 		# Изучаем технологии
 		try:
@@ -785,56 +980,70 @@ class GameManager():
 		except ObjectDoesNotExist:
 			current_build = None
 
-		if current_build:
-			current_prod = current_build.progress + production_pt
-			
-			if current_prod >= current_build.building.pp:
-				from timetable.utils import sendNotification
-
-				current_build.progress = current_build.building.pp
-				current_prod -= current_build.building.pp
-				game.production = current_prod
-				current_build.completed = True
-
-				#Если игрок - Китай, то получает 1-2 ед веры, производства или науки
-				if game.nation.id == Empire.CHINA:
-					rnd = random.random()
-					if rnd < Empire.CHINA_BONUS_CHANCE:
-						value = random.choice([1, 2])
-						param = random.choice(('prod', 'science', 'faith'))
-						if param == 'prod':
-							game.production += value
-							step.production += value
-						elif param == 'science':
-							game.science += value
-							step.science += value
-						elif param == 'faith':
-							game.faith += value
-							step.faith += value
-
-				if game.nation.id == Empire.FRANCE:
-					rnd = random.random()
-					if rnd <= Empire.FRANCE_POWER_CHANCE:
-						bonus_gold = current_build.pp * Empire.FRANCE_POWER_BONUS
-						game.gold += bonus_gold
-						step.gold += bonus_gold
-
-				game.user.userprofile.exp += 1
-				game.user.save()
-
-				sendNotification({
-					"user": game.user,
-					"title": "Здание построено",
-					"type": 1,
-					"text": "Завершено строительство здания \"" + current_build.building.name + "\""
-				})
-
-			else:
-				current_build.progress = current_prod
-				game.production = current_prod
-				step.production = production_pt
+		if game.nation.id == Empire.UK and current_build in [Empire.BUILDING_FARM, Empire.BUILDING_PLANTATION, Empire.BUILDING_MINE, Empire.BUILDING_BOAT]:
+			current_build.completed = True
 			current_build.save()
-			game.save()
+
+			game.user.userprofile.exp += 1
+			game.user.save()
+
+			sendNotification({
+				"user": game.user,
+				"title": "Здание построено",
+				"type": 1,
+				"text": "Завершено строительство здания \"" + current_build.building.name + "\""
+			})
+		else:	
+			if current_build:
+				current_prod = current_build.progress + production_pt
+				
+				if current_prod >= current_build.building.pp:
+					from timetable.utils import sendNotification
+
+					current_build.progress = current_build.building.pp
+					current_prod -= current_build.building.pp
+					game.production = current_prod
+					current_build.completed = True
+
+					#Если игрок - Китай, то получает 1-2 ед веры, производства или науки
+					if game.nation.id == Empire.CHINA:
+						rnd = random.random()
+						if rnd < Empire.CHINA_BONUS_CHANCE:
+							value = random.choice([1, 2])
+							param = random.choice(('prod', 'science', 'faith'))
+							if param == 'prod':
+								game.production += value
+								step.production += value
+							elif param == 'science':
+								game.science += value
+								step.science += value
+							elif param == 'faith':
+								game.faith += value
+								step.faith += value
+
+					if game.nation.id == Empire.FRANCE:
+						rnd = random.random()
+						if rnd <= Empire.FRANCE_POWER_CHANCE:
+							bonus_gold = current_build.pp * Empire.FRANCE_POWER_BONUS
+							game.gold += bonus_gold
+							step.gold += bonus_gold
+
+					game.user.userprofile.exp += 1
+					game.user.save()
+
+					sendNotification({
+						"user": game.user,
+						"title": "Здание построено",
+						"type": 1,
+						"text": "Завершено строительство здания \"" + current_build.building.name + "\""
+					})
+
+				else:
+					current_build.progress = current_prod
+					game.production = current_prod
+					step.production = production_pt
+				current_build.save()
+				game.save()
 
 		# Считает культуру
 		culture_level = game.culture_level
@@ -850,6 +1059,9 @@ class GameManager():
 			cells = gmap.new_territories(game)
 			game.gmap = str(cells)
 
+			if game.nation.id == Empire.JAPAN:
+				gold_pt += 50
+
 			sendNotification({
 				"user": game.user,
 				"title": "Новые территории",
@@ -862,27 +1074,26 @@ class GameManager():
 		citizens_count = Citizen.objects.filter(game = game).count()
 
 		# Подсчитываем количество доступных мест для жителей
-		citizens_places = 3 + (game.castle_level - 1) * 2
-		homes = UserBuild.objects.filter(id__in = Empire.BUILDING_HOMES)
-		for home in homes:
-			if home.id == Empire.BUILDING_HOMES[0]:
-				citizens_places += 3
-			elif home.id == Empire.BUILDING_HOMES[1]:
-				citizens_places += 5
-
-		if citizens_count < food_pt:
+		citizens_base = 0.1 + 0.01 * happiness_pt
+		if game.nation.id == Empire.INDIA:
+			citizens_base += Empire.INDIA_BONUS
+		if citizens_count < food_pt and citizens_count <= citizens_places:
 			citizen_rnd = random.random()
-			if citizen_rnd <= 0.1:
+			if citizen_rnd <= citizens_base:
 				citizen = Citizen()
 				citizen.game = game
 				citizen.save()
 				citizens_count += 1
-		elif citizens_count > food_pt:
+		elif citizens_count > food_pt or citizens_count > citizens_places:
 			last_citizen = Citizen.objects.all().filter(game = game).latest('id')
 			last_citizen.delete()
 			citizens_count -= 1
-
 		step.citizens = citizens_count
+
+		# Германия: все жители платят налог в размере 0,25 золота
+		if game.nation.id == Empire.GERMANY:
+			gold_pt += citizens_count * Empire.GERMANY_BONUS
+
 
 		# Механика туризма
 		base_tourism = 10
@@ -903,6 +1114,18 @@ class GameManager():
 					rnd = random.random()
 					if rnd <= diff:
 						tourist_count += 1
+
+		# Догмат на то, что туристы иногда могут приносить очки fp/cp/sp
+		if Empire.DOGMAT_3_TOURISTS in dogmats:
+			for i in range(0, tourist_count):
+				can_take = random.random()
+				if can_take <= 0.5:		
+					if rnd <= 0.33:
+						faith_pt += 1
+					elif rnd > 0.33 and rnd <= 0.66:
+						culture_pt += 1
+					elif rnd > 0.66:
+						science_pt += 1
 
 		if game.nation.id == Empire.THAILAND:
 			gold_pt += (1 + Empire.THAILAND_BONUS) * tourist_count

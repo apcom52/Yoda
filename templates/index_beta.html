@@ -12,6 +12,104 @@
 <div class="grid" id="page-content">
 	<div class="col-12 padding-5 size-fix padding-t-1 padding-lm-0" style="background-image: url({{ request.user.userprofile.bg.background.url }}); background-position: center; background-repeat: no-repeat; background-size: cover; background-attachment: fixed;">
 		<div class="grid">
+			<div class="col-4 col-t-3 col-lm-6">
+				<div class="card card--no-smooth card--image">
+					<div class="card__content">
+						<div class="horizontal-layout horizontal-layout--centered">
+							<img src="{{request.user.userprofile.avatar.url}}" class="img--circle padding-1" style="width: 64px;">
+							<div class="column padding-1"><b>{{request.user.first_name}} {{request.user.last_name}}</b>
+							<br><span class="m-gray-fg" style="font-size: 0.9em;">{{request.user.userprofile.level}} уровень</span>
+							</div>
+						</div>
+						<div class="progress margin-bottom-0 progress--color-{{request.user.userprofile.accent}} progress--size-thin"><div class="progress__active" style="width:20%"></div></div>
+						<div class="{{request.user.userprofile.accent}}-fg" style="font-size: 0.9em;">еще 19 очков опыта до следующего уровня</div>
+					</div>					
+				</div>
+
+				<div class="card card--no-smooth card--image">
+					<div class="card__content">
+						<div class="horizontal-layout horizontal-layout--centered">
+							<img src="{{game_info.game.nation.icon.url}}" class="img--circle margin-1 shadow-2" style="width: 32px;">
+							<div class="column padding-1"><b>{{game_info.game.nation.title}}</b></div>
+						</div>
+						<div class="grid">
+							<div class="col-5">
+								<div class="col-6 align-center bold">
+									<img src="/media/game/icons/food.png" style="width: 1em; height: 1em;"><br>
+									<img src="/media/game/icons/culture.png" style="width: 1em; height: 1em;"><br>
+									<img src="/media/game/icons/faith.png" style="width: 1em; height: 1em;">
+								</div>
+								<div class="col-6 align-center bold">
+									+2<br>
+									+{{game_info.game.culture|floatformat}} (+{{game_info.stats.culture|floatformat}})<br>
+									{{game_info.game.faith|floatformat}} (+{{game_info.stats.faith|floatformat}})
+									Настроение: +{{game_info.stats.happiness}})
+								</div>
+							</div>
+							<div class="col-5 offset-2">
+								<div class="col-6 align-center bold">
+									<img src="/media/game/icons/production.png" style="width: 1em; height: 1em;"><br>
+									<img src="/media/game/icons/gold.png" style="width: 1em; height: 1em;"><br>
+									<img src="/media/game/icons/science.png" style="width: 1em; height: 1em;">
+									<img src="/media/game/icons/tourism.png" style="width: 1em; height: 1em;">
+								</div>
+								<div class="col-6 align-center bold">
+									+{{game_info.stats.production|floatformat}}<br>
+									{{game_info.game.gold|floatformat}} (+{{game_info.stats.gold|floatformat}})<br>
+									+{{game_info.stats.science|floatformat}}
+									<br>
+									{{game_info.stats.tourism|floatformat}}
+								</div>
+							</div>
+						</div>
+							
+						<div class="progress margin-bottom-0 progress--color-blue progress--size-thin"><div class="progress__active" style="width:{{game_info.technology_progress}}%"></div></div>
+
+						<div class="blue-fg" style="font-size: 0.9em;"><b>
+							{% if game_info.latest_technology %}
+								{{game_info.latest_technology.technology.name}}</b>. Исследование завершено
+							{% else %}
+								{{game_info.technology.technology.name}}</b>. Исследовано {{game_info.technology_progress}}% (еще 12 часов)
+							{% endif %}
+						</div>	
+
+						
+						<div class="progress margin-bottom-0 progress--color-orange progress--size-thin"><div class="progress__active" style="width:{{game_info.building_progress}}%"></div></div>
+
+						<div class="orange-fg" style="font-size: 0.9em;"><b>
+							{% if game_info.latest_building %}
+								{{game_info.latest_building.building.name}}</b>. Строительство окончено
+							{% else %}
+								{{game_info.building.building.name}}</b>. Завершено {{game_info.building_progress}}% (еще 12 часов)
+							{% endif %}
+						</div>			
+
+						<div class="card__footer margin-top-1">
+							<a href="/game/"><div class="button button--color-{{request.user.userprofile.accent}} button--fit button--transparent align-center">ВОЙТИ В ИГРУ</div></a>
+							<button class="button--fit" id="openChest">Открыть сундук</button>
+						</div>
+					</div>					
+				</div>
+
+				<div class="card card--no-smooth margin-1">
+					<div class="card__header">
+						<div class="card__header__title">Объявления о продаже</div>
+					</div>
+					<div class="card__content">
+						<i class="m-gray-fg">Нет объявлений о продаже</i>
+					</div>
+					<div class="card__footer align-center">
+						<div class="button button--color-{{request.user.userprofile.accent}} button--transparent align-center">ОТКРЫТЬ ВСЕ</div>
+						<div class="button button--color-{{request.user.userprofile.accent}} button--transparent align-center">ДОБАВИТЬ</div>
+					</div>
+				</div>
+
+				<div class="card card--no-smooth margin-1">
+					<div class="card__header">
+						<div class="card__header__title">Расписание на сегодня</div>
+					</div>					
+				</div>				
+			</div>
 			<div class="col-8 col-t-5 col-lm-6">
 				<!-- Добавить запись -->
 				<div class="card card--no-smooth">
@@ -23,7 +121,7 @@
 							<div class="form form--fit padding-horizontal-0" id="postContent">
 								<textarea name="value" class="margin-0 postValueText" id="" rows="3" placeholder="Введите сообщение" id="postValueText"></textarea>
 							</div>
-							<div class="list list--image list--horizontal">								
+							<!-- <div class="list list--image list--horizontal">								
 								<div class="list__item" id="feed_addpost_attach_image"><img src="/media/img/ic/image.png" alt="">Изображение</div>
 								<div class="list__item" id="feed_addpost_attach_doc"><img src="/media/img/ic/document.png" alt="">Документ</div>
 								<div class="list__item" id="feed_addpost_attach_event"><img src="/media/img/ic/calendar.png" alt="">Мероприятие</div>
@@ -45,7 +143,7 @@
 										<div class="select" id="feed_addpost_event_attachment_select"></div>
 									</div>
 								</div>
-							</div>
+							</div> -->
 							<button class="button--color-{{request.user.userprofile.accent}} margin-left-0" id="sendPost">ОТПРАВИТЬ</button>
 						</div>
 					</form>
@@ -134,106 +232,7 @@
 				{% endfor %}
 
 				<!-- /// -->
-			</div>
-			<div class="col-4 col-t-3 col-lm-6">
-				<div class="card card--no-smooth card--image">
-					<div class="card__content">
-						<div class="horizontal-layout horizontal-layout--centered">
-							<img src="{{request.user.userprofile.avatar.url}}" class="img--circle padding-1" style="width: 64px;">
-							<div class="column padding-1"><b>{{request.user.first_name}} {{request.user.last_name}}</b>
-							<br><span class="m-gray-fg" style="font-size: 0.9em;">1 уровень</span>
-							</div>
-						</div>
-						<div class="progress margin-bottom-0 progress--color-{{request.user.userprofile.accent}} progress--size-thin"><div class="progress__active" style="width:20%"></div></div>
-						<div class="{{request.user.userprofile.accent}}-fg" style="font-size: 0.9em;">еще 19 очков опыта до следующего уровня</div>
-					</div>					
-				</div>
-
-				<div class="card card--no-smooth card--image">
-					<div class="card__content">
-						<div class="horizontal-layout horizontal-layout--centered">
-							<img src="{{game_info.game.nation.icon.url}}" class="img--circle margin-1 shadow-2" style="width: 32px;">
-							<div class="column padding-1"><b>{{game_info.game.nation.title}}</b></div>
-						</div>
-						<div class="grid">
-							<div class="col-5">
-								<div class="col-6 align-center bold">
-									<img src="/media/game/icons/food.png" style="width: 1em; height: 1em;"><br>
-									<img src="/media/game/icons/culture.png" style="width: 1em; height: 1em;"><br>
-									<img src="/media/game/icons/faith.png" style="width: 1em; height: 1em;">
-								</div>
-								<div class="col-6 align-center bold">
-									+2<br>
-									+{{game_info.game.culture|floatformat}} (+{{game_info.stats.culture|floatformat}})<br>
-									{{game_info.game.faith|floatformat}} (+{{game_info.stats.faith|floatformat}})
-								</div>
-							</div>
-							<div class="col-5 offset-2">
-								<div class="col-6 align-center bold">
-									<img src="/media/game/icons/production.png" style="width: 1em; height: 1em;"><br>
-									<img src="/media/game/icons/gold.png" style="width: 1em; height: 1em;"><br>
-									<img src="/media/game/icons/science.png" style="width: 1em; height: 1em;">
-									<img src="/media/game/icons/tourism.png" style="width: 1em; height: 1em;">
-								</div>
-								<div class="col-6 align-center bold">
-									+{{game_info.stats.production|floatformat}}<br>
-									{{game_info.game.gold|floatformat}} (+{{game_info.stats.gold|floatformat}})<br>
-									+{{game_info.stats.science|floatformat}}
-									<br>
-									{{game_info.stats.tourism|floatformat}}
-								</div>
-							</div>
-						</div>
-							
-						<div class="progress margin-bottom-0 progress--color-blue progress--size-thin"><div class="progress__active" style="width:{{game_info.technology_progress}}%"></div></div>
-
-						<div class="blue-fg" style="font-size: 0.9em;"><b>
-							{% if game_info.latest_technology %}
-								{{game_info.latest_technology.technology.name}}</b>. Исследование завершено
-							{% else %}
-								{{game_info.technology.technology.name}}</b>. Исследовано {{game_info.technology_progress}}% (еще 12 часов)
-							{% endif %}
-						</div>	
-
-						
-						<div class="progress margin-bottom-0 progress--color-orange progress--size-thin"><div class="progress__active" style="width:{{game_info.building_progress}}%"></div></div>
-
-						<div class="orange-fg" style="font-size: 0.9em;"><b>
-							{% if game_info.latest_building %}
-								{{game_info.latest_building.building.name}}</b>. Строительство окончено
-							{% else %}
-								{{game_info.building.building.name}}</b>. Завершено {{game_info.building_progress}}% (еще 12 часов)
-							{% endif %}
-						</div>			
-
-						<div class="card__footer margin-top-1">
-							<a href="/game/"><div class="button button--color-{{request.user.userprofile.accent}} button--fit button--transparent align-center">ВОЙТИ В ИГРУ</div></a>
-							<button class="button--fit" id="openChest">Открыть сундук</button>
-						</div>
-					</div>					
-				</div>
-
-				<div class="card card--no-smooth margin-1">
-					<div class="card__header">
-						<div class="card__header__title">Объявления о продаже</div>
-					</div>
-					<div class="card__content">
-						<i class="m-gray-fg">Нет объявлений о продаже</i>
-					</div>
-					<div class="card__footer align-center">
-						<div class="button button--color-{{request.user.userprofile.accent}} button--transparent align-center">ОТКРЫТЬ ВСЕ</div>
-						<div class="button button--color-{{request.user.userprofile.accent}} button--transparent align-center">ДОБАВИТЬ</div>
-					</div>
-				</div>
-
-				<div class="card card--no-smooth margin-1">
-					<div class="card__header">
-						<div class="card__header__title">Расписание на сегодня</div>
-					</div>					
-				</div>
-
-				
-			</div>
+			</div>			
 		</div>
 	</div>	
 </div>

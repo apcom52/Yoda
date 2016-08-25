@@ -32,6 +32,7 @@ class Game(models.Model):
 	happiness = models.FloatField('Очки настроения', default = 0)
 	castle_level = models.IntegerField('Уровень ратуши', default = 1)
 	culture_level = models.IntegerField('Уровень культуры', default = 0)
+	teach_level = models.IntegerField('Уровень обучения', default = 1)
 
 	def __str__(self):
 		return '%s (%s)' % (self.user.first_name + ' ' + self.user.last_name, self.nation)
@@ -90,6 +91,7 @@ class Building(models.Model):
 	nations = models.ForeignKey(Nation, blank = True, null = True)
 	sprite = models.CharField('Имя спрайта', max_length = 32, blank = True)
 	wonder = models.BooleanField('Чудо света', default = False)
+	cost = models.IntegerField('Содержание', default = 0, blank = True, null = True)
 
 	def __str__(self):
 		name = self.name
@@ -134,8 +136,6 @@ class BuildingBonusModificator(models.Model):
 
 	def __str__(self):
 		return self.bonus_types[self.type - 1][1] + " +" + str(self.value) + "%"
-
-
 
 class BuildingBonusInline(admin.StackedInline):
 	model = BuildingBonus
@@ -256,8 +256,8 @@ class UserBuildAdmin(admin.ModelAdmin):
 
 class UserDogmat(models.Model):
 	class Meta():
-		verbose_name = 'Постройка игрока'
-		verbose_name_plural = 'Постройки игроков'
+		verbose_name = 'Догмат игрока'
+		verbose_name_plural = 'Догматы игроков'
 
 	login = models.ForeignKey(User, verbose_name = 'Пользователь')
 	game = models.ForeignKey(Game, verbose_name = 'Игра')
@@ -274,4 +274,4 @@ class Citizen(models.Model):
 	free = models.BooleanField('Безработность', default = True)
 
 class CitizenAdmin(admin.ModelAdmin):
-	list_display = ('id', 'game', 'free')
+	list_display = ('id', 'game', 'free', 'x', 'y')

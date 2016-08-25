@@ -27,28 +27,8 @@
 {% endblock %}
 {% block content %}
 <div class="align-center">
-	<div class="list list--horizontal list--image">
-		<div class="list__item olive-fg">
-			<div class="game-icon"><img src="/media/game/icons/food.png" alt=""><span>+4</span></div>
-		</div>
-		<div class="list__item yellow-fg">
-			<div class="game-icon"><img src="/media/game/icons/gold.png" alt=""><span>18 768 (+7)</span></div>
-		</div>
-		<div class="list__item blue-fg">
-			<div class="game-icon"><img src="/media/game/icons/science.png" alt=""><span>+7</span></div>
-		</div>
-		<div class="list__item orange-fg">
-			<div class="game-icon"><img src="/media/game/icons/production.png" alt=""><span>+8</span></div>
-		</div>
-		<div class="list__item u-gray-fg">
-			<div class="game-icon"><img src="/media/game/icons/faith.png" alt=""><span>215 (+4)</span></div>
-		</div>
-		<div class="list__item white-fg">
-			<div class="game-icon"><img src="/media/game/icons/tourism.png" alt=""><span>8</span></div>
-		</div>
-		<div class="list__item yellow-fg">
-			<div class="game-icon"><img src="/media/game/icons/happiness.png" alt=""><span>3</span></div>
-		</div>
+	<div class="grid" id="stats_panel">
+		
 	</div>
 </div>
 
@@ -74,10 +54,14 @@
 	<div class="teach_button" id="startTeach"></div>
 </div>
 
-<div class="free_citizens_window">
-	<h3>Безработные</h3>
-	<p>У вас есть 5 безработных жителей. Нажмите на красные клетки, чтобы заставить жителей их обрабатывать</p>
+<div class="left-sidebar">
+	<div class="tooltip_window"></div>
+	<div class="free_citizens_window">
+		<h3>Безработные</h3>
+		<p>У вас есть 5 безработных жителей. Нажмите на красные клетки, чтобы заставить жителей их обрабатывать</p>
+	</div>
 </div>
+
 
 <div class="modal modal--size-xl buildings_window" id="buildingModal">
 	<div class="title">Строительство</div>
@@ -108,7 +92,6 @@
 	</div>
 </div>
 
-
 <div class="modal modal--size-xl dogmats_window" id="dogmatsModal">
 	<div class="title">Догматы</div>
 	<div class="dogmats-headers">
@@ -117,59 +100,6 @@
 		<div class="column">Третий уровень</div>
 	</div>
 	<div class="dogmats-list" id="availableDogmatsList">	
-		<div class="column">
-				<div class="dogmat first" data-dogmat-level="1">
-					Вы получаете <span class="game-icon"><span>+1</span><img src="/media/game/icons/gold.png" alt=""></span> за каждую культурную и туристическую постройку
-				</div>
-				<div class="dogmat first locked" data-dogmat-level="1">
-					<p>Нажмите, чтобы активировать</p>
-					<p><span class="game-icon"><span>300</span><img src="/media/game/icons/faith.png" alt=""></span></p>
-				</div>
-				<div class="dogmat first locked" data-dogmat-level="1">
-					<p>Нажмите, чтобы активировать</p>
-					<p><span class="game-icon"><span>300</span><img src="/media/game/icons/faith.png" alt=""></span></p>
-				</div>
-				<div class="dogmat first locked" data-dogmat-level="1">
-					<p>Нажмите, чтобы активировать</p>
-					<p><span class="game-icon"><span>300</span><img src="/media/game/icons/faith.png" alt=""></span></p>
-				</div>
-				<div class="dogmat first locked" data-dogmat-level="1">
-					<p>Нажмите, чтобы активировать</p>
-					<p><span class="game-icon"><span>300</span><img src="/media/game/icons/faith.png" alt=""></span></p>
-				</div>
-			</div>
-			<div class="column">
-				<div class="dogmat second locked" data-dogmat-level="2">
-					<p>Нажмите, чтобы активировать</p>
-					<p><span class="game-icon"><span>700</span><img src="/media/game/icons/faith.png" alt=""></span></p>
-				</div>
-				<div class="dogmat second locked" data-dogmat-level="2">
-					<p>Нажмите, чтобы активировать</p>
-					<p><span class="game-icon"><span>700</span><img src="/media/game/icons/faith.png" alt=""></span></p>
-				</div>
-				<div class="dogmat second locked" data-dogmat-level="2">
-					<p>Нажмите, чтобы активировать</p>
-					<p><span class="game-icon"><span>700</span><img src="/media/game/icons/faith.png" alt=""></span></p>
-				</div>
-				<div class="dogmat second locked" data-dogmat-level="2">
-					<p>Нажмите, чтобы активировать</p>
-					<p><span class="game-icon"><span>700</span><img src="/media/game/icons/faith.png" alt=""></span></p>
-				</div>
-			</div>
-			<div class="column">
-				<div class="dogmat third locked" data-dogmat-level="3">
-					<p>Нажмите, чтобы активировать</p>
-					<p><span class="game-icon"><span>1500</span><img src="/media/game/icons/faith.png" alt=""></span></p>
-				</div>
-				<div class="dogmat third locked" data-dogmat-level="3">
-					<p>Нажмите, чтобы активировать</p>
-					<p><span class="game-icon"><span>1500</span><img src="/media/game/icons/faith.png" alt=""></span></p>
-				</div>
-				<div class="dogmat third locked" data-dogmat-level="3">
-					<p>Нажмите, чтобы активировать</p>
-					<p><span class="game-icon"><span>1500</span><img src="/media/game/icons/faith.png" alt=""></span></p>
-				</div>
-			</div>	
 	</div>
 </div>
 
@@ -220,6 +150,45 @@
 		</div>
 	</div>
 </div>
+
+<!-- Обучение -->
+<div class="modal modal--invert padding-0" id="intro1">
+	<div class="modal__content modal__content--no-padding">
+		<img src="/media/game/ui/hello_art.jpg" alt="" class="img--responsive">
+		<p class="margin-horizontal-1">Привет, друг! Добро пожаловать в игру! Главная цель в игре - добиться процветания твоей империи. Чтобы это сделать, вам нужно следовать по одному из нескольких путей: культурному, религиозному, торговому или научному! Постройте сильную и процветающую империю!</p>
+	</div>
+	<div class="modal__footer align-center"><button class="button--color-teal modal__discard">OK</button></div>
+</div>
+
+<div class="modal modal--invert padding-0" id="intro2">
+	<div class="modal__content">		
+		<h3>Давай познакомимся с основами игры!</h3>
+		<p><span class="game-icon yellow-fg"><span>Золото</span> <img src="/media/game/icons/gold.png" alt=""></span> - основной ресурс. На золото вы можете обслуживать ваши постройки, а также за золото можно покупать различные вещи.</p>
+
+		<p><span class="game-icon blue-fg"><span>Наука</span> <img src="/media/game/icons/science.png" alt=""></span> - за очки науки вы можете изучать новые технологии (открывать доступ к новым постройкам и возможностям)</p>
+
+		<p><span class="game-icon orange-fg"><span>Производство</span> <img src="/media/game/icons/production.png" alt=""></span> - за очки производства вы можете построить новые здания или улучшить уже существующие</p>
+
+		<p><span class="game-icon pink-fg"><span>Культура</span> <img src="/media/game/icons/culture.png" alt=""></span> - за очки культуры вы будете получать новые земли</p>
+
+		<p><span class="game-icon u-gray-fg"><span>Вера</span> <img src="/media/game/icons/faith.png" alt=""></span> - за очки веры вы можете открывать новые догматы, которые ускорят ваше развитие</p>
+	</div>
+	<div class="modal__footer align-center"><button class="button--color-teal modal__discard">OK</button></div>
+</div>
+
+<div class="modal modal--invert padding-0" id="intro3">
+	<div class="modal__content">		
+		<h3>Самое главное! Выберите государство, за которые вы хотите сыграть!</h3>
+		<p>Выберите государство. Обратите внимание на то, что у каждого государства есть бонус, а также уникальное здание</p>
+
+		<div class="grid">
+			<div class="col-5" id="nationsList"></div>
+			<div class="col-7 padding-horizontal-1 size-fix" id="nationsContent"></div>
+		</div>
+	</div>
+	<div class="modal__footer align-center"><button class="button--color-green modal__discard">Выбрать</button></div>
+</div>
+<!-- Конец обучения -->
 
 {% verbatim %}
 <script id="ModalListItemTemplate" type="text/html">
@@ -371,6 +340,115 @@
 		</div>
 	</div>	
 </script>
+
+<script id="tooltipTemplate" type="text/html">
+	{{#if building}}
+	{{building}}<br>
+	{{/if}}
+	{{land}}<br>
+	{{#if resource_type}}<div class="resource">{{resource_type}}</div>{{/if}}
+	{{#each resources}}
+		<span class="game-icon"><span>{{value}}</span><img src="/media/game/icons/{{icon}}.png" alt=""></span>
+	{{/each}}
+</script>
+
+<script id="citizensWindowTemplate" type="text/html">
+	<h2>Расстановка жителей</h2>
+	Безработные жители: {{free}}
+	Всего жителей: {{count}}
+	Вместимость: {{count}}/{{places}}
+</script>
+
+<script id="dogmatsWindowList" type="text/html">
+	{{#each this}}
+		<div class="column">
+			{{#each dogmats}}
+				{{#if locked}}
+					<div class="dogmat {{../class}} locked" data-dogmat-level="{{../level}}" data-dogmat-price="{{../price}}">
+						<p>Нажмите, чтобы выбрать</p>
+						<p><span class="game-icon"><span>{{../price}}</span><img src="/media/game/icons/faith.png" alt=""></span></p>
+					</div>
+				{{else}}
+					<div class="dogmat {{../class}}" data-dogmat-level="{{../level}}">
+						{{content}}
+					</div>
+				{{/if}}
+			{{/each}}
+		</div>
+	{{/each}}
+</script>
+
+<script id="statsPanelTemplate" type="text/html">
+	<div class="col-1 padding-05 size-fix olive-fg">
+		<div class="game-icon"><img src="/media/game/icons/food.png" alt=""><span>+{{step.food}}</span></div>
+	</div>
+	<div class="col-1 padding-05 size-fix orange-fg">
+		<div class="game-icon"><img src="/media/game/icons/production.png" alt=""><span>+{{step.production}}</span></div>
+	</div>
+	<div class="col-2 padding-05 size-fix purple-fg">
+		<div class="game-icon"><img src="/media/game/icons/culture.png" alt=""><span>{{current.culture}} / {{current.culture_next}} (+{{step.culture}})</span></div>
+	</div>
+	<div class="col-1 padding-05 size-fix blue-fg">
+		<div class="game-icon"><img src="/media/game/icons/science.png" alt=""><span>{{step.science}}</span></div>
+	</div>
+	<div class="col-1 padding-05 size-fix yellow-fg">
+		<div class="game-icon"><img src="/media/game/icons/gold.png" alt=""><span>{{step.gold}}</span></div>
+	</div>
+	<div class="col-2 padding-05 size-fix white-fg">
+		<div class="game-icon"><img src="/media/game/icons/faith.png" alt=""><span>{{current.faith}} (+{{step.faith}})</span></div>
+	</div>
+	<div class="col-1 padding-05 size-fix white-fg">
+		<div class="game-icon"><img src="/media/game/icons/tourism.png" alt=""><span>{{step.tourism}}</span></div>
+	</div>
+</script>
+
+<script id="nationsListTemplate" type="text/html">
+	<div class="user-list user-list--invert" style="max-height: 320px; overflow-y: auto;">
+	{{#each this}}
+		<div class="user-list__item" data-nation-id="{{id}}">
+			<div class="user-list__item__avatar"><img src="{{icon}}" alt=""></div>
+			<div class="user-list__item__username">{{title}}</div>
+		</div>
+	{{/each}}
+	</div>
+</script>
+
+<script id="nationsContentTemplate" type="text/html">
+	{{#if is_locked}}
+		<div class="alert alert--color-black">Данное государство уже выбрано другим игроком. Выберите другое государство</div>
+	{{/if}}
+
+	<h4 class="helvetica-ultra yellow-fg">Особенность</h4>
+	<p>{{bonus}}</p>
+
+	<h4 class="helvetica-ultra yellow-fg">Уникальное здание</h4>
+	{{#with building}}
+	<div class="technology-list">
+		<div class="technology-list__item">
+			<img class="technology-list__item__icon" src="{{icon}}" alt="">
+			<div class="technology-list__item__info">
+				<div class="technology__list__item__title">{{name}}</div>					
+				<div class="technology__list__item__meta">
+					{{#each bonus}}
+					<span class="game-icon"><span>+{{value}}</span><img src="/media/game/icons/{{type}}.png" alt=""></span>
+					{{/each}}
+				</div>					
+			</div>
+		</div>
+	</div>
+	{{/with}}
+</script>
+
+<script id="loadingTemplate" type="text/html">
+	<div class="game-preload">
+		<div class="backstage"></div>
+		<div class="content">
+			<h2 class="helvetica-ultra">Увеличивайте вашу культуру, чтобы открывать новые земли</h1>
+			<h5>Подождите, идет загрузка...</h5>
+		</div>
+	</div>
+</script>
 {% endverbatim %}
 
 {% endblock %}
+
